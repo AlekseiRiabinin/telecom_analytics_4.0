@@ -1,0 +1,25 @@
+# k8s/spark-rbac-minimal.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: spark-jobs
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: spark
+  namespace: spark-jobs
+---
+# Use built-in edit role for simplicity
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: spark-edit-role
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+subjects:
+- kind: ServiceAccount
+  name: spark
+  namespace: spark-jobs

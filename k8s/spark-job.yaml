@@ -1,0 +1,34 @@
+# k8s/spark-job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: telecom-analytics-job
+  namespace: spark-jobs
+spec:
+  template:
+    metadata:
+      labels:
+        app: telecom-analytics
+    spec:
+      serviceAccountName: spark
+      containers:
+      - name: spark-job
+        image: alexflames77/telecom-analytics:latest
+        command: ["/opt/spark/work-dir/entrypoint.sh"]
+        env:
+        - name: SPARK_MASTER
+          value: "k8s://https://kubernetes.default.svc:443"
+        - name: SPARK_DRIVER_MEMORY
+          value: "2g"
+        - name: SPARK_EXECUTOR_MEMORY
+          value: "2g"
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1000m"
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
+      restartPolicy: Never
+  backoffLimit: 2
+  

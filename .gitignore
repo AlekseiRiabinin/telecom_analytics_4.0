@@ -1,0 +1,107 @@
+# Project root .gitignore
+
+# Build outputs
+target/
+project/target/
+project/project/
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Log files
+*.log
+logs/
+
+# SBT specific
+dist/
+/*.jar
+lib_managed/
+src_managed/
+build.sbt.cache
+build.sbt.orig
+
+# Bloop (Metals build server)
+.bloop/
+.metals/
+metals.sbt
+
+# ENSIME (Scala IDE)
+.ensime
+.ensime_cache/
+.ensime_lucene/
+
+# Scala-IDE specific
+.scala_dependencies
+.worksheet
+
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+out/
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+# NetBeans
+/nbproject/private/
+/nbproject/
+/build/
+
+# Spark specific
+spark-warehouse/
+derby.log
+metastore_db/
+
+# Data and output directories
+data/
+output/
+sample_data/output/
+
+# Docker
+docker/.env
+docker/*.tar.gz
+
+# Kubernetes
+k8s/*.kubeconfig
+k8s/temp/
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Certificate files
+*.p12
+*.keystore
+*.truststore
+*.jks
+
+# Application specific
+config/local.conf
+config/secrets.conf
+
+# Git
+!.gitkeep
