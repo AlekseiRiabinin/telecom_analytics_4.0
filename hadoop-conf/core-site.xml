@@ -1,0 +1,171 @@
+<configuration>
+  <!-- ============================================== -->
+  <!-- MinIO/S3 Storage Configuration                -->
+  <!-- ============================================== -->
+  
+  <!-- Default filesystem URI (MinIO bucket) -->
+  <property>
+    <name>fs.defaultFS</name>
+    <value>s3a://default</value>
+    <description>
+      The default filesystem URI that serves as the root for relative paths.
+      Points to the 'default' bucket in MinIO storage.
+    </description>
+  </property>
+
+  <!-- ============================================== -->
+  <!-- MinIO Connection Credentials                  -->
+  <!-- ============================================== -->
+  
+  <property>
+    <name>fs.s3a.access.key</name>
+    <value>minioadmin</value>
+    <description>
+      Access key ID for MinIO authentication.
+      For production, use environment variables or secured credential providers.
+    </description>
+  </property>
+
+  <property>
+    <name>fs.s3a.secret.key</name>
+    <value>minioadmin</value>
+    <description>
+      Secret access key for MinIO authentication.
+      For production, use environment variables or secured credential providers.
+    </description>
+  </property>
+
+  <property>
+    <name>fs.s3a.endpoint</name>
+    <value>http://minio:9002</value>
+    <description>
+      MinIO server endpoint URL. Uses Docker service name 'minio' and default port 9002.
+      For HTTPS, change protocol to https:// and enable SSL below.
+    </description>
+  </property>
+
+  <!-- ============================================== -->
+  <!-- MinIO Compatibility Settings                  -->
+  <!-- ============================================== -->
+  
+  <property>
+    <name>fs.s3a.path.style.access</name>
+    <value>true</value>
+    <description>
+      Enables path-style access for MinIO (required).
+      MinIO doesn't support virtual-hosted style access.
+    </description>
+  </property>
+
+  <property>
+    <name>fs.s3a.impl</name>
+    <value>org.apache.hadoop.fs.s3a.S3AFileSystem</value>
+    <description>
+      The implementation class for S3A filesystem.
+      Must be set to enable S3A protocol support.
+    </description>
+  </property>
+
+  <property>
+    <name>fs.s3a.connection.ssl.enabled</name>
+    <value>false</value>
+    <description>
+      Disables SSL for MinIO connections (since we're using HTTP).
+      Set to true and configure certificates if using HTTPS.
+    </description>
+  </property>
+
+  <!-- ============================================== -->
+  <!-- Performance Tuning                            -->
+  <!-- ============================================== -->
+  
+  <property>
+    <name>fs.s3a.connection.maximum</name>
+    <value>100</value>
+    <description>
+      Maximum number of simultaneous connections to MinIO.
+      Adjust based on the workload and MinIO server capacity.
+    </description>
+  </property>
+
+  <property>
+    <name>fs.s3a.threads.max</name>
+    <value>20</value>
+    <description>
+      Maximum number of threads for S3A filesystem operations.
+      Higher values improve parallelism but increase memory usage.
+    </description>
+  </property>
+
+  <property>
+    <name>fs.s3a.fast.upload</name>
+    <value>true</value>
+    <description>
+      Enables accelerated upload mechanism for better performance.
+      Recommended for most workloads.
+    </description>
+  </property>
+
+  <property>
+    <name>fs.s3a.fast.upload.buffer</name>
+    <value>disk</value>
+    <description>
+      Buffer type for fast uploads. 'disk' is most reliable.
+      Alternatives: 'array' (memory) or 'bytebuffer' (off-heap).
+    </description>
+  </property>
+
+  <!-- ============================================== -->
+  <!-- Advanced Configuration                       -->
+  <!-- ============================================== -->
+  
+  <property>
+    <name>fs.s3a.aws.credentials.provider</name>
+    <value>org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider</value>
+    <description>
+      Credential provider implementation.
+      Simple provider reads from configuration (good for development).
+      For production, consider IAM or environment variable providers.
+    </description>
+  </property>
+
+  <property>
+    <name>fs.s3a.attempts.maximum</name>
+    <value>10</value>
+    <description>
+      Maximum retry attempts for failed operations.
+      Helps handle transient network issues.
+    </description>
+  </property>
+
+  <property>
+    <name>fs.s3a.connection.timeout</name>
+    <value>60000</value>
+    <description>
+      Connection timeout in milliseconds (60 seconds).
+      Adjust based on the network latency characteristics.
+    </description>
+  </property>
+
+  <!-- ============================================== -->
+  <!-- Additional Recommended Settings               -->
+  <!-- ============================================== -->
+  
+  <property>
+    <name>fs.s3a.multipart.size</name>
+    <value>104857600</value> <!-- 100MB -->
+    <description>
+      Size threshold for multipart uploads (100MB).
+      Larger values reduce overhead but increase memory usage.
+    </description>
+  </property>
+
+  <property>
+    <name>fs.s3a.multipart.threshold</name>
+    <value>104857600</value> <!-- 100MB -->
+    <description>
+      Minimum file size for multipart upload (100MB).
+      Files smaller than this will be uploaded in single request.
+    </description>
+  </property>
+</configuration>
