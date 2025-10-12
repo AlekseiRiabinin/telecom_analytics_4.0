@@ -1,0 +1,210 @@
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:25.8-lts
+    container_name: clickhouse-server
+    ports:
+      - "8123:8123"  # HTTP API
+      - "9000:9000"  # Native interface
+    environment:
+      - CLICKHOUSE_DB=airflow
+      - CLICKHOUSE_USER=admin
+      - CLICKHOUSE_PASSWORD=clickhouse_admin
+      - CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+      - clickhouse_log:/var/log/clickhouse-server
+    networks:
+      - kafka-net
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - wget
+        - --no-verbose
+        - --tries=1
+        - --spider
+        - http://localhost:8123/ping || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  minio:
+    image: minio/minio:RELEASE.2024-04-18T19-09-19Z
+    container_name: minio
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+      - AWS_ACCESS_KEY_ID=minioadmin
+      - AWS_SECRET_ACCESS_KEY=minioadmin
+      - AWS_ENDPOINT_URL=http://minio:9002
+    command: server /data --console-address ":9001" --address ":9002"
+    volumes:
+      - minio-data:/data
+    ports:
+      - "9002:9002"
+      - "9001:9001"
+    networks:
+      - kafka-net
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1GiB
+
+  minio-setup:
+    image: minio/minio:RELEASE.2024-04-18T19-09-19Z
+    container_name: minio-setup
+    depends_on:
+      minio:
+        condition: service_started
+    entrypoint: |
+      /bin/sh -c "
+      echo 'Waiting for MinIO to be ready...';
+      sleep 25;
+      
+      if ! command -v curl >/dev/null 2>&1; then
+        echo 'Installing curl...';
+        apt-get update && apt-get install -y curl;
+      fi
+      
+      until curl -s http://minio:9002/minio/health/live >/dev/null; do
+        echo 'Waiting for MinIO health endpoint...';
+        sleep 5;
+      done
+      
+      if command -v mc >/dev/null 2>&1; then
+        mc alias set local http://minio:9002 minioadmin minioadmin;
+        mc mb local/trino-data-lake || true;
+        mc mb local/trino-warehouse || true;
+        mc mb local/trino-catalog || true;
+        mc mb local/spark-data || true;
+        mc mb local/airflow-logs || true;
+        mc anonymous set download local/trino-data-lake || true;
+        echo 'MinIO buckets initialized successfully';
+      else
+        echo 'MC client not available, using API calls instead';
+
+        for bucket in trino-data-lake trino-warehouse trino-catalog spark-data airflow-logs; do
+          curl -X PUT http://minio:9002/$bucket -H 'Content-Length: 0' || true;
+        done
+        echo 'Buckets created via API';
+      fi
+      "
+    networks:
+      - kafka-net
+    restart: on-failure
+
+  airflow-webserver:
+    build:
+      context: ../apps/airflow-app
+      dockerfile: Dockerfile
+    image: alexflames77/custom-airflow:latest
+    container_name: airflow-webserver-telecom
+    command: webserver
+    depends_on:
+      - clickhouse
+      - minio
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
+      - AIRFLOW__WEBSERVER__EXPOSE_CONFIG=True
+      - AIRFLOW__CORE__FERNET_KEY=PakKUDc_578hbrABpAhOs0PMn7RnDBfkgRO03e_tugA=
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - HADOOP_CONF_DIR=/opt/hadoop/etc/hadoop
+      - AIRFLOW_CONN_HDFS_DEFAULT=hdfs://namenode:8020
+      - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:9092,kafka-2:9095
+      - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
+      - AIRFLOW_CONN_MINIO_DEFAULT=s3://minioadmin:minioadmin@minio:9002
+      - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/airflow
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
+      - ./airflow/plugins:/opt/airflow/plugins
+      - ./hadoop-conf:/opt/hadoop/etc/hadoop
+    ports:
+      - "8083:8080"
+    networks:
+      - kafka-net
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2GiB
+
+  airflow-scheduler:
+    image: alexflames77/custom-airflow:latest
+    container_name: airflow-scheduler-telecom
+    command: scheduler
+    depends_on:
+      - airflow-webserver-telecom
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
+      - HADOOP_CONF_DIR=/opt/hadoop/etc/hadoop
+      - AIRFLOW__CORE__FERNET_KEY=PakKUDc_578hbrABpAhOs0PMn7RnDBfkgRO03e_tugA=
+      - AIRFLOW_CONN_HDFS_DEFAULT=hdfs://namenode:8020
+      - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:9092,kafka-2:9095
+      - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
+      - AIRFLOW_CONN_MINIO_DEFAULT=s3://minioadmin:minioadmin@minio:9002
+      - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/airflow
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
+      - ./airflow/plugins:/opt/airflow/plugins
+      - ./hadoop-conf:/opt/hadoop/etc/hadoop
+    networks:
+      - kafka-net
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2GiB
+
+  airflow-init:
+    image: alexflames77/custom-airflow:latest
+    container_name: airflow-init-telecom
+    entrypoint: /bin/bash
+    command: -c "airflow db init && airflow users create \
+      --username admin \
+      --firstname Admin \
+      --lastname User \
+      --role Admin \
+      --email admin@example.com \
+      --password admin"
+    depends_on:
+      - clickhouse
+      - minio
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
+      - AIRFLOW_CONN_HDFS_DEFAULT=hdfs://namenode:8020
+      - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:9092,kafka-2:9095
+      - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
+      - AIRFLOW_CONN_MINIO_DEFAULT=s3://minioadmin:minioadmin@minio:9002
+      - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/airflow
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
+      - ./airflow/plugins:/opt/airflow/plugins
+    networks:
+      - kafka-net
+
+volumes:
+  clickhouse_data:
+    name: clickhouse_data
+  clickhouse_log:
+    name: clickhouse_log
+  minio-data:
+    name: minio-data
+
+networks:
+  kafka-net:
+    driver: bridge
