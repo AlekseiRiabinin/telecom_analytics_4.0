@@ -1,12 +1,36 @@
 #!/bin/bash
 
-echo "=== Starting Kafka Data Pipeline (No Airflow) ==="
+echo "=== Starting Complete Kafka + ClickHouse Pipeline ==="
 
 COMPOSE_FILE="docker-compose.telecom.yml"
 
 # Function to check if service is running
 is_service_running() {
     docker compose -f "$COMPOSE_FILE" ps "$1" | grep -q "Up"
+}
+
+# Function to start ClickHouse with proper waiting
+start_clickhouse() {
+    echo "Starting ClickHouse independently..."
+    BUCKET=telecom-data docker compose -f "$COMPOSE_FILE" up -d --no-deps clickhouse
+    
+    echo "Waiting for ClickHouse to initialize..."
+    sleep 20
+    
+    # Test ClickHouse
+    echo "Testing ClickHouse..."
+    if curl -s http://localhost:8123/ping | grep -q "Ok"; then
+        echo "✅ ClickHouse is running and responding!"
+        echo ""
+        echo "Testing database access..."
+        curl -s "http://admin:clickhouse_admin@localhost:8123?query=SHOW DATABASES"
+        echo ""
+        return 0
+    else
+        echo "❌ ClickHouse not responding. Checking logs..."
+        docker compose -f "$COMPOSE_FILE" logs clickhouse --tail=10
+        return 1
+    fi
 }
 
 # Start Kafka brokers first
@@ -37,11 +61,15 @@ BUCKET=telecom-data docker compose -f "$COMPOSE_FILE" up -d minio kafka-producer
 
 sleep 10
 
-# Start ClickHouse separately (bypass health check dependencies)
+# Start ClickHouse with proper method
 echo "4. Starting ClickHouse..."
-BUCKET=telecom-data docker compose -f "$COMPOSE_FILE" up -d clickhouse
+if start_clickhouse; then
+    echo "✅ ClickHouse started successfully!"
+else
+    echo "⚠️  ClickHouse had issues starting, but continuing with pipeline..."
+fi
 
-echo "✅ Kafka data pipeline services deployment completed!"
+echo "✅ Complete data pipeline deployment completed!"
 
 # Final status check
 echo ""
@@ -54,6 +82,6 @@ echo "Kafka Brokers:    localhost:9092, localhost:9095"
 echo "ClickHouse:       http://localhost:8123 (admin/clickhouse_admin)"
 echo "MinIO Console:    http://localhost:9001 (minioadmin/minioadmin)"
 echo ""
-echo "Note: Some services may show dependency warnings but should be functional"
-echo "Check individual service logs if any service isn't working:"
-echo "  docker compose -f $COMPOSE_FILE logs [service-name]"
+echo "=== Next Steps ==="
+echo "Check individual logs: docker compose -f $COMPOSE_FILE logs [service-name]"
+echo "Stop all services:    ./stop-system.sh"

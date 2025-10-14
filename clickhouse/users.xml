@@ -5,10 +5,21 @@
             <max_memory_usage>10000000000</max_memory_usage>
             <use_uncompressed_cache>0</use_uncompressed_cache>
             <load_balancing>in_order</load_balancing>
+            <max_concurrent_queries>100</max_concurrent_queries>
+            <max_partitions_per_insert_block>100</max_partitions_per_insert_block>
         </default>
     </profiles>
 
     <users>
+        <default>
+            <password></password>
+            <networks>
+                <ip>::/0</ip>
+            </networks>
+            <profile>default</profile>
+            <quota>default</quota>
+        </default>
+        
         <admin>
             <password>clickhouse_admin</password>
             <networks>
@@ -16,6 +27,7 @@
             </networks>
             <profile>default</profile>
             <quota>default</quota>
+            <access_management>1</access_management>
         </admin>
     </users>
 
