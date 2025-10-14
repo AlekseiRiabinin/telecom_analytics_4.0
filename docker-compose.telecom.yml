@@ -92,8 +92,6 @@ services:
     volumes:
       - clickhouse_data:/var/lib/clickhouse
       - clickhouse_log:/var/log/clickhouse-server
-      - ./clickhouse/config.xml:/etc/clickhouse-server/config.xml:ro
-      - ./clickhouse/users.xml:/etc/clickhouse-server/users.xml:ro
     networks:
       - kafka-net
     ulimits:
