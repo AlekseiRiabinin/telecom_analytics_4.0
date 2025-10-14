@@ -1,7 +1,86 @@
 services:
+
+  # Kafka Brokers
+  kafka-1:
+    image: bitnami/kafka:3.8.0
+    container_name: kafka-1
+    ports:
+      - "9092:9092"    # Kafka-1 communication port
+    environment:
+      - KAFKA_ENABLE_KRAFT=yes
+      - KAFKA_KRAFT_CLUSTER_ID=d8ce1515-401e-44d4-a444-1b6dba479047
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_HEAP_OPTS=-Xmx2G -Xms2G
+    volumes:
+      - ./server-1.properties:/opt/bitnami/kafka/config/server.properties:ro
+    networks:
+      - kafka-net
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 2GiB
+        reservations:
+          cpus: '0.25'
+          memory: 1GiB
+
+  kafka-2:
+    image: bitnami/kafka:3.8.0
+    container_name: kafka-2
+    ports:
+      - "9095:9095"    # Kafka-2 communication port
+    environment:
+      - KAFKA_ENABLE_KRAFT=yes
+      - KAFKA_KRAFT_CLUSTER_ID=d8ce1515-401e-44d4-a444-1b6dba479047
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_HEAP_OPTS=-Xmx2G -Xms2G
+    volumes:
+      - ./server-2.properties:/opt/bitnami/kafka/config/server.properties:ro
+    networks:
+      - kafka-net
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 2GiB
+        reservations:
+          cpus: '0.25'
+          memory: 1GiB
+  
+  # Kafka Producer (smart meter data)
+  kafka-producer:
+    build:
+      context: .
+      dockerfile: producer/Dockerfile
+    image: alexflames77/kafka_producer:latest
+    container_name: kafka-producer
+    depends_on:
+      - kafka-1
+      - kafka-2
+    networks:
+      - kafka-net
+    volumes:
+      - ./data/smart_meter_data.json:/app/data/smart_meter_data.json
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512MiB
+        reservations:
+          cpus: '0.25'
+          memory: 256MiB
+
   clickhouse:
-    image: clickhouse/clickhouse-server:25.8-lts
+    image: clickhouse/clickhouse-server:25.9
     container_name: clickhouse-server
+    depends_on:
+      kafka-1:
+        condition: service_healthy
+      kafka-2:
+        condition: service_healthy
     ports:
       - "8123:8123"  # HTTP API
       - "9000:9000"  # Native interface
@@ -13,6 +92,8 @@ services:
     volumes:
       - clickhouse_data:/var/lib/clickhouse
       - clickhouse_log:/var/log/clickhouse-server
+      - ./clickhouse/config.xml:/etc/clickhouse-server/config.xml:ro
+      - ./clickhouse/users.xml:/etc/clickhouse-server/users.xml:ro
     networks:
       - kafka-net
     ulimits:
@@ -105,7 +186,7 @@ services:
       context: ../apps/airflow-app
       dockerfile: Dockerfile
     image: alexflames77/custom-airflow:latest
-    container_name: airflow-webserver-telecom
+    container_name: airflow-webserver
     command: webserver
     depends_on:
       - clickhouse
@@ -140,10 +221,10 @@ services:
 
   airflow-scheduler:
     image: alexflames77/custom-airflow:latest
-    container_name: airflow-scheduler-telecom
+    container_name: airflow-scheduler
     command: scheduler
     depends_on:
-      - airflow-webserver-telecom
+      - airflow-webserver
     environment:
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
@@ -170,7 +251,7 @@ services:
 
   airflow-init:
     image: alexflames77/custom-airflow:latest
-    container_name: airflow-init-telecom
+    container_name: airflow-init
     entrypoint: /bin/bash
     command: -c "airflow db init && airflow users create \
       --username admin \
