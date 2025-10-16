@@ -1,0 +1,35 @@
+{
+  "name": "Telecom Analytics Airflow Dev",
+  "dockerComposeFile": "../docker-compose.telecom.yml",
+  "service": "airflow-webserver",
+  "workspaceFolder": "/opt/airflow",
+  
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "mtxr.sqltools",
+        "redhat.vscode-yaml",
+        "ms-azuretools.vscode-docker",
+        "ms-vscode.makefile-tools",
+        "eamodio.gitlens"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.analysis.extraPaths": ["/opt/airflow/dags", "/opt/airflow/plugins"],
+        "editor.formatOnSave": true,
+        "python.formatting.provider": "black",
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": true,
+        "files.watcherExclude": {
+          "**/target/**": true,
+          "**/__pycache__/**": true
+        }
+      }
+    }
+  },
+  
+  "forwardPorts": [8083],
+  "postCreateCommand": "echo 'Development environment ready!' && airflow version",
+  "remoteUser": "airflow"
+}

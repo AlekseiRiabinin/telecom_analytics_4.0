@@ -179,6 +179,34 @@ services:
       - kafka-net
     restart: on-failure
 
+  postgres:
+    image: postgres:15.2
+    container_name: postgres
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres-azure-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5    
+    networks:
+      - kafka-net
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2GiB
+        reservations:
+          cpus: '0.5'
+          memory: 1GiB
+
   airflow-webserver:
     build:
       context: ../apps/airflow-app
@@ -187,6 +215,7 @@ services:
     container_name: airflow-webserver
     command: webserver
     depends_on:
+      - postgres
       - clickhouse
       - minio
     environment:
@@ -283,6 +312,8 @@ volumes:
     name: clickhouse_log
   minio-data:
     name: minio-data
+  postgres-azure-data:
+    name: postgres-azure-data
 
 networks:
   kafka-net:
