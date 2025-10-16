@@ -1,29 +1,24 @@
-#!/usr/bin/env python3
-"""
-Airflow Connections Test Script
-Run this from INSIDE the Airflow container via VS Code Dev Container
-"""
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+from airflow.operators.empty import EmptyOperator
+from datetime import datetime
 import os
 import sys
-from airflow.models import Variable
-from airflow.configuration import conf
+
 
 def test_airflow_environment():
+    """Test function to verify the environment"""
     print("🔍 Testing Airflow Environment...")
     print("=" * 50)
     
     # Test Core Configuration
     print("1. Core Configuration:")
-    print(f"   Executor: {conf.get('core', 'executor')}")
-    print(f"   DAG Folder: {conf.get('core', 'dags_folder')}")
-    print(f"   Load Examples: {conf.get('core', 'load_examples')}")
+    print(f"   DAG Folder: {os.getenv('AIRFLOW__CORE__DAGS_FOLDER', 'Not set')}")
     
     # Test Environment Variables
     print("\n2. Environment Variables:")
     env_vars = [
         'AIRFLOW__CORE__EXECUTOR',
-        'AIRFLOW__DATABASE__SQL_ALCHEMY_CONN',
-        'HADOOP_CONF_DIR',
         'AIRFLOW_CONN_HDFS_DEFAULT',
         'AIRFLOW_CONN_KAFKA_DEFAULT', 
         'AIRFLOW_CONN_SPARK_DEFAULT',
@@ -33,26 +28,20 @@ def test_airflow_environment():
     
     for var in env_vars:
         value = os.getenv(var, 'NOT SET')
-        # Mask passwords in connection strings
-        if 'password' in var.lower() or '@' in value:
-            masked_value = '***MASKED***'
-        else:
-            masked_value = value[:80] + '...' if len(str(value)) > 80 else value
+        masked_value = value[:50] + '...' if len(value) > 50 else value
         print(f"   {var}: {masked_value}")
     
-    # Test Python Path and Providers
-    print("\n3. Python Environment:")
-    print(f"   Python Path: {sys.executable}")
-    print(f"   Python Version: {sys.version}")
+    # Test Python Environment
+    print(f"\n3. Python Path: {sys.executable}")
     
-    # Test if providers are accessible
+    # Test provider imports
     print("\n4. Testing Provider Imports:")
     providers = [
-        ('PostgreSQL', 'airflow.providers.postgres.operators.postgres'),
-        ('Apache HDFS', 'airflow.providers.apache.hdfs.sensors.hdfs'),
-        ('Apache Kafka', 'airflow.providers.apache.kafka.operators.kafka'),
-        ('ClickHouse', 'airflow.providers.clickhouse.operators.clickhouse'),
-        ('Apache Spark', 'airflow.providers.apache.spark.operators.spark_submit')
+        ('PostgreSQL', 'airflow.providers.postgres'),
+        ('Apache HDFS', 'airflow.providers.apache.hdfs'),
+        ('Apache Kafka', 'airflow.providers.apache.kafka'),
+        ('ClickHouse', 'airflow.providers.clickhouse'),
+        ('Apache Spark', 'airflow.providers.apache.spark')
     ]
     
     for provider_name, module_path in providers:
@@ -62,12 +51,10 @@ def test_airflow_environment():
         except ImportError as e:
             print(f"   ❌ {provider_name}: MISSING - {e}")
     
-    print("\n" + "=" * 50)
-    print("✅ Environment check completed!")
+    return "Environment test completed!"
 
-def test_connection_objects():
-    """Test if we can access connection objects"""
-    print("\n5. Testing Connection Objects:")
+def test_connections():
+    """Test if connections are accessible"""
     try:
         from airflow.hooks.base import BaseHook
         
@@ -82,13 +69,42 @@ def test_connection_objects():
         for conn_id in connections_to_test:
             try:
                 conn = BaseHook.get_connection(conn_id)
-                print(f"   ✅ {conn_id}: {conn.conn_type} -> {conn.host}")
+                print(f"✅ {conn_id}: {conn.conn_type} -> {conn.host}")
             except Exception as e:
-                print(f"   ❌ {conn_id}: ERROR - {e}")
+                print(f"❌ {conn_id}: ERROR - {e}")
                 
     except Exception as e:
-        print(f"   ⚠️ Cannot test connections: {e}")
+        print(f"⚠️ Cannot test connections: {e}")
 
-if __name__ == "__main__":
-    test_airflow_environment()
-    test_connection_objects()
+# Define the DAG
+with DAG(
+    'telecom_environment_test',
+    default_args={
+        'owner': 'telecom',
+        'depends_on_past': False,
+        'start_date': datetime(2024, 1, 1),
+        'email_on_failure': False,
+        'email_on_retry': False,
+        'retries': 1,
+    },
+    description='Test Telecom Analytics Environment',
+    schedule_interval=None,  # Manual trigger only
+    catchup=False,
+    tags=['telecom', 'test'],
+) as dag:
+
+    start = EmptyOperator(task_id='start')
+    
+    test_environment = PythonOperator(
+        task_id='test_environment',
+        python_callable=test_airflow_environment,
+    )
+    
+    test_connections = PythonOperator(
+        task_id='test_connections', 
+        python_callable=test_connections,
+    )
+    
+    end = EmptyOperator(task_id='end')
+    
+    start >> test_environment >> test_connections >> end
