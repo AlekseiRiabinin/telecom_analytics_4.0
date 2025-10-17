@@ -218,6 +218,7 @@ services:
       - postgres
       - clickhouse
       - minio
+      - mssql
     environment:
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
@@ -230,6 +231,7 @@ services:
       - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
       - AIRFLOW_CONN_MINIO_DEFAULT=s3://minioadmin:minioadmin@minio:9002
       - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/airflow
+      - AIRFLOW_CONN_MSSQL_DEFAULT=mssql+pyodbc://sa:Admin123!@mssql:1433/telecom_db?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes
     volumes:
       - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs
@@ -252,6 +254,7 @@ services:
     command: scheduler
     depends_on:
       - airflow-webserver
+      - mssql
     environment:
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
@@ -262,6 +265,7 @@ services:
       - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
       - AIRFLOW_CONN_MINIO_DEFAULT=s3://minioadmin:minioadmin@minio:9002
       - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/airflow
+      - AIRFLOW_CONN_MSSQL_DEFAULT=mssql+pyodbc://sa:Admin123!@mssql:1433/telecom_db?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes
     volumes:
       - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs
@@ -290,6 +294,7 @@ services:
     depends_on:
       - clickhouse
       - minio
+      - mssql
     environment:
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
@@ -298,12 +303,47 @@ services:
       - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
       - AIRFLOW_CONN_MINIO_DEFAULT=s3://minioadmin:minioadmin@minio:9002
       - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/airflow
+      - AIRFLOW_CONN_MSSQL_DEFAULT=mssql+pyodbc://sa:Admin123!@mssql:1433/telecom_db?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes
     volumes:
       - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs
       - ./airflow/plugins:/opt/airflow/plugins
     networks:
       - kafka-net
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-CU12-ubuntu-20.04
+    container_name: mssql-server
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Admin123!
+      - MSSQL_PID=Developer
+      - MSSQL_AGENT_ENABLED=true
+      - MSSQL_MEMORY_LIMIT_MB=1536
+      - MSSQL_TELEMETRY_ENABLED=false
+      - MSSQL_COLLATION=SQL_Latin1_General_CP1_CI_AS
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql-data:/var/opt/mssql
+      - mssql-backups:/var/opt/mssql/backups
+    networks:
+      - kafka-net
+    restart: unless-stopped
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "Admin123!" -Q "SELECT 1" -C -b || exit 1
+      interval: 30s
+      timeout: 20s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2GiB
+        reservations:
+          cpus: '0.5'
+          memory: 1GiB
 
 volumes:
   clickhouse_data:
@@ -314,6 +354,10 @@ volumes:
     name: minio-data
   postgres-azure-data:
     name: postgres-azure-data
+  mssql-data:
+    name: mssql-data
+  mssql-backups:
+    name: mssql-backups
 
 networks:
   kafka-net:
