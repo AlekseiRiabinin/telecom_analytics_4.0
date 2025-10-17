@@ -29,9 +29,9 @@ echo "3. Checking if all services are stopped..."
 RUNNING_CONTAINERS=$(docker compose -f "$COMPOSE_FILE" ps --services --filter "status=running" | wc -l)
 
 if [ "$RUNNING_CONTAINERS" -eq 0 ]; then
-    echo "✅ All services stopped successfully!"
+    echo "All services stopped successfully!"
 else
-    echo "⚠️  Some services might still be running:"
+    echo "Some services might still be running:"
     docker compose -f "$COMPOSE_FILE" ps --services --filter "status=running"
     echo ""
     echo "You can force stop with: docker compose -f $COMPOSE_FILE down --remove-orphans"

@@ -20,28 +20,61 @@ start_clickhouse() {
     # Test ClickHouse
     echo "Testing ClickHouse..."
     if curl -s http://localhost:8123/ping | grep -q "Ok"; then
-        echo "✅ ClickHouse is running and responding!"
+        echo "ClickHouse is running and responding!"
         echo ""
         echo "Testing database access..."
         curl -s "http://admin:clickhouse_admin@localhost:8123?query=SHOW DATABASES"
         echo ""
         return 0
     else
-        echo "❌ ClickHouse not responding. Checking logs..."
+        echo "ClickHouse not responding. Checking logs..."
         docker compose -f "$COMPOSE_FILE" logs clickhouse --tail=10
         return 1
     fi
 }
 
+
+# Function to start MSSQL with proper waiting
+start_mssql() {
+    echo "Starting MSSQL independently..."
+    BUCKET=telecom-data docker compose -f "$COMPOSE_FILE" up -d --no-deps mssql
+    
+    echo "Waiting for MSSQL to initialize..."
+    sleep 30
+    
+    # Test MSSQL
+    echo "Testing MSSQL..."
+    if docker exec mssql-server /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "Admin123!" -Q "SELECT 1" -C -b >/dev/null 2>&1; then
+        echo "MSSQL is running and responding!"
+        echo ""
+        echo "Testing database access..."
+        docker exec mssql-server /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "Admin123!" -Q "SELECT name FROM sys.databases" -C
+        echo ""
+        return 0
+    else
+        echo "MSSQL not responding. Checking logs..."
+        docker compose -f "$COMPOSE_FILE" logs mssql --tail=10
+        return 1
+    fi
+}
+
+# Start MSSQL first (it takes the longest to initialize)
+echo "1. Starting MSSQL database..."
+if start_mssql; then
+    echo "MSSQL started successfully!"
+else
+    echo "MSSQL had issues starting, but continuing with pipeline..."
+fi
+
 # Start Kafka brokers first
-echo "1. Starting Kafka brokers..."
+echo "2. Starting Kafka brokers..."
 BUCKET=telecom-data docker compose -f "$COMPOSE_FILE" up -d kafka-1 kafka-2
 
 echo "Waiting for Kafka to initialize..."
 sleep 25
 
 # Create Kafka topic
-echo "2. Creating Kafka topic..."
+echo "3. Creating Kafka topic..."
 docker exec kafka-1 bash -c '
     if ! kafka-topics.sh --describe --topic "smart_meter_data" --bootstrap-server kafka-1:9092 >/dev/null 2>&1; then
         echo "Creating topic: smart_meter_data"
@@ -56,20 +89,20 @@ docker exec kafka-1 bash -c '
 '
 
 # Start services that don't depend on health checks
-echo "3. Starting MinIO and producer..."
+echo "4. Starting MinIO and producer..."
 BUCKET=telecom-data docker compose -f "$COMPOSE_FILE" up -d minio kafka-producer minio-setup
 
 sleep 10
 
 # Start ClickHouse with proper method
-echo "4. Starting ClickHouse..."
+echo "5. Starting ClickHouse..."
 if start_clickhouse; then
-    echo "✅ ClickHouse started successfully!"
+    echo "ClickHouse started successfully!"
 else
-    echo "⚠️  ClickHouse had issues starting, but continuing with pipeline..."
+    echo "ClickHouse had issues starting, but continuing with pipeline..."
 fi
 
-echo "✅ Complete data pipeline deployment completed!"
+echo "Complete data pipeline deployment completed!"
 
 # Final status check
 echo ""
@@ -80,6 +113,7 @@ echo ""
 echo "=== Access Information ==="
 echo "Kafka Brokers:    localhost:9092, localhost:9095"
 echo "ClickHouse:       http://localhost:8123 (admin/clickhouse_admin)"
+echo "MSSQL:            localhost:1433 (sa/Admin123!)"
 echo "MinIO Console:    http://localhost:9001 (minioadmin/minioadmin)"
 echo ""
 echo "=== Next Steps ==="
