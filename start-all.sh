@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#!/bin/bash
-
 echo "=== Starting Complete Telecom Analytics Platform ==="
 echo "This will start both the core data pipeline and Airflow platform"
 echo ""
@@ -46,9 +44,36 @@ echo ""
 echo "3. Waiting for core services to stabilize..."
 sleep 15
 
+# Start Spark cluster
+echo ""
+echo "4. Starting Spark cluster..."
+./start-spark.sh
+
+if [ $? -eq 0 ]; then
+    echo "✅ Spark cluster started successfully!"
+else
+    echo "⚠️  Spark cluster had some issues, but continuing..."
+fi
+
+# Wait for Spark to initialize
+echo ""
+echo "5. Waiting for Spark to stabilize..."
+sleep 10
+
+# Start Debezium CDC
+echo ""
+echo "6. Starting Debezium CDC connector..."
+./start-debezium.sh
+
+if [ $? -eq 0 ]; then
+    echo "✅ Debezium CDC started successfully!"
+else
+    echo "⚠️  Debezium CDC had some issues, but continuing..."
+fi
+
 # Start Airflow platform
 echo ""
-echo "4. Starting Airflow platform (PostgreSQL + Airflow)..."
+echo "7. Starting Airflow platform (PostgreSQL + Airflow)..."
 ./start-airflow.sh
 
 if [ $? -eq 0 ]; then
@@ -59,16 +84,24 @@ fi
 
 # Final status check
 echo ""
-echo "5. Final platform status..."
+echo "8. Final platform status..."
 echo "=== Complete Platform Status ==="
 docker compose -f "$COMPOSE_FILE" ps
+
 
 echo ""
 echo "=== Access Information ==="
 echo "📊 Data Pipeline:"
 echo "   Kafka Brokers:    localhost:9092, localhost:9095"
 echo "   ClickHouse:       http://localhost:8123 (admin/clickhouse_admin)"
+echo "   MSSQL:            localhost:1433 (sa/Admin123!)"
 echo "   MinIO Console:    http://localhost:9001 (minioadmin/minioadmin)"
+echo ""
+echo "🔄 Change Data Capture:"
+echo "   Debezium UI:      http://localhost:8087"
+echo ""
+echo "⚡ Processing:"
+echo "   Spark Master:     http://localhost:8091"
 echo ""
 echo "⚙️  Orchestration:"
 echo "   Airflow:          http://localhost:8083 (admin/admin)"
@@ -77,6 +110,8 @@ echo ""
 echo "=== Next Steps ==="
 echo "🔍 Monitor pipeline:  ./verify-complete-pipeline.sh"
 echo "📈 Run analytics:     ./run-analytics.sh"
+echo "⚡ Submit Spark job:   ./submit-spark-job.sh"
+echo "🔄 Test CDC:          ./test-cdc-pipeline.sh"
 echo "🛑 Stop all:          ./stop-all.sh"
 echo ""
 echo "🎉 Telecom Analytics Platform is now running!"

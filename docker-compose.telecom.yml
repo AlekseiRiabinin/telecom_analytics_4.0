@@ -345,6 +345,90 @@ services:
           cpus: '0.5'
           memory: 1GiB
 
+  spark-master:
+    image: bitnami/spark:3.5.4
+    container_name: spark-master
+    hostname: spark-master
+    ports:
+      - "7077:7077"    # Spark communication port
+      - "8091:8080"    # Spark Master Web UI
+    environment:
+      - SPARK_MODE=master
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_MASTER_WEBUI_PORT=8080
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+      - SPARK_LOG_LEVEL=INFO
+    volumes:
+      - ./spark/jars:/opt/bitnami/spark/jars
+    networks:
+      - kafka-net
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2GiB
+        reservations:
+          cpus: '0.5'
+          memory: 1GiB
+
+  spark-worker:
+    image: bitnami/spark:3.5.4
+    container_name: spark-worker
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=1G
+      - SPARK_WORKER_CORES=1
+      - SPARK_WORKER_WEBUI_PORT=8081
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+      - SPARK_LOG_LEVEL=INFO
+    volumes:
+      - ./spark/jars:/opt/bitnami/spark/jars
+    depends_on:
+      - spark-master
+    networks:
+      - kafka-net
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 3GiB
+        reservations:
+          cpus: '0.75'
+          memory: 1.5GiB
+
+  debezium-connect:
+    image: debezium/connect:2.5
+    container_name: debezium-connect
+    depends_on:
+      - kafka-1
+      - kafka-2
+      - mssql
+    environment:
+      - BOOTSTRAP_SERVERS=kafka-1:9092,kafka-2:9095
+      - GROUP_ID=1
+      - CONFIG_STORAGE_TOPIC=debezium_connect_configs
+      - OFFSET_STORAGE_TOPIC=debezium_connect_offsets
+      - STATUS_STORAGE_TOPIC=debezium_connect_statuses
+      - KEY_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+      - VALUE_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+    ports:
+      - "8087:8083"  # Debezium REST API
+    networks:
+      - kafka-net
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1GiB
+
 volumes:
   clickhouse_data:
     name: clickhouse_data
