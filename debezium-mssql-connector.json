@@ -1,0 +1,22 @@
+{
+  "name": "mssql-telecom-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.sqlserver.SqlServerConnector",
+    "database.hostname": "mssql",
+    "database.port": "1433",
+    "database.user": "sa",
+    "database.password": "Admin123!",
+    "database.dbname": "telecom_db",
+    "database.server.name": "mssql-telecom-server",
+    "table.include.list": "dbo.smart_meter_data",
+    "database.history.kafka.bootstrap.servers": "kafka-1:9092,kafka-2:9095",
+    "database.history.kafka.topic": "dbhistory.telecom_db",
+    "topic.prefix": "telecom-cdc",
+    "transforms": "unwrap",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.drop.tombstones": "false",
+    "transforms.unwrap.delete.handling.mode": "rewrite",
+    "include.schema.changes": "false",
+    "snapshot.mode": "initial"
+  }
+}
