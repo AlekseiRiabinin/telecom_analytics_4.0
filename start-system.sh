@@ -13,7 +13,7 @@ is_service_running() {
 start_clickhouse() {
     echo "Starting ClickHouse independently..."
     BUCKET=telecom-data docker compose -f "$COMPOSE_FILE" up -d --no-deps clickhouse
-    
+
     echo "Waiting for ClickHouse to initialize..."
     sleep 20
     
@@ -57,6 +57,42 @@ start_mssql() {
     fi
 }
 
+# Function to create Kafka Connect internal topics
+create_connect_topics() {
+    echo "Creating Kafka Connect internal topics..."
+    docker exec kafka-1 bash -c '
+        kafka-topics.sh --delete --topic debezium_connect_configs --bootstrap-server kafka-1:9092 2>/dev/null || true
+        kafka-topics.sh --delete --topic debezium_connect_offsets --bootstrap-server kafka-1:9092 2>/dev/null || true
+        kafka-topics.sh --delete --topic debezium_connect_statuses --bootstrap-server kafka-1:9092 2>/dev/null || true
+        
+        sleep 2
+        
+        echo "Creating Kafka Connect internal topics with replication factor 2..."
+        kafka-topics.sh --create \
+            --topic debezium_connect_configs \
+            --partitions 1 \
+            --replication-factor 2 \
+            --config cleanup.policy=compact \
+            --bootstrap-server kafka-1:9092
+            
+        kafka-topics.sh --create \
+            --topic debezium_connect_offsets \
+            --partitions 25 \
+            --replication-factor 2 \
+            --config cleanup.policy=compact \
+            --bootstrap-server kafka-1:9092
+            
+        kafka-topics.sh --create \
+            --topic debezium_connect_statuses \
+            --partitions 5 \
+            --replication-factor 2 \
+            --config cleanup.policy=compact \
+            --bootstrap-server kafka-1:9092
+            
+        echo "Kafka Connect internal topics created successfully"
+    '
+}
+
 # Start MSSQL first (it takes the longest to initialize)
 echo "1. Starting MSSQL database..."
 if start_mssql; then
@@ -72,8 +108,12 @@ BUCKET=telecom-data docker compose -f "$COMPOSE_FILE" up -d kafka-1 kafka-2
 echo "Waiting for Kafka to initialize..."
 sleep 25
 
-# Create Kafka topic
-echo "3. Creating Kafka topic..."
+# Create Kafka Connect internal topics FIRST
+echo "3. Creating Kafka Connect internal topics..."
+create_connect_topics
+
+# Create application topics
+echo "4. Creating application Kafka topics..."
 docker exec kafka-1 bash -c '
     if ! kafka-topics.sh --describe --topic "smart_meter_data" --bootstrap-server kafka-1:9092 >/dev/null 2>&1; then
         echo "Creating topic: smart_meter_data"
@@ -107,17 +147,16 @@ docker exec kafka-1 bash -c '
     else
         echo "Topic dbhistory.telecom_db already exists."
     fi
-
 '
 
 # Start services that don't depend on health checks
-echo "4. Starting MinIO and producer..."
+echo "5. Starting MinIO and producer..."
 BUCKET=telecom-data docker compose -f "$COMPOSE_FILE" up -d minio kafka-producer minio-setup
 
 sleep 10
 
 # Start ClickHouse with proper method
-echo "5. Starting ClickHouse..."
+echo "6. Starting ClickHouse..."
 if start_clickhouse; then
     echo "ClickHouse started successfully!"
 else
