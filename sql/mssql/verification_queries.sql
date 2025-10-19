@@ -7,16 +7,30 @@ USE telecom_db;
 SELECT name FROM sys.tables;
 GO
 
--- Check sample data
-SELECT 
-    meter_id,
-    COUNT(*) as record_count,
-    AVG(energy_consumption) as avg_consumption,
-    MIN(timestamp) as first_reading,
-    MAX(timestamp) as last_reading
-FROM smart_meter_data 
-GROUP BY meter_id;
-GO
+-- Check database CDC
+SELECT name, is_cdc_enabled FROM sys.databases WHERE name = 'telecom_db';
 
-PRINT '🎉 MSSQL Telecom Analytics Database Setup Complete!';
-GO
+-- Check table CDC tracking
+SELECT name, is_tracked_by_cdc FROM sys.tables WHERE name = 'smart_meter_data';
+
+-- Check CDC capture instances (THIS IS IMPORTANT)
+SELECT 
+    capture_instance,
+    object_id, 
+    source_schema,
+    source_table,
+    start_lsn,
+    create_date
+FROM cdc.change_tables;
+
+-- Check CDC jobs (to ensure they're running)
+SELECT 
+    name,
+    enabled,
+    date_created,
+    date_modified
+FROM msdb.dbo.sysjobs 
+WHERE name LIKE '%cdc%';
+
+-- Check if SQL Server Agent is running
+EXEC xp_servicecontrol 'QueryState', 'SQLServerAgent';
