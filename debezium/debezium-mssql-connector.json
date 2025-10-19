@@ -10,17 +10,11 @@
     "database.server.name": "mssql-telecom-server",
     "table.include.list": "dbo.smart_meter_data",
     "database.history.kafka.bootstrap.servers": "kafka-1:9092,kafka-2:9095",
-    "database.history.kafka.topic": "dbhistory.telecom_db",
+    "database.encrypt": "false",
+    "database.trustServerCertificate": "true",
     "topic.prefix": "telecom-cdc",
-    "transforms": "unwrap",
-    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
-    "transforms.unwrap.drop.tombstones": "false",
-    "transforms.unwrap.delete.handling.mode": "rewrite",
-    "include.schema.changes": "false",
     "snapshot.mode": "initial",
-    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
-    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
-    "key.converter.schemas.enable": "false",
-    "value.converter.schemas.enable": "false"
+    "snapshot.locking.mode": "none",
+    "poll.interval.ms": "1000"
   }
 }

@@ -414,7 +414,7 @@ services:
           memory: 1.5GiB
 
   debezium-connect:
-    image: debezium/connect:2.5
+    image: alexflames77/custom-debezium:latest
     container_name: debezium-connect
     depends_on:
       - kafka-1
@@ -428,11 +428,18 @@ services:
       - STATUS_STORAGE_TOPIC=debezium_connect_statuses
       - KEY_CONVERTER=org.apache.kafka.connect.json.JsonConverter
       - VALUE_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+      - LOG_LEVEL=INFO
     ports:
       - "8087:8083"  # Debezium REST API
     networks:
       - kafka-net
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
     deploy:
       resources:
         limits:
