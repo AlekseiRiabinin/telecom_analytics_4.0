@@ -10,6 +10,7 @@ EXEC sys.sp_cdc_enable_table
     @source_schema = N'dbo',  
     @source_name   = N'smart_meter_data',  
     @role_name     = NULL,  
+    @capture_instance = N'dbo_smart_meter_data',
     @supports_net_changes = 1;
 GO
 

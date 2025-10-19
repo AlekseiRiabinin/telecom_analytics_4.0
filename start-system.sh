@@ -33,7 +33,6 @@ start_clickhouse() {
     fi
 }
 
-
 # Function to start MSSQL with proper waiting
 start_mssql() {
     echo "Starting MSSQL independently..."
@@ -86,6 +85,29 @@ docker exec kafka-1 bash -c '
     else
         echo "Topic smart_meter_data already exists."
     fi
+
+    if ! kafka-topics.sh --describe --topic "telecom-cdc.dbo.smart_meter_data" --bootstrap-server kafka-1:9092 >/dev/null 2>&1; then
+        echo "Creating CDC topic: telecom-cdc.dbo.smart_meter_data"
+        kafka-topics.sh --create \
+            --topic "telecom-cdc.dbo.smart_meter_data" \
+            --partitions 4 \
+            --replication-factor 2 \
+            --bootstrap-server kafka-1:9092
+    else
+        echo "Topic telecom-cdc.dbo.smart_meter_data already exists."
+    fi    
+
+    if ! kafka-topics.sh --describe --topic "dbhistory.telecom_db" --bootstrap-server kafka-1:9092 >/dev/null 2>&1; then
+        echo "Creating CDC history topic: dbhistory.telecom_db"
+        kafka-topics.sh --create \
+            --topic "dbhistory.telecom_db" \
+            --partitions 1 \
+            --replication-factor 2 \
+            --bootstrap-server kafka-1:9092
+    else
+        echo "Topic dbhistory.telecom_db already exists."
+    fi
+
 '
 
 # Start services that don't depend on health checks
