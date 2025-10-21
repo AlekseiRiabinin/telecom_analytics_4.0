@@ -5,7 +5,8 @@ services:
     image: bitnami/kafka:3.8.0
     container_name: kafka-1
     ports:
-      - "9092:9092"    # Kafka-1 communication port
+      - "19092:19092"    # External access
+      - "19093:19093"    # Controller port
     environment:
       - KAFKA_ENABLE_KRAFT=yes
       - KAFKA_KRAFT_CLUSTER_ID=d8ce1515-401e-44d4-a444-1b6dba479047
@@ -29,7 +30,8 @@ services:
     image: bitnami/kafka:3.8.0
     container_name: kafka-2
     ports:
-      - "9095:9095"    # Kafka-2 communication port
+      - "19094:19094"    # External access (changed from 9095)
+      - "19095:19095"    # Controller port
     environment:
       - KAFKA_ENABLE_KRAFT=yes
       - KAFKA_KRAFT_CLUSTER_ID=d8ce1515-401e-44d4-a444-1b6dba479047
@@ -235,7 +237,7 @@ services:
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
       - HADOOP_CONF_DIR=/opt/hadoop/etc/hadoop
       - AIRFLOW_CONN_HDFS_DEFAULT=hdfs://namenode:8020
-      - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:9092,kafka-2:9095
+      - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092,kafka-2:19095
       - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
       - AIRFLOW_CONN_MINIO_DEFAULT=s3://minioadmin:minioadmin@minio:9002
       - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/airflow
@@ -269,7 +271,7 @@ services:
       - HADOOP_CONF_DIR=/opt/hadoop/etc/hadoop
       - AIRFLOW__CORE__FERNET_KEY=PakKUDc_578hbrABpAhOs0PMn7RnDBfkgRO03e_tugA=
       - AIRFLOW_CONN_HDFS_DEFAULT=hdfs://namenode:8020
-      - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:9092,kafka-2:9095
+      - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092,kafka-2:19095
       - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
       - AIRFLOW_CONN_MINIO_DEFAULT=s3://minioadmin:minioadmin@minio:9002
       - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/airflow
@@ -307,7 +309,7 @@ services:
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
       - AIRFLOW_CONN_HDFS_DEFAULT=hdfs://namenode:8020
-      - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:9092,kafka-2:9095
+      - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092,kafka-2:19095
       - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
       - AIRFLOW_CONN_MINIO_DEFAULT=s3://minioadmin:minioadmin@minio:9002
       - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/airflow
@@ -414,6 +416,9 @@ services:
           memory: 1.5GiB
 
   debezium-connect:
+    build: 
+      context: ./debezium
+      dockerfile: Dockerfile
     image: alexflames77/custom-debezium:latest
     container_name: debezium-connect
     depends_on:
@@ -421,14 +426,16 @@ services:
       - kafka-2
       - mssql
     environment:
-      - BOOTSTRAP_SERVERS=kafka-1:9092,kafka-2:9095
-      - GROUP_ID=1
+      - BOOTSTRAP_SERVERS=kafka-1:19092,kafka-2:19094
+      - GROUP_ID=debezium-connect-cluster
       - CONFIG_STORAGE_TOPIC=debezium_connect_configs
       - OFFSET_STORAGE_TOPIC=debezium_connect_offsets
       - STATUS_STORAGE_TOPIC=debezium_connect_statuses
-      - KEY_CONVERTER=org.apache.kafka.connect.json.JsonConverter
-      - VALUE_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+      - CONFIG_STORAGE_REPLICATION_FACTOR=2
+      - OFFSET_STORAGE_REPLICATION_FACTOR=2
+      - STATUS_STORAGE_REPLICATION_FACTOR=2
       - LOG_LEVEL=INFO
+      - KAFKA_LOG4J_OPTS=-Dlog4j.configuration=file:/kafka/config/connect-log4j.properties
     ports:
       - "8087:8083"  # Debezium REST API
     networks:
@@ -443,8 +450,9 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.5'
-          memory: 1GiB
+          memory: 2G
+        reservations:
+          memory: 1G
 
 volumes:
   clickhouse_data:

@@ -7,14 +7,14 @@
     "database.user": "sa",
     "database.password": "Admin123!",
     "database.dbname": "telecom_db",
+    "database.names": "telecom_db",
     "database.server.name": "mssql-telecom-server",
     "table.include.list": "dbo.smart_meter_data",
-    "database.history.kafka.bootstrap.servers": "kafka-1:9092,kafka-2:9095",
+    "schema.history.internal.kafka.bootstrap.servers": "kafka-1:19092,kafka-2:19094",
+    "schema.history.internal.kafka.topic": "schema-history.telecom_db",
     "database.encrypt": "false",
     "database.trustServerCertificate": "true",
     "topic.prefix": "telecom-cdc",
-    "snapshot.mode": "initial",
-    "snapshot.locking.mode": "none",
-    "poll.interval.ms": "1000"
+    "snapshot.mode": "initial"
   }
 }

@@ -1,26 +1,29 @@
 FROM debezium/connect:2.5.4.Final
 
 LABEL maintainer="Aleksei Riabinin <aleksei.riabinin@yahoo.com>"
-LABEL description="Debezium Connect with MSSQL JDBC Driver"
+LABEL description="Debezium Connect with updated MSSQL JDBC Driver"
 
 USER root
 
-# Copy JDBC driver to multiple possible locations to ensure it's found
-COPY mssql-jdbc-13.2.1.jre11.jar /kafka/libs/mssql-jdbc-13.2.1.jre11.jar
-COPY mssql-jdbc-13.2.1.jre11.jar /usr/share/java/kafka/mssql-jdbc-13.2.1.jre11.jar
+# Replace the built-in Java 8 driver with our Java 11 driver
+RUN rm -f /kafka/connect/debezium-connector-sqlserver/mssql-jdbc-*.jar
+RUN rm -f /kafka/connect/debezium-connector-jdbc/mssql-jdbc-*.jar
+
+# Copy our newer JDBC driver
+COPY mssql-jdbc-13.2.1.jre11.jar /kafka/connect/debezium-connector-sqlserver/
+COPY mssql-jdbc-13.2.1.jre11.jar /kafka/connect/debezium-connector-jdbc/
+
+# Copy debug log configuration
+COPY connect-log4j-debug.properties /kafka/config/connect-log4j.properties
 
 # Set proper ownership
-RUN chown kafka:kafka /kafka/libs/mssql-jdbc-13.2.1.jre11.jar && \
-    chown kafka:kafka /usr/share/java/kafka/mssql-jdbc-13.2.1.jre11.jar
+RUN chown -R kafka:kafka /kafka/connect/debezium-connector-sqlserver/ /kafka/connect/debezium-connector-jdbc/ /kafka/config/
 
-# Create symlink to ensure it's in classpath
-RUN ln -sf /kafka/libs/mssql-jdbc-13.2.1.jre11.jar /usr/share/java/kafka/mssql-jdbc.jar
-
-# Verify all locations
+# Verify the files are in place
 RUN echo "=== Verification ===" && \
-    echo "/kafka/libs:" && ls -la /kafka/libs/mssql-jdbc* 2>/dev/null || echo "Not in /kafka/libs" && \
-    echo "/usr/share/java/kafka:" && ls -la /usr/share/java/kafka/mssql-jdbc* 2>/dev/null || echo "Not in /usr/share/java/kafka" && \
-    find / -name '*mssql-jdbc*' -type f 2>/dev/null | head -10
+    ls -la /kafka/connect/debezium-connector-sqlserver/mssql-jdbc* && \
+    ls -la /kafka/connect/debezium-connector-jdbc/mssql-jdbc* && \
+    ls -la /kafka/config/connect-log4j.properties
 
 USER kafka
 
