@@ -275,8 +275,10 @@ services:
       - ./airflow/logs:/opt/airflow/logs
       - ./airflow/plugins:/opt/airflow/plugins
       - ./hadoop-conf:/opt/hadoop/etc/hadoop
+      - ./spark/pipelines:/opt/airflow/dags/spark/pipelines
+      - ./spark/jars:/opt/airflow/jars
     ports:
-      - "8083:8080"
+      - "8083:8080" 
     networks:
       - kafka-net
     restart: always
@@ -311,6 +313,8 @@ services:
       - ./airflow/logs:/opt/airflow/logs
       - ./airflow/plugins:/opt/airflow/plugins
       - ./hadoop-conf:/opt/hadoop/etc/hadoop
+      - ./spark/pipelines:/opt/airflow/dags/spark/pipelines
+      - ./spark/jars:/opt/airflow/jars
     networks:
       - kafka-net
     restart: always
@@ -345,6 +349,8 @@ services:
       - ./airflow/logs:/opt/airflow/logs
       - ./airflow/plugins:/opt/airflow/plugins
       - ./hadoop-conf:/opt/hadoop/etc/hadoop
+      - ./spark/pipelines:/opt/airflow/dags/spark/pipelines
+      - ./spark/jars:/opt/airflow/jars
     networks:
       - kafka-net
     restart: always
@@ -379,6 +385,8 @@ services:
       - ./airflow/logs:/opt/airflow/logs
       - ./airflow/plugins:/opt/airflow/plugins
       - ./hadoop-conf:/opt/hadoop/etc/hadoop
+      - ./spark/pipelines:/opt/airflow/dags/spark/pipelines
+      - ./spark/jars:/opt/airflow/jars
     networks:
       - kafka-net
     restart: always

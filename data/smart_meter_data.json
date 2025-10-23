@@ -1,0 +1,8002 @@
+[
+  {
+    "meter_id": "WELLINGTON_626",
+    "timestamp": "2025-06-10T06:10:07.414848Z",
+    "kwh_usage": 3.54,
+    "voltage": 230,
+    "customer_id": "CUST_7591",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_660",
+    "timestamp": "2025-06-10T21:25:07.414960Z",
+    "kwh_usage": 2.14,
+    "voltage": 240,
+    "customer_id": "CUST_1812",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_222",
+    "timestamp": "2025-06-10T10:09:07.415009Z",
+    "kwh_usage": 2.04,
+    "voltage": 230,
+    "customer_id": "CUST_2780",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_218",
+    "timestamp": "2025-06-10T07:30:07.415044Z",
+    "kwh_usage": 2.87,
+    "voltage": 240,
+    "customer_id": "CUST_2717",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_406",
+    "timestamp": "2025-06-10T13:22:07.415072Z",
+    "kwh_usage": 0.8,
+    "voltage": 230,
+    "customer_id": "CUST_7798",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_995",
+    "timestamp": "2025-06-10T15:56:07.415103Z",
+    "kwh_usage": 3.83,
+    "voltage": 240,
+    "customer_id": "CUST_3051",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_337",
+    "timestamp": "2025-06-10T10:06:07.415129Z",
+    "kwh_usage": 2.84,
+    "voltage": 230,
+    "customer_id": "CUST_9566",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_374",
+    "timestamp": "2025-06-10T18:23:07.415154Z",
+    "kwh_usage": 1.22,
+    "voltage": 230,
+    "customer_id": "CUST_5750",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_320",
+    "timestamp": "2025-06-10T13:48:07.415193Z",
+    "kwh_usage": 2.77,
+    "voltage": 240,
+    "customer_id": "CUST_7915",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_927",
+    "timestamp": "2025-06-10T09:13:07.415220Z",
+    "kwh_usage": 0.95,
+    "voltage": 240,
+    "customer_id": "CUST_7051",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_815",
+    "timestamp": "2025-06-10T04:03:07.415244Z",
+    "kwh_usage": 2.05,
+    "voltage": 240,
+    "customer_id": "CUST_7468",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_849",
+    "timestamp": "2025-06-10T12:53:07.415269Z",
+    "kwh_usage": 0.67,
+    "voltage": 230,
+    "customer_id": "CUST_6498",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_671",
+    "timestamp": "2025-06-10T14:14:07.415293Z",
+    "kwh_usage": 2.03,
+    "voltage": 230,
+    "customer_id": "CUST_3288",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_867",
+    "timestamp": "2025-06-10T14:29:07.415318Z",
+    "kwh_usage": 1.19,
+    "voltage": 230,
+    "customer_id": "CUST_8667",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_455",
+    "timestamp": "2025-06-10T13:08:07.415341Z",
+    "kwh_usage": 4.48,
+    "voltage": 240,
+    "customer_id": "CUST_7188",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_306",
+    "timestamp": "2025-06-10T04:39:07.415365Z",
+    "kwh_usage": 4.16,
+    "voltage": 240,
+    "customer_id": "CUST_3826",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_770",
+    "timestamp": "2025-06-10T16:01:07.415399Z",
+    "kwh_usage": 3.18,
+    "voltage": 240,
+    "customer_id": "CUST_1179",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_908",
+    "timestamp": "2025-06-10T06:10:07.415424Z",
+    "kwh_usage": 0.55,
+    "voltage": 230,
+    "customer_id": "CUST_7078",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_615",
+    "timestamp": "2025-06-10T20:46:07.415448Z",
+    "kwh_usage": 4.56,
+    "voltage": 240,
+    "customer_id": "CUST_6277",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_836",
+    "timestamp": "2025-06-10T13:11:07.415472Z",
+    "kwh_usage": 3.01,
+    "voltage": 230,
+    "customer_id": "CUST_8822",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_857",
+    "timestamp": "2025-06-10T03:12:07.415496Z",
+    "kwh_usage": 3.35,
+    "voltage": 230,
+    "customer_id": "CUST_9627",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_796",
+    "timestamp": "2025-06-09T21:31:07.415520Z",
+    "kwh_usage": 3.97,
+    "voltage": 230,
+    "customer_id": "CUST_3942",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_923",
+    "timestamp": "2025-06-10T15:15:07.415545Z",
+    "kwh_usage": 2.63,
+    "voltage": 240,
+    "customer_id": "CUST_5869",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_341",
+    "timestamp": "2025-06-10T03:22:07.415568Z",
+    "kwh_usage": 4.57,
+    "voltage": 240,
+    "customer_id": "CUST_4844",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_117",
+    "timestamp": "2025-06-10T20:46:07.415600Z",
+    "kwh_usage": 2.11,
+    "voltage": 240,
+    "customer_id": "CUST_8171",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_948",
+    "timestamp": "2025-06-10T17:37:07.415627Z",
+    "kwh_usage": 1.16,
+    "voltage": 240,
+    "customer_id": "CUST_8108",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_420",
+    "timestamp": "2025-06-10T15:35:07.415651Z",
+    "kwh_usage": 3.52,
+    "voltage": 240,
+    "customer_id": "CUST_2329",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_259",
+    "timestamp": "2025-06-10T06:50:07.415684Z",
+    "kwh_usage": 0.7,
+    "voltage": 230,
+    "customer_id": "CUST_1320",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_192",
+    "timestamp": "2025-06-10T11:27:07.415710Z",
+    "kwh_usage": 3.78,
+    "voltage": 230,
+    "customer_id": "CUST_8163",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_868",
+    "timestamp": "2025-06-10T09:52:07.415734Z",
+    "kwh_usage": 2.6,
+    "voltage": 240,
+    "customer_id": "CUST_6927",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_681",
+    "timestamp": "2025-06-09T23:29:07.415791Z",
+    "kwh_usage": 3.83,
+    "voltage": 240,
+    "customer_id": "CUST_2938",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_115",
+    "timestamp": "2025-06-10T07:39:07.415816Z",
+    "kwh_usage": 3.0,
+    "voltage": 230,
+    "customer_id": "CUST_7045",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_545",
+    "timestamp": "2025-06-10T21:28:07.415842Z",
+    "kwh_usage": 4.12,
+    "voltage": 230,
+    "customer_id": "CUST_1542",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_839",
+    "timestamp": "2025-06-10T16:56:07.415866Z",
+    "kwh_usage": 2.96,
+    "voltage": 230,
+    "customer_id": "CUST_1279",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_880",
+    "timestamp": "2025-06-10T10:47:07.415913Z",
+    "kwh_usage": 3.08,
+    "voltage": 230,
+    "customer_id": "CUST_5913",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_566",
+    "timestamp": "2025-06-10T13:10:07.415964Z",
+    "kwh_usage": 3.93,
+    "voltage": 240,
+    "customer_id": "CUST_9506",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_202",
+    "timestamp": "2025-06-10T05:53:07.416031Z",
+    "kwh_usage": 4.88,
+    "voltage": 240,
+    "customer_id": "CUST_5888",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_303",
+    "timestamp": "2025-06-10T13:48:07.416100Z",
+    "kwh_usage": 3.03,
+    "voltage": 240,
+    "customer_id": "CUST_1330",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_148",
+    "timestamp": "2025-06-10T15:06:07.416163Z",
+    "kwh_usage": 2.02,
+    "voltage": 230,
+    "customer_id": "CUST_1632",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_345",
+    "timestamp": "2025-06-10T00:44:07.416191Z",
+    "kwh_usage": 3.08,
+    "voltage": 230,
+    "customer_id": "CUST_7415",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_634",
+    "timestamp": "2025-06-10T07:17:07.416216Z",
+    "kwh_usage": 2.44,
+    "voltage": 240,
+    "customer_id": "CUST_3816",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_731",
+    "timestamp": "2025-06-10T10:11:07.416241Z",
+    "kwh_usage": 1.01,
+    "voltage": 240,
+    "customer_id": "CUST_7011",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_174",
+    "timestamp": "2025-06-10T14:47:07.416265Z",
+    "kwh_usage": 4.59,
+    "voltage": 240,
+    "customer_id": "CUST_3725",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_497",
+    "timestamp": "2025-06-10T08:57:07.416289Z",
+    "kwh_usage": 0.76,
+    "voltage": 230,
+    "customer_id": "CUST_8778",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_700",
+    "timestamp": "2025-06-10T19:28:07.416313Z",
+    "kwh_usage": 1.82,
+    "voltage": 240,
+    "customer_id": "CUST_7757",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_521",
+    "timestamp": "2025-06-10T01:19:07.416351Z",
+    "kwh_usage": 2.61,
+    "voltage": 240,
+    "customer_id": "CUST_9701",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_340",
+    "timestamp": "2025-06-09T23:29:07.416377Z",
+    "kwh_usage": 4.42,
+    "voltage": 240,
+    "customer_id": "CUST_3059",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_954",
+    "timestamp": "2025-06-10T20:02:07.416410Z",
+    "kwh_usage": 2.61,
+    "voltage": 240,
+    "customer_id": "CUST_1460",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_438",
+    "timestamp": "2025-06-10T21:13:07.416436Z",
+    "kwh_usage": 1.13,
+    "voltage": 230,
+    "customer_id": "CUST_5018",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_797",
+    "timestamp": "2025-06-10T08:29:07.416459Z",
+    "kwh_usage": 3.71,
+    "voltage": 230,
+    "customer_id": "CUST_8516",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_493",
+    "timestamp": "2025-06-10T16:00:07.416483Z",
+    "kwh_usage": 1.86,
+    "voltage": 230,
+    "customer_id": "CUST_8422",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_737",
+    "timestamp": "2025-06-10T02:06:07.416539Z",
+    "kwh_usage": 2.16,
+    "voltage": 240,
+    "customer_id": "CUST_9147",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_572",
+    "timestamp": "2025-06-09T21:31:07.416608Z",
+    "kwh_usage": 1.47,
+    "voltage": 240,
+    "customer_id": "CUST_7939",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_940",
+    "timestamp": "2025-06-10T02:51:07.416680Z",
+    "kwh_usage": 0.75,
+    "voltage": 230,
+    "customer_id": "CUST_4861",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_349",
+    "timestamp": "2025-06-10T03:29:07.416738Z",
+    "kwh_usage": 0.75,
+    "voltage": 230,
+    "customer_id": "CUST_2249",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_836",
+    "timestamp": "2025-06-10T05:46:07.416812Z",
+    "kwh_usage": 0.97,
+    "voltage": 230,
+    "customer_id": "CUST_7879",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_648",
+    "timestamp": "2025-06-10T08:50:07.416861Z",
+    "kwh_usage": 1.41,
+    "voltage": 240,
+    "customer_id": "CUST_8678",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_635",
+    "timestamp": "2025-06-10T05:21:07.416888Z",
+    "kwh_usage": 1.87,
+    "voltage": 240,
+    "customer_id": "CUST_9535",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_232",
+    "timestamp": "2025-06-10T15:55:07.416938Z",
+    "kwh_usage": 1.08,
+    "voltage": 230,
+    "customer_id": "CUST_3983",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_327",
+    "timestamp": "2025-06-10T06:44:07.417006Z",
+    "kwh_usage": 0.79,
+    "voltage": 240,
+    "customer_id": "CUST_4472",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_838",
+    "timestamp": "2025-06-10T18:20:07.417070Z",
+    "kwh_usage": 2.12,
+    "voltage": 230,
+    "customer_id": "CUST_4161",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_347",
+    "timestamp": "2025-06-09T23:16:07.417133Z",
+    "kwh_usage": 4.37,
+    "voltage": 230,
+    "customer_id": "CUST_2133",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_472",
+    "timestamp": "2025-06-10T01:58:07.417201Z",
+    "kwh_usage": 2.19,
+    "voltage": 230,
+    "customer_id": "CUST_6036",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_149",
+    "timestamp": "2025-06-10T06:59:07.417256Z",
+    "kwh_usage": 1.06,
+    "voltage": 240,
+    "customer_id": "CUST_2566",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_289",
+    "timestamp": "2025-06-10T18:58:07.417315Z",
+    "kwh_usage": 1.24,
+    "voltage": 240,
+    "customer_id": "CUST_3343",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_768",
+    "timestamp": "2025-06-09T23:29:07.417373Z",
+    "kwh_usage": 4.72,
+    "voltage": 240,
+    "customer_id": "CUST_8214",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_238",
+    "timestamp": "2025-06-10T08:32:07.417446Z",
+    "kwh_usage": 2.83,
+    "voltage": 230,
+    "customer_id": "CUST_4244",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_538",
+    "timestamp": "2025-06-10T05:54:07.417475Z",
+    "kwh_usage": 3.43,
+    "voltage": 230,
+    "customer_id": "CUST_6717",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_740",
+    "timestamp": "2025-06-10T02:12:07.417515Z",
+    "kwh_usage": 3.83,
+    "voltage": 230,
+    "customer_id": "CUST_6320",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_279",
+    "timestamp": "2025-06-10T14:39:07.417581Z",
+    "kwh_usage": 2.09,
+    "voltage": 230,
+    "customer_id": "CUST_8199",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_546",
+    "timestamp": "2025-06-10T06:37:07.417638Z",
+    "kwh_usage": 2.19,
+    "voltage": 230,
+    "customer_id": "CUST_6515",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_392",
+    "timestamp": "2025-06-09T22:45:07.417691Z",
+    "kwh_usage": 2.38,
+    "voltage": 230,
+    "customer_id": "CUST_8307",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_933",
+    "timestamp": "2025-06-10T14:22:07.417782Z",
+    "kwh_usage": 4.15,
+    "voltage": 240,
+    "customer_id": "CUST_4930",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_409",
+    "timestamp": "2025-06-10T10:02:07.417823Z",
+    "kwh_usage": 3.36,
+    "voltage": 240,
+    "customer_id": "CUST_4480",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_297",
+    "timestamp": "2025-06-10T15:53:07.417848Z",
+    "kwh_usage": 3.46,
+    "voltage": 240,
+    "customer_id": "CUST_9359",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_685",
+    "timestamp": "2025-06-10T06:03:07.417872Z",
+    "kwh_usage": 1.09,
+    "voltage": 240,
+    "customer_id": "CUST_1896",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_414",
+    "timestamp": "2025-06-10T05:45:07.417898Z",
+    "kwh_usage": 4.87,
+    "voltage": 230,
+    "customer_id": "CUST_7461",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_800",
+    "timestamp": "2025-06-10T11:48:07.417929Z",
+    "kwh_usage": 1.87,
+    "voltage": 240,
+    "customer_id": "CUST_6026",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_380",
+    "timestamp": "2025-06-09T23:42:07.417993Z",
+    "kwh_usage": 1.5,
+    "voltage": 240,
+    "customer_id": "CUST_5937",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_516",
+    "timestamp": "2025-06-10T15:17:07.418024Z",
+    "kwh_usage": 0.84,
+    "voltage": 240,
+    "customer_id": "CUST_8496",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_851",
+    "timestamp": "2025-06-10T13:53:07.418048Z",
+    "kwh_usage": 4.11,
+    "voltage": 240,
+    "customer_id": "CUST_5497",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_788",
+    "timestamp": "2025-06-10T03:00:07.418072Z",
+    "kwh_usage": 4.51,
+    "voltage": 230,
+    "customer_id": "CUST_6333",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_429",
+    "timestamp": "2025-06-10T15:01:07.418097Z",
+    "kwh_usage": 2.52,
+    "voltage": 230,
+    "customer_id": "CUST_7665",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_820",
+    "timestamp": "2025-06-10T08:32:07.418121Z",
+    "kwh_usage": 1.49,
+    "voltage": 240,
+    "customer_id": "CUST_7694",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_607",
+    "timestamp": "2025-06-10T05:39:07.418145Z",
+    "kwh_usage": 2.49,
+    "voltage": 230,
+    "customer_id": "CUST_5567",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_982",
+    "timestamp": "2025-06-10T19:29:07.418169Z",
+    "kwh_usage": 3.72,
+    "voltage": 240,
+    "customer_id": "CUST_1232",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_203",
+    "timestamp": "2025-06-10T13:10:07.418244Z",
+    "kwh_usage": 2.45,
+    "voltage": 230,
+    "customer_id": "CUST_4187",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_343",
+    "timestamp": "2025-06-09T23:24:07.418290Z",
+    "kwh_usage": 4.24,
+    "voltage": 230,
+    "customer_id": "CUST_3841",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_331",
+    "timestamp": "2025-06-10T17:20:07.418326Z",
+    "kwh_usage": 2.68,
+    "voltage": 240,
+    "customer_id": "CUST_2189",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_276",
+    "timestamp": "2025-06-10T07:34:07.418350Z",
+    "kwh_usage": 3.19,
+    "voltage": 230,
+    "customer_id": "CUST_3587",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_991",
+    "timestamp": "2025-06-10T15:10:07.418375Z",
+    "kwh_usage": 3.92,
+    "voltage": 240,
+    "customer_id": "CUST_2166",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_508",
+    "timestamp": "2025-06-10T07:08:07.418398Z",
+    "kwh_usage": 3.35,
+    "voltage": 230,
+    "customer_id": "CUST_5980",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_322",
+    "timestamp": "2025-06-10T14:13:07.418422Z",
+    "kwh_usage": 1.3,
+    "voltage": 240,
+    "customer_id": "CUST_7776",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_127",
+    "timestamp": "2025-06-10T20:14:07.418447Z",
+    "kwh_usage": 3.5,
+    "voltage": 240,
+    "customer_id": "CUST_2566",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_776",
+    "timestamp": "2025-06-10T04:37:07.418471Z",
+    "kwh_usage": 3.18,
+    "voltage": 240,
+    "customer_id": "CUST_7167",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_422",
+    "timestamp": "2025-06-10T02:51:07.418495Z",
+    "kwh_usage": 4.46,
+    "voltage": 230,
+    "customer_id": "CUST_7958",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_318",
+    "timestamp": "2025-06-10T07:13:07.418521Z",
+    "kwh_usage": 4.34,
+    "voltage": 240,
+    "customer_id": "CUST_5017",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_190",
+    "timestamp": "2025-06-10T19:20:07.418545Z",
+    "kwh_usage": 2.88,
+    "voltage": 230,
+    "customer_id": "CUST_5636",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_360",
+    "timestamp": "2025-06-10T20:49:07.418568Z",
+    "kwh_usage": 0.52,
+    "voltage": 240,
+    "customer_id": "CUST_3089",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_325",
+    "timestamp": "2025-06-10T21:20:07.418603Z",
+    "kwh_usage": 4.83,
+    "voltage": 230,
+    "customer_id": "CUST_8829",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_344",
+    "timestamp": "2025-06-10T08:47:07.418672Z",
+    "kwh_usage": 3.24,
+    "voltage": 240,
+    "customer_id": "CUST_2109",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_325",
+    "timestamp": "2025-06-10T09:18:07.418730Z",
+    "kwh_usage": 0.69,
+    "voltage": 230,
+    "customer_id": "CUST_6736",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_259",
+    "timestamp": "2025-06-10T09:30:07.418802Z",
+    "kwh_usage": 4.95,
+    "voltage": 240,
+    "customer_id": "CUST_8077",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_628",
+    "timestamp": "2025-06-10T07:52:07.418829Z",
+    "kwh_usage": 2.48,
+    "voltage": 230,
+    "customer_id": "CUST_6066",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_444",
+    "timestamp": "2025-06-10T09:27:07.418852Z",
+    "kwh_usage": 1.02,
+    "voltage": 230,
+    "customer_id": "CUST_3774",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_889",
+    "timestamp": "2025-06-10T04:03:07.418919Z",
+    "kwh_usage": 4.66,
+    "voltage": 230,
+    "customer_id": "CUST_6297",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_853",
+    "timestamp": "2025-06-10T04:01:07.418963Z",
+    "kwh_usage": 4.3,
+    "voltage": 240,
+    "customer_id": "CUST_3203",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_798",
+    "timestamp": "2025-06-10T05:21:07.418989Z",
+    "kwh_usage": 2.91,
+    "voltage": 240,
+    "customer_id": "CUST_2957",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_395",
+    "timestamp": "2025-06-09T21:58:07.419014Z",
+    "kwh_usage": 3.39,
+    "voltage": 230,
+    "customer_id": "CUST_5123",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_317",
+    "timestamp": "2025-06-10T02:42:07.419052Z",
+    "kwh_usage": 3.56,
+    "voltage": 230,
+    "customer_id": "CUST_6614",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_948",
+    "timestamp": "2025-06-10T12:13:07.419120Z",
+    "kwh_usage": 4.05,
+    "voltage": 230,
+    "customer_id": "CUST_3860",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_361",
+    "timestamp": "2025-06-10T14:22:07.419174Z",
+    "kwh_usage": 2.96,
+    "voltage": 240,
+    "customer_id": "CUST_3911",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_482",
+    "timestamp": "2025-06-10T14:10:07.419201Z",
+    "kwh_usage": 2.81,
+    "voltage": 230,
+    "customer_id": "CUST_5653",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_326",
+    "timestamp": "2025-06-10T11:28:07.419225Z",
+    "kwh_usage": 4.65,
+    "voltage": 240,
+    "customer_id": "CUST_5589",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_404",
+    "timestamp": "2025-06-10T18:26:07.419249Z",
+    "kwh_usage": 3.95,
+    "voltage": 240,
+    "customer_id": "CUST_5279",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_253",
+    "timestamp": "2025-06-10T15:29:07.419272Z",
+    "kwh_usage": 3.9,
+    "voltage": 240,
+    "customer_id": "CUST_4965",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_868",
+    "timestamp": "2025-06-09T22:56:07.419313Z",
+    "kwh_usage": 4.92,
+    "voltage": 240,
+    "customer_id": "CUST_6039",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_775",
+    "timestamp": "2025-06-10T10:33:07.419382Z",
+    "kwh_usage": 1.4,
+    "voltage": 240,
+    "customer_id": "CUST_3283",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_475",
+    "timestamp": "2025-06-10T20:41:07.419411Z",
+    "kwh_usage": 3.08,
+    "voltage": 230,
+    "customer_id": "CUST_5805",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_301",
+    "timestamp": "2025-06-10T16:55:07.419436Z",
+    "kwh_usage": 3.27,
+    "voltage": 240,
+    "customer_id": "CUST_7550",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_882",
+    "timestamp": "2025-06-10T06:18:07.419459Z",
+    "kwh_usage": 3.64,
+    "voltage": 230,
+    "customer_id": "CUST_6531",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_831",
+    "timestamp": "2025-06-09T23:39:07.419483Z",
+    "kwh_usage": 3.71,
+    "voltage": 240,
+    "customer_id": "CUST_7630",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_307",
+    "timestamp": "2025-06-10T19:18:07.419507Z",
+    "kwh_usage": 2.21,
+    "voltage": 240,
+    "customer_id": "CUST_9170",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_455",
+    "timestamp": "2025-06-10T18:16:07.419530Z",
+    "kwh_usage": 1.17,
+    "voltage": 230,
+    "customer_id": "CUST_4852",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_300",
+    "timestamp": "2025-06-10T08:27:07.419554Z",
+    "kwh_usage": 3.42,
+    "voltage": 230,
+    "customer_id": "CUST_8185",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_629",
+    "timestamp": "2025-06-10T13:12:07.419588Z",
+    "kwh_usage": 3.09,
+    "voltage": 240,
+    "customer_id": "CUST_1143",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_416",
+    "timestamp": "2025-06-10T03:10:07.419612Z",
+    "kwh_usage": 1.86,
+    "voltage": 230,
+    "customer_id": "CUST_8430",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_366",
+    "timestamp": "2025-06-10T03:16:07.419636Z",
+    "kwh_usage": 4.46,
+    "voltage": 240,
+    "customer_id": "CUST_1653",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_416",
+    "timestamp": "2025-06-10T01:35:07.419659Z",
+    "kwh_usage": 4.68,
+    "voltage": 230,
+    "customer_id": "CUST_9405",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_525",
+    "timestamp": "2025-06-10T09:37:07.419684Z",
+    "kwh_usage": 1.39,
+    "voltage": 240,
+    "customer_id": "CUST_8909",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_981",
+    "timestamp": "2025-06-10T02:10:07.419716Z",
+    "kwh_usage": 4.72,
+    "voltage": 230,
+    "customer_id": "CUST_2501",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_536",
+    "timestamp": "2025-06-10T03:26:07.419775Z",
+    "kwh_usage": 1.7,
+    "voltage": 240,
+    "customer_id": "CUST_8917",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_974",
+    "timestamp": "2025-06-10T19:33:07.419840Z",
+    "kwh_usage": 3.72,
+    "voltage": 240,
+    "customer_id": "CUST_9476",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_332",
+    "timestamp": "2025-06-10T09:39:07.419869Z",
+    "kwh_usage": 2.45,
+    "voltage": 240,
+    "customer_id": "CUST_1912",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_487",
+    "timestamp": "2025-06-10T12:26:07.419893Z",
+    "kwh_usage": 3.29,
+    "voltage": 230,
+    "customer_id": "CUST_8708",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_898",
+    "timestamp": "2025-06-10T12:38:07.419917Z",
+    "kwh_usage": 4.96,
+    "voltage": 240,
+    "customer_id": "CUST_1245",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_519",
+    "timestamp": "2025-06-10T09:52:07.419940Z",
+    "kwh_usage": 2.08,
+    "voltage": 240,
+    "customer_id": "CUST_9729",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_466",
+    "timestamp": "2025-06-10T06:27:07.419963Z",
+    "kwh_usage": 2.29,
+    "voltage": 230,
+    "customer_id": "CUST_5012",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_362",
+    "timestamp": "2025-06-10T03:40:07.419987Z",
+    "kwh_usage": 2.76,
+    "voltage": 240,
+    "customer_id": "CUST_2010",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_202",
+    "timestamp": "2025-06-10T21:09:07.420033Z",
+    "kwh_usage": 0.74,
+    "voltage": 240,
+    "customer_id": "CUST_6001",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_970",
+    "timestamp": "2025-06-10T19:11:07.420080Z",
+    "kwh_usage": 3.69,
+    "voltage": 240,
+    "customer_id": "CUST_3722",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_681",
+    "timestamp": "2025-06-10T18:28:07.420106Z",
+    "kwh_usage": 4.66,
+    "voltage": 230,
+    "customer_id": "CUST_5676",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_278",
+    "timestamp": "2025-06-10T09:48:07.420130Z",
+    "kwh_usage": 1.96,
+    "voltage": 230,
+    "customer_id": "CUST_3854",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_154",
+    "timestamp": "2025-06-10T09:07:07.420154Z",
+    "kwh_usage": 4.71,
+    "voltage": 240,
+    "customer_id": "CUST_6647",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_369",
+    "timestamp": "2025-06-10T13:24:07.420191Z",
+    "kwh_usage": 3.43,
+    "voltage": 230,
+    "customer_id": "CUST_8357",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_950",
+    "timestamp": "2025-06-10T04:56:07.420216Z",
+    "kwh_usage": 4.34,
+    "voltage": 240,
+    "customer_id": "CUST_6396",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_811",
+    "timestamp": "2025-06-10T04:54:07.420240Z",
+    "kwh_usage": 3.73,
+    "voltage": 230,
+    "customer_id": "CUST_1883",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_338",
+    "timestamp": "2025-06-10T19:54:07.420294Z",
+    "kwh_usage": 2.06,
+    "voltage": 230,
+    "customer_id": "CUST_9067",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_277",
+    "timestamp": "2025-06-10T05:34:07.420336Z",
+    "kwh_usage": 3.64,
+    "voltage": 230,
+    "customer_id": "CUST_3786",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_955",
+    "timestamp": "2025-06-09T22:34:07.420362Z",
+    "kwh_usage": 3.09,
+    "voltage": 230,
+    "customer_id": "CUST_6383",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_789",
+    "timestamp": "2025-06-10T03:48:07.420386Z",
+    "kwh_usage": 1.67,
+    "voltage": 230,
+    "customer_id": "CUST_7350",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_308",
+    "timestamp": "2025-06-10T17:14:07.420421Z",
+    "kwh_usage": 4.31,
+    "voltage": 230,
+    "customer_id": "CUST_1068",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_914",
+    "timestamp": "2025-06-10T12:04:07.420447Z",
+    "kwh_usage": 0.89,
+    "voltage": 240,
+    "customer_id": "CUST_8860",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_747",
+    "timestamp": "2025-06-10T07:14:07.420471Z",
+    "kwh_usage": 1.84,
+    "voltage": 230,
+    "customer_id": "CUST_7422",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_211",
+    "timestamp": "2025-06-10T11:42:07.420513Z",
+    "kwh_usage": 1.2,
+    "voltage": 240,
+    "customer_id": "CUST_3752",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_520",
+    "timestamp": "2025-06-10T16:21:07.420581Z",
+    "kwh_usage": 2.16,
+    "voltage": 240,
+    "customer_id": "CUST_3514",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_459",
+    "timestamp": "2025-06-10T16:06:07.420637Z",
+    "kwh_usage": 4.87,
+    "voltage": 230,
+    "customer_id": "CUST_3794",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_425",
+    "timestamp": "2025-06-10T04:45:07.420691Z",
+    "kwh_usage": 0.96,
+    "voltage": 230,
+    "customer_id": "CUST_5823",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_724",
+    "timestamp": "2025-06-10T04:54:07.420773Z",
+    "kwh_usage": 3.65,
+    "voltage": 230,
+    "customer_id": "CUST_4484",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_340",
+    "timestamp": "2025-06-10T11:09:07.420829Z",
+    "kwh_usage": 4.47,
+    "voltage": 240,
+    "customer_id": "CUST_8892",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_654",
+    "timestamp": "2025-06-10T13:28:07.420856Z",
+    "kwh_usage": 4.76,
+    "voltage": 230,
+    "customer_id": "CUST_4810",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_828",
+    "timestamp": "2025-06-10T13:54:07.420881Z",
+    "kwh_usage": 3.95,
+    "voltage": 240,
+    "customer_id": "CUST_5628",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "HAMILTON_318",
+    "timestamp": "2025-06-10T15:12:07.420906Z",
+    "kwh_usage": 4.49,
+    "voltage": 230,
+    "customer_id": "CUST_5498",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_659",
+    "timestamp": "2025-06-10T01:19:07.420929Z",
+    "kwh_usage": 3.01,
+    "voltage": 240,
+    "customer_id": "CUST_4301",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_440",
+    "timestamp": "2025-06-10T20:30:07.420978Z",
+    "kwh_usage": 1.74,
+    "voltage": 240,
+    "customer_id": "CUST_6205",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_926",
+    "timestamp": "2025-06-10T03:42:07.421050Z",
+    "kwh_usage": 4.84,
+    "voltage": 230,
+    "customer_id": "CUST_7607",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_593",
+    "timestamp": "2025-06-10T17:26:07.421085Z",
+    "kwh_usage": 3.77,
+    "voltage": 230,
+    "customer_id": "CUST_3787",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_888",
+    "timestamp": "2025-06-10T01:41:07.421109Z",
+    "kwh_usage": 2.07,
+    "voltage": 230,
+    "customer_id": "CUST_3006",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_904",
+    "timestamp": "2025-06-10T21:22:07.421146Z",
+    "kwh_usage": 4.8,
+    "voltage": 240,
+    "customer_id": "CUST_9085",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_423",
+    "timestamp": "2025-06-10T11:00:07.421172Z",
+    "kwh_usage": 2.96,
+    "voltage": 230,
+    "customer_id": "CUST_4646",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_707",
+    "timestamp": "2025-06-09T22:19:07.421212Z",
+    "kwh_usage": 0.61,
+    "voltage": 240,
+    "customer_id": "CUST_3269",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_334",
+    "timestamp": "2025-06-10T20:45:07.421282Z",
+    "kwh_usage": 1.51,
+    "voltage": 240,
+    "customer_id": "CUST_6923",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_279",
+    "timestamp": "2025-06-10T01:20:07.421345Z",
+    "kwh_usage": 2.28,
+    "voltage": 230,
+    "customer_id": "CUST_3152",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_467",
+    "timestamp": "2025-06-10T15:39:07.421414Z",
+    "kwh_usage": 2.09,
+    "voltage": 240,
+    "customer_id": "CUST_3887",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_665",
+    "timestamp": "2025-06-10T13:01:07.421489Z",
+    "kwh_usage": 2.86,
+    "voltage": 230,
+    "customer_id": "CUST_9927",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_541",
+    "timestamp": "2025-06-10T19:37:07.421555Z",
+    "kwh_usage": 1.52,
+    "voltage": 230,
+    "customer_id": "CUST_9293",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_815",
+    "timestamp": "2025-06-10T02:20:07.421609Z",
+    "kwh_usage": 3.44,
+    "voltage": 240,
+    "customer_id": "CUST_2119",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_840",
+    "timestamp": "2025-06-10T05:20:07.421662Z",
+    "kwh_usage": 3.67,
+    "voltage": 240,
+    "customer_id": "CUST_4151",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_146",
+    "timestamp": "2025-06-10T03:46:07.421731Z",
+    "kwh_usage": 4.31,
+    "voltage": 240,
+    "customer_id": "CUST_2684",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_676",
+    "timestamp": "2025-06-10T19:51:07.421792Z",
+    "kwh_usage": 0.96,
+    "voltage": 230,
+    "customer_id": "CUST_5544",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_819",
+    "timestamp": "2025-06-10T09:27:07.421819Z",
+    "kwh_usage": 4.94,
+    "voltage": 230,
+    "customer_id": "CUST_6760",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_647",
+    "timestamp": "2025-06-10T00:47:07.421843Z",
+    "kwh_usage": 4.48,
+    "voltage": 240,
+    "customer_id": "CUST_2078",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_370",
+    "timestamp": "2025-06-10T12:15:07.421866Z",
+    "kwh_usage": 4.16,
+    "voltage": 240,
+    "customer_id": "CUST_2661",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_278",
+    "timestamp": "2025-06-10T04:35:07.421916Z",
+    "kwh_usage": 3.81,
+    "voltage": 240,
+    "customer_id": "CUST_9529",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_497",
+    "timestamp": "2025-06-10T03:18:07.421974Z",
+    "kwh_usage": 4.68,
+    "voltage": 230,
+    "customer_id": "CUST_9182",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_192",
+    "timestamp": "2025-06-09T21:34:07.422001Z",
+    "kwh_usage": 3.72,
+    "voltage": 230,
+    "customer_id": "CUST_7727",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_948",
+    "timestamp": "2025-06-09T23:43:07.422025Z",
+    "kwh_usage": 2.38,
+    "voltage": 230,
+    "customer_id": "CUST_8750",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_506",
+    "timestamp": "2025-06-10T10:55:07.422048Z",
+    "kwh_usage": 1.83,
+    "voltage": 240,
+    "customer_id": "CUST_8190",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_855",
+    "timestamp": "2025-06-10T20:23:07.422071Z",
+    "kwh_usage": 4.34,
+    "voltage": 240,
+    "customer_id": "CUST_8410",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_686",
+    "timestamp": "2025-06-10T01:25:07.422094Z",
+    "kwh_usage": 3.29,
+    "voltage": 240,
+    "customer_id": "CUST_4652",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_398",
+    "timestamp": "2025-06-10T14:08:07.422147Z",
+    "kwh_usage": 1.33,
+    "voltage": 240,
+    "customer_id": "CUST_5385",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_803",
+    "timestamp": "2025-06-10T19:49:07.422188Z",
+    "kwh_usage": 3.24,
+    "voltage": 240,
+    "customer_id": "CUST_7983",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_188",
+    "timestamp": "2025-06-10T20:40:07.422212Z",
+    "kwh_usage": 2.31,
+    "voltage": 230,
+    "customer_id": "CUST_1791",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_832",
+    "timestamp": "2025-06-09T22:06:07.422236Z",
+    "kwh_usage": 4.19,
+    "voltage": 240,
+    "customer_id": "CUST_5454",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_321",
+    "timestamp": "2025-06-10T03:42:07.422275Z",
+    "kwh_usage": 0.86,
+    "voltage": 240,
+    "customer_id": "CUST_2258",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_877",
+    "timestamp": "2025-06-10T15:53:07.422315Z",
+    "kwh_usage": 3.09,
+    "voltage": 230,
+    "customer_id": "CUST_7719",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "HAMILTON_484",
+    "timestamp": "2025-06-10T08:34:07.422379Z",
+    "kwh_usage": 2.78,
+    "voltage": 230,
+    "customer_id": "CUST_3962",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_249",
+    "timestamp": "2025-06-10T11:18:07.422436Z",
+    "kwh_usage": 3.8,
+    "voltage": 230,
+    "customer_id": "CUST_3850",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_823",
+    "timestamp": "2025-06-10T03:54:07.422489Z",
+    "kwh_usage": 4.17,
+    "voltage": 240,
+    "customer_id": "CUST_4080",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_240",
+    "timestamp": "2025-06-10T07:55:07.422548Z",
+    "kwh_usage": 3.54,
+    "voltage": 240,
+    "customer_id": "CUST_5741",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_650",
+    "timestamp": "2025-06-10T02:25:07.422617Z",
+    "kwh_usage": 2.55,
+    "voltage": 240,
+    "customer_id": "CUST_4449",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_615",
+    "timestamp": "2025-06-10T00:52:07.422672Z",
+    "kwh_usage": 4.78,
+    "voltage": 230,
+    "customer_id": "CUST_2534",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_779",
+    "timestamp": "2025-06-09T21:58:07.422731Z",
+    "kwh_usage": 3.09,
+    "voltage": 240,
+    "customer_id": "CUST_5170",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_206",
+    "timestamp": "2025-06-10T11:59:07.422837Z",
+    "kwh_usage": 1.61,
+    "voltage": 230,
+    "customer_id": "CUST_1486",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_644",
+    "timestamp": "2025-06-09T22:17:07.422909Z",
+    "kwh_usage": 0.97,
+    "voltage": 240,
+    "customer_id": "CUST_8280",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_626",
+    "timestamp": "2025-06-10T02:07:07.422969Z",
+    "kwh_usage": 1.17,
+    "voltage": 230,
+    "customer_id": "CUST_6305",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_449",
+    "timestamp": "2025-06-09T23:22:07.423036Z",
+    "kwh_usage": 3.82,
+    "voltage": 240,
+    "customer_id": "CUST_7015",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_875",
+    "timestamp": "2025-06-09T22:36:07.423092Z",
+    "kwh_usage": 1.63,
+    "voltage": 230,
+    "customer_id": "CUST_3349",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_265",
+    "timestamp": "2025-06-10T10:39:07.423149Z",
+    "kwh_usage": 2.15,
+    "voltage": 240,
+    "customer_id": "CUST_4606",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "HAMILTON_499",
+    "timestamp": "2025-06-10T04:18:07.423218Z",
+    "kwh_usage": 4.72,
+    "voltage": 230,
+    "customer_id": "CUST_2123",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_425",
+    "timestamp": "2025-06-10T15:43:07.423273Z",
+    "kwh_usage": 4.62,
+    "voltage": 230,
+    "customer_id": "CUST_5510",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_932",
+    "timestamp": "2025-06-10T14:41:07.423330Z",
+    "kwh_usage": 2.6,
+    "voltage": 230,
+    "customer_id": "CUST_2750",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_358",
+    "timestamp": "2025-06-10T20:43:07.423382Z",
+    "kwh_usage": 2.39,
+    "voltage": 230,
+    "customer_id": "CUST_9917",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_482",
+    "timestamp": "2025-06-10T08:44:07.423408Z",
+    "kwh_usage": 2.23,
+    "voltage": 230,
+    "customer_id": "CUST_7152",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_807",
+    "timestamp": "2025-06-10T00:52:07.423432Z",
+    "kwh_usage": 2.68,
+    "voltage": 240,
+    "customer_id": "CUST_2319",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_764",
+    "timestamp": "2025-06-10T17:45:07.423477Z",
+    "kwh_usage": 1.11,
+    "voltage": 240,
+    "customer_id": "CUST_6289",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_923",
+    "timestamp": "2025-06-10T20:02:07.423514Z",
+    "kwh_usage": 0.91,
+    "voltage": 230,
+    "customer_id": "CUST_3922",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_798",
+    "timestamp": "2025-06-10T03:23:07.423576Z",
+    "kwh_usage": 4.81,
+    "voltage": 230,
+    "customer_id": "CUST_5824",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "HAMILTON_490",
+    "timestamp": "2025-06-10T11:49:07.423647Z",
+    "kwh_usage": 0.94,
+    "voltage": 230,
+    "customer_id": "CUST_4409",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_548",
+    "timestamp": "2025-06-10T12:07:07.423706Z",
+    "kwh_usage": 0.85,
+    "voltage": 230,
+    "customer_id": "CUST_8869",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_343",
+    "timestamp": "2025-06-10T04:59:07.423787Z",
+    "kwh_usage": 4.85,
+    "voltage": 230,
+    "customer_id": "CUST_8288",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_892",
+    "timestamp": "2025-06-09T23:17:07.423840Z",
+    "kwh_usage": 2.39,
+    "voltage": 230,
+    "customer_id": "CUST_5141",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_322",
+    "timestamp": "2025-06-10T00:30:07.423912Z",
+    "kwh_usage": 4.59,
+    "voltage": 240,
+    "customer_id": "CUST_8661",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_500",
+    "timestamp": "2025-06-10T10:14:07.423944Z",
+    "kwh_usage": 4.21,
+    "voltage": 230,
+    "customer_id": "CUST_7555",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_514",
+    "timestamp": "2025-06-10T14:04:07.423968Z",
+    "kwh_usage": 4.84,
+    "voltage": 230,
+    "customer_id": "CUST_4296",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_440",
+    "timestamp": "2025-06-10T11:02:07.423991Z",
+    "kwh_usage": 2.55,
+    "voltage": 230,
+    "customer_id": "CUST_4583",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_226",
+    "timestamp": "2025-06-10T16:18:07.424028Z",
+    "kwh_usage": 2.03,
+    "voltage": 230,
+    "customer_id": "CUST_1811",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_695",
+    "timestamp": "2025-06-10T17:17:07.424085Z",
+    "kwh_usage": 1.06,
+    "voltage": 240,
+    "customer_id": "CUST_2742",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_323",
+    "timestamp": "2025-06-10T13:03:07.424149Z",
+    "kwh_usage": 4.11,
+    "voltage": 230,
+    "customer_id": "CUST_2583",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_781",
+    "timestamp": "2025-06-09T23:23:07.424178Z",
+    "kwh_usage": 3.05,
+    "voltage": 230,
+    "customer_id": "CUST_7668",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_164",
+    "timestamp": "2025-06-10T16:17:07.424203Z",
+    "kwh_usage": 2.76,
+    "voltage": 240,
+    "customer_id": "CUST_3365",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_636",
+    "timestamp": "2025-06-10T03:48:07.424227Z",
+    "kwh_usage": 2.43,
+    "voltage": 230,
+    "customer_id": "CUST_1082",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_300",
+    "timestamp": "2025-06-10T02:05:07.424252Z",
+    "kwh_usage": 2.84,
+    "voltage": 230,
+    "customer_id": "CUST_3996",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_103",
+    "timestamp": "2025-06-10T14:41:07.424287Z",
+    "kwh_usage": 2.71,
+    "voltage": 240,
+    "customer_id": "CUST_2579",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_707",
+    "timestamp": "2025-06-10T13:59:07.424354Z",
+    "kwh_usage": 0.73,
+    "voltage": 230,
+    "customer_id": "CUST_1412",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_243",
+    "timestamp": "2025-06-10T16:11:07.424404Z",
+    "kwh_usage": 1.02,
+    "voltage": 240,
+    "customer_id": "CUST_7365",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_713",
+    "timestamp": "2025-06-10T13:31:07.424443Z",
+    "kwh_usage": 1.32,
+    "voltage": 240,
+    "customer_id": "CUST_9674",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_615",
+    "timestamp": "2025-06-10T02:21:07.424469Z",
+    "kwh_usage": 0.76,
+    "voltage": 240,
+    "customer_id": "CUST_8620",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "HAMILTON_960",
+    "timestamp": "2025-06-10T20:19:07.424493Z",
+    "kwh_usage": 1.3,
+    "voltage": 230,
+    "customer_id": "CUST_8620",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_193",
+    "timestamp": "2025-06-10T12:35:07.424518Z",
+    "kwh_usage": 2.69,
+    "voltage": 230,
+    "customer_id": "CUST_6439",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_868",
+    "timestamp": "2025-06-10T09:37:07.424579Z",
+    "kwh_usage": 0.77,
+    "voltage": 240,
+    "customer_id": "CUST_4324",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_162",
+    "timestamp": "2025-06-10T08:14:07.424646Z",
+    "kwh_usage": 4.5,
+    "voltage": 240,
+    "customer_id": "CUST_1276",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_616",
+    "timestamp": "2025-06-10T09:12:07.424756Z",
+    "kwh_usage": 3.92,
+    "voltage": 230,
+    "customer_id": "CUST_9688",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_323",
+    "timestamp": "2025-06-10T11:37:07.424799Z",
+    "kwh_usage": 2.45,
+    "voltage": 230,
+    "customer_id": "CUST_3550",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_774",
+    "timestamp": "2025-06-10T02:27:07.424824Z",
+    "kwh_usage": 5.0,
+    "voltage": 230,
+    "customer_id": "CUST_5851",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_527",
+    "timestamp": "2025-06-10T08:18:07.424849Z",
+    "kwh_usage": 0.67,
+    "voltage": 240,
+    "customer_id": "CUST_2955",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_286",
+    "timestamp": "2025-06-10T06:28:07.424873Z",
+    "kwh_usage": 1.71,
+    "voltage": 240,
+    "customer_id": "CUST_8870",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_970",
+    "timestamp": "2025-06-10T13:46:07.424898Z",
+    "kwh_usage": 1.92,
+    "voltage": 230,
+    "customer_id": "CUST_1908",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_605",
+    "timestamp": "2025-06-10T14:09:07.424964Z",
+    "kwh_usage": 3.53,
+    "voltage": 230,
+    "customer_id": "CUST_9312",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_878",
+    "timestamp": "2025-06-10T00:52:07.425004Z",
+    "kwh_usage": 4.88,
+    "voltage": 240,
+    "customer_id": "CUST_4341",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_883",
+    "timestamp": "2025-06-10T00:02:07.425029Z",
+    "kwh_usage": 4.49,
+    "voltage": 240,
+    "customer_id": "CUST_1651",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_712",
+    "timestamp": "2025-06-10T13:55:07.425053Z",
+    "kwh_usage": 1.98,
+    "voltage": 230,
+    "customer_id": "CUST_8909",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_213",
+    "timestamp": "2025-06-10T10:03:07.425077Z",
+    "kwh_usage": 1.27,
+    "voltage": 230,
+    "customer_id": "CUST_3203",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_216",
+    "timestamp": "2025-06-10T19:21:07.425100Z",
+    "kwh_usage": 3.28,
+    "voltage": 230,
+    "customer_id": "CUST_1043",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_777",
+    "timestamp": "2025-06-10T19:26:07.425123Z",
+    "kwh_usage": 4.1,
+    "voltage": 230,
+    "customer_id": "CUST_2256",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_321",
+    "timestamp": "2025-06-10T17:59:07.425148Z",
+    "kwh_usage": 1.69,
+    "voltage": 240,
+    "customer_id": "CUST_6330",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "HAMILTON_791",
+    "timestamp": "2025-06-10T03:18:07.425172Z",
+    "kwh_usage": 1.86,
+    "voltage": 240,
+    "customer_id": "CUST_2011",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_913",
+    "timestamp": "2025-06-10T14:00:07.425196Z",
+    "kwh_usage": 1.36,
+    "voltage": 230,
+    "customer_id": "CUST_7775",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_965",
+    "timestamp": "2025-06-10T18:03:07.425234Z",
+    "kwh_usage": 0.61,
+    "voltage": 230,
+    "customer_id": "CUST_2086",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_315",
+    "timestamp": "2025-06-10T17:18:07.425260Z",
+    "kwh_usage": 1.57,
+    "voltage": 240,
+    "customer_id": "CUST_6695",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_107",
+    "timestamp": "2025-06-10T16:38:07.425303Z",
+    "kwh_usage": 1.16,
+    "voltage": 240,
+    "customer_id": "CUST_5498",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_458",
+    "timestamp": "2025-06-10T04:38:07.425373Z",
+    "kwh_usage": 2.79,
+    "voltage": 230,
+    "customer_id": "CUST_1212",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_908",
+    "timestamp": "2025-06-10T01:43:07.425403Z",
+    "kwh_usage": 3.27,
+    "voltage": 230,
+    "customer_id": "CUST_7185",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_477",
+    "timestamp": "2025-06-10T00:23:07.425427Z",
+    "kwh_usage": 3.02,
+    "voltage": 230,
+    "customer_id": "CUST_8263",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_770",
+    "timestamp": "2025-06-10T21:08:07.425452Z",
+    "kwh_usage": 1.11,
+    "voltage": 230,
+    "customer_id": "CUST_5583",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_928",
+    "timestamp": "2025-06-10T14:15:07.425476Z",
+    "kwh_usage": 0.54,
+    "voltage": 230,
+    "customer_id": "CUST_5162",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_120",
+    "timestamp": "2025-06-10T14:29:07.425500Z",
+    "kwh_usage": 3.99,
+    "voltage": 230,
+    "customer_id": "CUST_2762",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_432",
+    "timestamp": "2025-06-10T15:05:07.425523Z",
+    "kwh_usage": 0.73,
+    "voltage": 240,
+    "customer_id": "CUST_2096",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_520",
+    "timestamp": "2025-06-10T05:14:07.425589Z",
+    "kwh_usage": 2.69,
+    "voltage": 240,
+    "customer_id": "CUST_8021",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_192",
+    "timestamp": "2025-06-10T00:10:07.425632Z",
+    "kwh_usage": 0.56,
+    "voltage": 240,
+    "customer_id": "CUST_3144",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_510",
+    "timestamp": "2025-06-10T02:17:07.425670Z",
+    "kwh_usage": 3.98,
+    "voltage": 230,
+    "customer_id": "CUST_5559",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_203",
+    "timestamp": "2025-06-10T15:35:07.425695Z",
+    "kwh_usage": 0.93,
+    "voltage": 240,
+    "customer_id": "CUST_6035",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_594",
+    "timestamp": "2025-06-10T20:08:07.425719Z",
+    "kwh_usage": 0.69,
+    "voltage": 240,
+    "customer_id": "CUST_6369",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_250",
+    "timestamp": "2025-06-10T08:00:07.425763Z",
+    "kwh_usage": 4.7,
+    "voltage": 230,
+    "customer_id": "CUST_6216",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_679",
+    "timestamp": "2025-06-09T21:48:07.425789Z",
+    "kwh_usage": 3.78,
+    "voltage": 230,
+    "customer_id": "CUST_8219",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_471",
+    "timestamp": "2025-06-10T00:42:07.425813Z",
+    "kwh_usage": 2.01,
+    "voltage": 240,
+    "customer_id": "CUST_6948",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_309",
+    "timestamp": "2025-06-10T10:32:07.425837Z",
+    "kwh_usage": 1.09,
+    "voltage": 240,
+    "customer_id": "CUST_6904",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_575",
+    "timestamp": "2025-06-10T11:07:07.425895Z",
+    "kwh_usage": 1.99,
+    "voltage": 230,
+    "customer_id": "CUST_2813",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_109",
+    "timestamp": "2025-06-10T10:15:07.425940Z",
+    "kwh_usage": 3.64,
+    "voltage": 230,
+    "customer_id": "CUST_6132",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_470",
+    "timestamp": "2025-06-10T19:36:07.425978Z",
+    "kwh_usage": 3.95,
+    "voltage": 240,
+    "customer_id": "CUST_9843",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_455",
+    "timestamp": "2025-06-10T05:49:07.426004Z",
+    "kwh_usage": 4.22,
+    "voltage": 230,
+    "customer_id": "CUST_8495",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_788",
+    "timestamp": "2025-06-10T16:43:07.426036Z",
+    "kwh_usage": 3.9,
+    "voltage": 230,
+    "customer_id": "CUST_3462",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_808",
+    "timestamp": "2025-06-09T23:50:07.426061Z",
+    "kwh_usage": 4.59,
+    "voltage": 230,
+    "customer_id": "CUST_3241",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_139",
+    "timestamp": "2025-06-10T06:18:07.426085Z",
+    "kwh_usage": 3.56,
+    "voltage": 230,
+    "customer_id": "CUST_8696",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_398",
+    "timestamp": "2025-06-10T02:49:07.426108Z",
+    "kwh_usage": 1.07,
+    "voltage": 240,
+    "customer_id": "CUST_7894",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_222",
+    "timestamp": "2025-06-10T16:07:07.426132Z",
+    "kwh_usage": 4.39,
+    "voltage": 240,
+    "customer_id": "CUST_9463",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_736",
+    "timestamp": "2025-06-09T22:50:07.426155Z",
+    "kwh_usage": 3.22,
+    "voltage": 240,
+    "customer_id": "CUST_5069",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_813",
+    "timestamp": "2025-06-10T01:34:07.426179Z",
+    "kwh_usage": 0.66,
+    "voltage": 240,
+    "customer_id": "CUST_1939",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_722",
+    "timestamp": "2025-06-10T03:41:07.426202Z",
+    "kwh_usage": 2.57,
+    "voltage": 230,
+    "customer_id": "CUST_3304",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_130",
+    "timestamp": "2025-06-10T11:17:07.426228Z",
+    "kwh_usage": 4.22,
+    "voltage": 230,
+    "customer_id": "CUST_1280",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_395",
+    "timestamp": "2025-06-10T17:20:07.426295Z",
+    "kwh_usage": 3.55,
+    "voltage": 230,
+    "customer_id": "CUST_2082",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_635",
+    "timestamp": "2025-06-10T04:14:07.426328Z",
+    "kwh_usage": 4.63,
+    "voltage": 240,
+    "customer_id": "CUST_9959",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_859",
+    "timestamp": "2025-06-10T04:39:07.426352Z",
+    "kwh_usage": 3.2,
+    "voltage": 240,
+    "customer_id": "CUST_3793",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_492",
+    "timestamp": "2025-06-10T14:58:07.426376Z",
+    "kwh_usage": 4.78,
+    "voltage": 230,
+    "customer_id": "CUST_7009",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_511",
+    "timestamp": "2025-06-10T00:42:07.426400Z",
+    "kwh_usage": 0.76,
+    "voltage": 240,
+    "customer_id": "CUST_8924",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_586",
+    "timestamp": "2025-06-10T02:19:07.426423Z",
+    "kwh_usage": 0.93,
+    "voltage": 230,
+    "customer_id": "CUST_3664",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_650",
+    "timestamp": "2025-06-10T05:58:07.426447Z",
+    "kwh_usage": 1.74,
+    "voltage": 240,
+    "customer_id": "CUST_3843",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_852",
+    "timestamp": "2025-06-10T19:00:07.426471Z",
+    "kwh_usage": 4.07,
+    "voltage": 240,
+    "customer_id": "CUST_7108",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_707",
+    "timestamp": "2025-06-10T12:03:07.426527Z",
+    "kwh_usage": 3.35,
+    "voltage": 230,
+    "customer_id": "CUST_9293",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_480",
+    "timestamp": "2025-06-10T15:09:07.426595Z",
+    "kwh_usage": 3.13,
+    "voltage": 230,
+    "customer_id": "CUST_6197",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_895",
+    "timestamp": "2025-06-10T19:06:07.426671Z",
+    "kwh_usage": 0.67,
+    "voltage": 230,
+    "customer_id": "CUST_6631",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_897",
+    "timestamp": "2025-06-10T06:57:07.426730Z",
+    "kwh_usage": 2.69,
+    "voltage": 240,
+    "customer_id": "CUST_8270",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_449",
+    "timestamp": "2025-06-10T12:58:07.426818Z",
+    "kwh_usage": 1.65,
+    "voltage": 240,
+    "customer_id": "CUST_6532",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_596",
+    "timestamp": "2025-06-10T05:26:07.426849Z",
+    "kwh_usage": 2.89,
+    "voltage": 230,
+    "customer_id": "CUST_6932",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_557",
+    "timestamp": "2025-06-10T06:43:07.426873Z",
+    "kwh_usage": 1.17,
+    "voltage": 240,
+    "customer_id": "CUST_2230",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_702",
+    "timestamp": "2025-06-10T16:48:07.426897Z",
+    "kwh_usage": 3.37,
+    "voltage": 230,
+    "customer_id": "CUST_7480",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "HAMILTON_516",
+    "timestamp": "2025-06-10T13:40:07.426921Z",
+    "kwh_usage": 2.19,
+    "voltage": 240,
+    "customer_id": "CUST_3136",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_636",
+    "timestamp": "2025-06-10T01:42:07.426945Z",
+    "kwh_usage": 1.1,
+    "voltage": 230,
+    "customer_id": "CUST_9835",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_880",
+    "timestamp": "2025-06-10T20:37:07.426988Z",
+    "kwh_usage": 3.09,
+    "voltage": 230,
+    "customer_id": "CUST_6787",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_386",
+    "timestamp": "2025-06-10T21:12:07.427047Z",
+    "kwh_usage": 2.43,
+    "voltage": 230,
+    "customer_id": "CUST_1466",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_206",
+    "timestamp": "2025-06-09T23:55:07.427106Z",
+    "kwh_usage": 2.64,
+    "voltage": 230,
+    "customer_id": "CUST_4965",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_211",
+    "timestamp": "2025-06-10T11:07:07.427133Z",
+    "kwh_usage": 1.24,
+    "voltage": 230,
+    "customer_id": "CUST_8845",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_112",
+    "timestamp": "2025-06-10T13:04:07.427158Z",
+    "kwh_usage": 0.58,
+    "voltage": 230,
+    "customer_id": "CUST_4500",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_322",
+    "timestamp": "2025-06-10T04:56:07.427181Z",
+    "kwh_usage": 3.7,
+    "voltage": 230,
+    "customer_id": "CUST_8178",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_257",
+    "timestamp": "2025-06-10T09:58:07.427205Z",
+    "kwh_usage": 1.53,
+    "voltage": 240,
+    "customer_id": "CUST_1685",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_869",
+    "timestamp": "2025-06-10T11:01:07.427257Z",
+    "kwh_usage": 4.24,
+    "voltage": 240,
+    "customer_id": "CUST_6521",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_553",
+    "timestamp": "2025-06-10T07:02:07.427316Z",
+    "kwh_usage": 3.48,
+    "voltage": 240,
+    "customer_id": "CUST_4552",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_940",
+    "timestamp": "2025-06-10T07:33:07.427354Z",
+    "kwh_usage": 1.59,
+    "voltage": 230,
+    "customer_id": "CUST_1039",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_237",
+    "timestamp": "2025-06-10T00:50:07.427379Z",
+    "kwh_usage": 2.89,
+    "voltage": 240,
+    "customer_id": "CUST_7489",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_917",
+    "timestamp": "2025-06-10T15:50:07.427403Z",
+    "kwh_usage": 1.94,
+    "voltage": 240,
+    "customer_id": "CUST_5033",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_848",
+    "timestamp": "2025-06-10T07:19:07.427453Z",
+    "kwh_usage": 1.73,
+    "voltage": 230,
+    "customer_id": "CUST_7747",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_330",
+    "timestamp": "2025-06-10T14:52:07.427532Z",
+    "kwh_usage": 3.05,
+    "voltage": 240,
+    "customer_id": "CUST_6265",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_391",
+    "timestamp": "2025-06-09T23:31:07.427605Z",
+    "kwh_usage": 4.57,
+    "voltage": 230,
+    "customer_id": "CUST_2497",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_634",
+    "timestamp": "2025-06-10T13:32:07.427669Z",
+    "kwh_usage": 3.43,
+    "voltage": 230,
+    "customer_id": "CUST_5489",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_391",
+    "timestamp": "2025-06-10T03:58:07.427722Z",
+    "kwh_usage": 0.91,
+    "voltage": 240,
+    "customer_id": "CUST_4618",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_701",
+    "timestamp": "2025-06-10T16:27:07.427788Z",
+    "kwh_usage": 3.37,
+    "voltage": 230,
+    "customer_id": "CUST_4109",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_610",
+    "timestamp": "2025-06-10T20:32:07.427816Z",
+    "kwh_usage": 2.82,
+    "voltage": 230,
+    "customer_id": "CUST_9727",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_686",
+    "timestamp": "2025-06-10T04:07:07.427839Z",
+    "kwh_usage": 3.18,
+    "voltage": 240,
+    "customer_id": "CUST_9742",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_751",
+    "timestamp": "2025-06-10T03:33:07.427863Z",
+    "kwh_usage": 3.79,
+    "voltage": 230,
+    "customer_id": "CUST_5349",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_629",
+    "timestamp": "2025-06-10T18:31:07.427886Z",
+    "kwh_usage": 1.47,
+    "voltage": 240,
+    "customer_id": "CUST_4170",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_672",
+    "timestamp": "2025-06-09T23:26:07.427910Z",
+    "kwh_usage": 2.39,
+    "voltage": 230,
+    "customer_id": "CUST_7269",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_963",
+    "timestamp": "2025-06-10T13:06:07.427941Z",
+    "kwh_usage": 1.05,
+    "voltage": 240,
+    "customer_id": "CUST_1880",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_500",
+    "timestamp": "2025-06-09T23:44:07.428009Z",
+    "kwh_usage": 4.87,
+    "voltage": 230,
+    "customer_id": "CUST_9005",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_557",
+    "timestamp": "2025-06-10T00:39:07.428038Z",
+    "kwh_usage": 1.44,
+    "voltage": 230,
+    "customer_id": "CUST_8746",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_467",
+    "timestamp": "2025-06-10T06:32:07.428061Z",
+    "kwh_usage": 0.53,
+    "voltage": 240,
+    "customer_id": "CUST_5715",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_810",
+    "timestamp": "2025-06-10T00:20:07.428085Z",
+    "kwh_usage": 3.9,
+    "voltage": 240,
+    "customer_id": "CUST_8297",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_592",
+    "timestamp": "2025-06-10T11:28:07.428109Z",
+    "kwh_usage": 0.69,
+    "voltage": 230,
+    "customer_id": "CUST_4469",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_744",
+    "timestamp": "2025-06-10T00:25:07.428132Z",
+    "kwh_usage": 0.69,
+    "voltage": 240,
+    "customer_id": "CUST_9180",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_968",
+    "timestamp": "2025-06-09T23:58:07.428157Z",
+    "kwh_usage": 5.0,
+    "voltage": 230,
+    "customer_id": "CUST_2417",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_308",
+    "timestamp": "2025-06-10T00:01:07.428211Z",
+    "kwh_usage": 3.01,
+    "voltage": 230,
+    "customer_id": "CUST_7742",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_127",
+    "timestamp": "2025-06-10T12:37:07.428302Z",
+    "kwh_usage": 1.58,
+    "voltage": 240,
+    "customer_id": "CUST_3513",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_692",
+    "timestamp": "2025-06-10T19:46:07.428335Z",
+    "kwh_usage": 4.85,
+    "voltage": 240,
+    "customer_id": "CUST_3812",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_290",
+    "timestamp": "2025-06-10T18:17:07.428359Z",
+    "kwh_usage": 1.82,
+    "voltage": 230,
+    "customer_id": "CUST_4753",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_793",
+    "timestamp": "2025-06-10T20:48:07.428394Z",
+    "kwh_usage": 3.2,
+    "voltage": 230,
+    "customer_id": "CUST_4038",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_536",
+    "timestamp": "2025-06-10T11:47:07.428421Z",
+    "kwh_usage": 3.5,
+    "voltage": 240,
+    "customer_id": "CUST_2330",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_693",
+    "timestamp": "2025-06-10T18:22:07.428444Z",
+    "kwh_usage": 4.92,
+    "voltage": 240,
+    "customer_id": "CUST_4274",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_624",
+    "timestamp": "2025-06-10T20:45:07.428467Z",
+    "kwh_usage": 4.87,
+    "voltage": 240,
+    "customer_id": "CUST_5932",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_993",
+    "timestamp": "2025-06-10T00:37:07.428491Z",
+    "kwh_usage": 1.16,
+    "voltage": 230,
+    "customer_id": "CUST_6394",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_968",
+    "timestamp": "2025-06-10T02:16:07.428514Z",
+    "kwh_usage": 3.41,
+    "voltage": 240,
+    "customer_id": "CUST_8608",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_556",
+    "timestamp": "2025-06-10T14:35:07.428538Z",
+    "kwh_usage": 0.73,
+    "voltage": 230,
+    "customer_id": "CUST_2519",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_588",
+    "timestamp": "2025-06-09T22:49:07.428562Z",
+    "kwh_usage": 4.39,
+    "voltage": 240,
+    "customer_id": "CUST_2136",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_536",
+    "timestamp": "2025-06-10T06:05:07.428585Z",
+    "kwh_usage": 4.66,
+    "voltage": 240,
+    "customer_id": "CUST_2841",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_880",
+    "timestamp": "2025-06-10T11:16:07.428630Z",
+    "kwh_usage": 2.69,
+    "voltage": 240,
+    "customer_id": "CUST_3403",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_401",
+    "timestamp": "2025-06-09T22:06:07.428697Z",
+    "kwh_usage": 4.45,
+    "voltage": 230,
+    "customer_id": "CUST_4034",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_396",
+    "timestamp": "2025-06-10T06:08:07.428776Z",
+    "kwh_usage": 2.9,
+    "voltage": 230,
+    "customer_id": "CUST_9325",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_542",
+    "timestamp": "2025-06-10T00:55:07.428810Z",
+    "kwh_usage": 3.39,
+    "voltage": 240,
+    "customer_id": "CUST_7618",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_306",
+    "timestamp": "2025-06-09T22:40:07.428836Z",
+    "kwh_usage": 0.78,
+    "voltage": 240,
+    "customer_id": "CUST_9251",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_550",
+    "timestamp": "2025-06-10T05:24:07.428895Z",
+    "kwh_usage": 0.62,
+    "voltage": 240,
+    "customer_id": "CUST_7794",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_128",
+    "timestamp": "2025-06-10T19:05:07.428938Z",
+    "kwh_usage": 1.48,
+    "voltage": 230,
+    "customer_id": "CUST_2120",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_251",
+    "timestamp": "2025-06-10T13:09:07.428976Z",
+    "kwh_usage": 1.38,
+    "voltage": 240,
+    "customer_id": "CUST_4378",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_168",
+    "timestamp": "2025-06-10T03:05:07.429001Z",
+    "kwh_usage": 4.22,
+    "voltage": 230,
+    "customer_id": "CUST_2917",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_244",
+    "timestamp": "2025-06-10T16:42:07.429025Z",
+    "kwh_usage": 3.35,
+    "voltage": 240,
+    "customer_id": "CUST_2089",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_519",
+    "timestamp": "2025-06-10T21:11:07.429049Z",
+    "kwh_usage": 3.9,
+    "voltage": 230,
+    "customer_id": "CUST_1056",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_721",
+    "timestamp": "2025-06-10T13:21:07.429073Z",
+    "kwh_usage": 1.89,
+    "voltage": 240,
+    "customer_id": "CUST_1595",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_990",
+    "timestamp": "2025-06-10T05:48:07.429115Z",
+    "kwh_usage": 2.82,
+    "voltage": 240,
+    "customer_id": "CUST_2603",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_934",
+    "timestamp": "2025-06-10T00:24:07.429184Z",
+    "kwh_usage": 4.78,
+    "voltage": 240,
+    "customer_id": "CUST_8287",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_500",
+    "timestamp": "2025-06-10T19:02:07.429217Z",
+    "kwh_usage": 1.1,
+    "voltage": 240,
+    "customer_id": "CUST_2943",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_151",
+    "timestamp": "2025-06-10T18:13:07.429242Z",
+    "kwh_usage": 4.53,
+    "voltage": 230,
+    "customer_id": "CUST_6891",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_512",
+    "timestamp": "2025-06-09T22:38:07.429265Z",
+    "kwh_usage": 4.52,
+    "voltage": 240,
+    "customer_id": "CUST_8840",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_622",
+    "timestamp": "2025-06-10T13:22:07.429289Z",
+    "kwh_usage": 3.17,
+    "voltage": 230,
+    "customer_id": "CUST_9158",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_308",
+    "timestamp": "2025-06-10T17:13:07.429313Z",
+    "kwh_usage": 4.45,
+    "voltage": 240,
+    "customer_id": "CUST_9738",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_683",
+    "timestamp": "2025-06-10T12:43:07.429336Z",
+    "kwh_usage": 0.99,
+    "voltage": 240,
+    "customer_id": "CUST_7412",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_244",
+    "timestamp": "2025-06-10T02:38:07.429373Z",
+    "kwh_usage": 0.55,
+    "voltage": 230,
+    "customer_id": "CUST_4222",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_900",
+    "timestamp": "2025-06-10T04:11:07.429398Z",
+    "kwh_usage": 3.04,
+    "voltage": 240,
+    "customer_id": "CUST_4981",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_714",
+    "timestamp": "2025-06-10T13:54:07.429422Z",
+    "kwh_usage": 2.64,
+    "voltage": 230,
+    "customer_id": "CUST_1659",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_303",
+    "timestamp": "2025-06-10T07:58:07.429445Z",
+    "kwh_usage": 1.4,
+    "voltage": 240,
+    "customer_id": "CUST_7933",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_359",
+    "timestamp": "2025-06-10T11:20:07.429471Z",
+    "kwh_usage": 3.2,
+    "voltage": 230,
+    "customer_id": "CUST_8058",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_874",
+    "timestamp": "2025-06-10T02:13:07.429514Z",
+    "kwh_usage": 0.92,
+    "voltage": 240,
+    "customer_id": "CUST_5240",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_580",
+    "timestamp": "2025-06-10T19:59:07.429588Z",
+    "kwh_usage": 0.72,
+    "voltage": 230,
+    "customer_id": "CUST_3081",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_389",
+    "timestamp": "2025-06-10T20:53:07.429620Z",
+    "kwh_usage": 1.31,
+    "voltage": 240,
+    "customer_id": "CUST_6572",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_294",
+    "timestamp": "2025-06-10T10:49:07.429645Z",
+    "kwh_usage": 4.33,
+    "voltage": 230,
+    "customer_id": "CUST_5623",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_994",
+    "timestamp": "2025-06-10T05:31:07.429668Z",
+    "kwh_usage": 4.41,
+    "voltage": 240,
+    "customer_id": "CUST_7311",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_576",
+    "timestamp": "2025-06-10T12:36:07.429692Z",
+    "kwh_usage": 1.99,
+    "voltage": 240,
+    "customer_id": "CUST_4482",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_862",
+    "timestamp": "2025-06-10T00:15:07.429717Z",
+    "kwh_usage": 4.34,
+    "voltage": 230,
+    "customer_id": "CUST_9520",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "HAMILTON_946",
+    "timestamp": "2025-06-10T15:16:07.429757Z",
+    "kwh_usage": 2.24,
+    "voltage": 230,
+    "customer_id": "CUST_5267",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_863",
+    "timestamp": "2025-06-09T22:06:07.429965Z",
+    "kwh_usage": 4.63,
+    "voltage": 230,
+    "customer_id": "CUST_9072",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_237",
+    "timestamp": "2025-06-10T20:12:07.430003Z",
+    "kwh_usage": 1.8,
+    "voltage": 230,
+    "customer_id": "CUST_4057",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_238",
+    "timestamp": "2025-06-10T06:28:07.430029Z",
+    "kwh_usage": 1.6,
+    "voltage": 230,
+    "customer_id": "CUST_5617",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_652",
+    "timestamp": "2025-06-09T23:01:07.430054Z",
+    "kwh_usage": 0.97,
+    "voltage": 240,
+    "customer_id": "CUST_8275",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_226",
+    "timestamp": "2025-06-09T23:14:07.430079Z",
+    "kwh_usage": 2.85,
+    "voltage": 230,
+    "customer_id": "CUST_1675",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_758",
+    "timestamp": "2025-06-09T22:13:07.430104Z",
+    "kwh_usage": 1.98,
+    "voltage": 230,
+    "customer_id": "CUST_2321",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_103",
+    "timestamp": "2025-06-10T02:05:07.430127Z",
+    "kwh_usage": 1.69,
+    "voltage": 230,
+    "customer_id": "CUST_6168",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_981",
+    "timestamp": "2025-06-10T06:44:07.430150Z",
+    "kwh_usage": 4.25,
+    "voltage": 230,
+    "customer_id": "CUST_2722",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_633",
+    "timestamp": "2025-06-10T14:03:07.430178Z",
+    "kwh_usage": 0.97,
+    "voltage": 230,
+    "customer_id": "CUST_7633",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_179",
+    "timestamp": "2025-06-10T14:13:07.430245Z",
+    "kwh_usage": 3.01,
+    "voltage": 240,
+    "customer_id": "CUST_2880",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_519",
+    "timestamp": "2025-06-10T12:11:07.430276Z",
+    "kwh_usage": 2.29,
+    "voltage": 230,
+    "customer_id": "CUST_5448",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_840",
+    "timestamp": "2025-06-10T08:49:07.430300Z",
+    "kwh_usage": 2.55,
+    "voltage": 240,
+    "customer_id": "CUST_1647",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_138",
+    "timestamp": "2025-06-10T19:40:07.430325Z",
+    "kwh_usage": 2.55,
+    "voltage": 230,
+    "customer_id": "CUST_6638",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_156",
+    "timestamp": "2025-06-10T11:45:07.430361Z",
+    "kwh_usage": 1.42,
+    "voltage": 240,
+    "customer_id": "CUST_8691",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_426",
+    "timestamp": "2025-06-10T11:52:07.430387Z",
+    "kwh_usage": 2.06,
+    "voltage": 230,
+    "customer_id": "CUST_9886",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_101",
+    "timestamp": "2025-06-10T13:53:07.430456Z",
+    "kwh_usage": 1.31,
+    "voltage": 240,
+    "customer_id": "CUST_5551",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_237",
+    "timestamp": "2025-06-10T00:27:07.430511Z",
+    "kwh_usage": 2.84,
+    "voltage": 230,
+    "customer_id": "CUST_8618",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_974",
+    "timestamp": "2025-06-10T04:42:07.430539Z",
+    "kwh_usage": 1.45,
+    "voltage": 230,
+    "customer_id": "CUST_7125",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_557",
+    "timestamp": "2025-06-10T01:18:07.430562Z",
+    "kwh_usage": 2.41,
+    "voltage": 230,
+    "customer_id": "CUST_5666",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_386",
+    "timestamp": "2025-06-10T02:02:07.430586Z",
+    "kwh_usage": 4.5,
+    "voltage": 230,
+    "customer_id": "CUST_2225",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_701",
+    "timestamp": "2025-06-10T08:48:07.430610Z",
+    "kwh_usage": 4.79,
+    "voltage": 230,
+    "customer_id": "CUST_8609",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_581",
+    "timestamp": "2025-06-10T17:54:07.430662Z",
+    "kwh_usage": 3.18,
+    "voltage": 230,
+    "customer_id": "CUST_9547",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_114",
+    "timestamp": "2025-06-09T23:53:07.430731Z",
+    "kwh_usage": 0.84,
+    "voltage": 230,
+    "customer_id": "CUST_2356",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_845",
+    "timestamp": "2025-06-10T20:47:07.430812Z",
+    "kwh_usage": 3.46,
+    "voltage": 240,
+    "customer_id": "CUST_2494",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_787",
+    "timestamp": "2025-06-09T21:49:07.430843Z",
+    "kwh_usage": 0.56,
+    "voltage": 240,
+    "customer_id": "CUST_9470",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_488",
+    "timestamp": "2025-06-10T00:55:07.430868Z",
+    "kwh_usage": 2.25,
+    "voltage": 230,
+    "customer_id": "CUST_4064",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_950",
+    "timestamp": "2025-06-10T21:01:07.430892Z",
+    "kwh_usage": 1.71,
+    "voltage": 230,
+    "customer_id": "CUST_8786",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_193",
+    "timestamp": "2025-06-10T06:28:07.430917Z",
+    "kwh_usage": 0.75,
+    "voltage": 240,
+    "customer_id": "CUST_4085",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_940",
+    "timestamp": "2025-06-09T23:02:07.430989Z",
+    "kwh_usage": 4.43,
+    "voltage": 240,
+    "customer_id": "CUST_2877",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_973",
+    "timestamp": "2025-06-09T23:47:07.431041Z",
+    "kwh_usage": 3.59,
+    "voltage": 240,
+    "customer_id": "CUST_4630",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_625",
+    "timestamp": "2025-06-10T13:47:07.431068Z",
+    "kwh_usage": 3.04,
+    "voltage": 230,
+    "customer_id": "CUST_1707",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_915",
+    "timestamp": "2025-06-10T00:11:07.431092Z",
+    "kwh_usage": 0.69,
+    "voltage": 230,
+    "customer_id": "CUST_9472",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_952",
+    "timestamp": "2025-06-10T18:25:07.431129Z",
+    "kwh_usage": 3.93,
+    "voltage": 240,
+    "customer_id": "CUST_3342",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_702",
+    "timestamp": "2025-06-10T03:36:07.431158Z",
+    "kwh_usage": 2.89,
+    "voltage": 230,
+    "customer_id": "CUST_1411",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_355",
+    "timestamp": "2025-06-10T15:00:07.431221Z",
+    "kwh_usage": 3.29,
+    "voltage": 230,
+    "customer_id": "CUST_8785",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_583",
+    "timestamp": "2025-06-09T22:44:07.431287Z",
+    "kwh_usage": 4.89,
+    "voltage": 240,
+    "customer_id": "CUST_2012",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_786",
+    "timestamp": "2025-06-10T00:06:07.431316Z",
+    "kwh_usage": 3.4,
+    "voltage": 230,
+    "customer_id": "CUST_2711",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_452",
+    "timestamp": "2025-06-10T13:35:07.431342Z",
+    "kwh_usage": 3.99,
+    "voltage": 230,
+    "customer_id": "CUST_8238",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_421",
+    "timestamp": "2025-06-09T23:33:07.431365Z",
+    "kwh_usage": 3.57,
+    "voltage": 240,
+    "customer_id": "CUST_5439",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_553",
+    "timestamp": "2025-06-10T15:00:07.431403Z",
+    "kwh_usage": 0.65,
+    "voltage": 230,
+    "customer_id": "CUST_6864",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_286",
+    "timestamp": "2025-06-10T20:36:07.431452Z",
+    "kwh_usage": 3.98,
+    "voltage": 240,
+    "customer_id": "CUST_8225",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_480",
+    "timestamp": "2025-06-10T06:23:07.431522Z",
+    "kwh_usage": 4.83,
+    "voltage": 240,
+    "customer_id": "CUST_6220",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_550",
+    "timestamp": "2025-06-10T00:14:07.431555Z",
+    "kwh_usage": 2.34,
+    "voltage": 240,
+    "customer_id": "CUST_3279",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_351",
+    "timestamp": "2025-06-10T19:36:07.431594Z",
+    "kwh_usage": 4.02,
+    "voltage": 240,
+    "customer_id": "CUST_4934",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_811",
+    "timestamp": "2025-06-10T03:52:07.431619Z",
+    "kwh_usage": 3.11,
+    "voltage": 230,
+    "customer_id": "CUST_2466",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_313",
+    "timestamp": "2025-06-10T20:25:07.431642Z",
+    "kwh_usage": 2.14,
+    "voltage": 230,
+    "customer_id": "CUST_3245",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_763",
+    "timestamp": "2025-06-09T21:33:07.431671Z",
+    "kwh_usage": 0.5,
+    "voltage": 230,
+    "customer_id": "CUST_3166",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_683",
+    "timestamp": "2025-06-10T19:31:07.431764Z",
+    "kwh_usage": 3.2,
+    "voltage": 230,
+    "customer_id": "CUST_9413",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_960",
+    "timestamp": "2025-06-10T14:44:07.431797Z",
+    "kwh_usage": 3.89,
+    "voltage": 230,
+    "customer_id": "CUST_9922",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_669",
+    "timestamp": "2025-06-10T02:49:07.431821Z",
+    "kwh_usage": 2.26,
+    "voltage": 240,
+    "customer_id": "CUST_5458",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_369",
+    "timestamp": "2025-06-10T16:12:07.431845Z",
+    "kwh_usage": 1.61,
+    "voltage": 240,
+    "customer_id": "CUST_9175",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_592",
+    "timestamp": "2025-06-10T12:52:07.431868Z",
+    "kwh_usage": 4.65,
+    "voltage": 240,
+    "customer_id": "CUST_3442",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "HAMILTON_757",
+    "timestamp": "2025-06-10T16:07:07.431917Z",
+    "kwh_usage": 2.47,
+    "voltage": 230,
+    "customer_id": "CUST_2650",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_264",
+    "timestamp": "2025-06-10T07:02:07.431979Z",
+    "kwh_usage": 3.01,
+    "voltage": 230,
+    "customer_id": "CUST_3713",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_698",
+    "timestamp": "2025-06-10T07:52:07.432007Z",
+    "kwh_usage": 2.88,
+    "voltage": 240,
+    "customer_id": "CUST_7613",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_987",
+    "timestamp": "2025-06-10T13:54:07.432032Z",
+    "kwh_usage": 3.64,
+    "voltage": 240,
+    "customer_id": "CUST_3645",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_209",
+    "timestamp": "2025-06-10T06:37:07.432056Z",
+    "kwh_usage": 4.91,
+    "voltage": 230,
+    "customer_id": "CUST_4614",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_514",
+    "timestamp": "2025-06-10T20:47:07.432079Z",
+    "kwh_usage": 2.84,
+    "voltage": 240,
+    "customer_id": "CUST_2042",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_893",
+    "timestamp": "2025-06-10T10:34:07.432127Z",
+    "kwh_usage": 4.58,
+    "voltage": 240,
+    "customer_id": "CUST_5674",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_348",
+    "timestamp": "2025-06-09T23:11:07.432178Z",
+    "kwh_usage": 3.58,
+    "voltage": 230,
+    "customer_id": "CUST_8392",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_613",
+    "timestamp": "2025-06-10T19:46:07.432204Z",
+    "kwh_usage": 2.38,
+    "voltage": 240,
+    "customer_id": "CUST_6360",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_243",
+    "timestamp": "2025-06-10T17:57:07.432228Z",
+    "kwh_usage": 1.51,
+    "voltage": 240,
+    "customer_id": "CUST_9720",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_864",
+    "timestamp": "2025-06-09T21:38:07.432251Z",
+    "kwh_usage": 0.96,
+    "voltage": 230,
+    "customer_id": "CUST_3364",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_186",
+    "timestamp": "2025-06-10T04:51:07.432275Z",
+    "kwh_usage": 4.58,
+    "voltage": 230,
+    "customer_id": "CUST_4316",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_550",
+    "timestamp": "2025-06-10T19:35:07.432317Z",
+    "kwh_usage": 4.9,
+    "voltage": 240,
+    "customer_id": "CUST_1152",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_697",
+    "timestamp": "2025-06-10T04:12:07.432384Z",
+    "kwh_usage": 4.4,
+    "voltage": 240,
+    "customer_id": "CUST_3191",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_922",
+    "timestamp": "2025-06-09T21:58:07.432413Z",
+    "kwh_usage": 3.12,
+    "voltage": 240,
+    "customer_id": "CUST_2926",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_700",
+    "timestamp": "2025-06-10T19:13:07.432438Z",
+    "kwh_usage": 4.5,
+    "voltage": 240,
+    "customer_id": "CUST_1647",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_284",
+    "timestamp": "2025-06-10T11:20:07.432462Z",
+    "kwh_usage": 4.84,
+    "voltage": 230,
+    "customer_id": "CUST_9146",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_702",
+    "timestamp": "2025-06-10T19:34:07.432486Z",
+    "kwh_usage": 1.02,
+    "voltage": 240,
+    "customer_id": "CUST_2668",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_598",
+    "timestamp": "2025-06-10T20:57:07.432509Z",
+    "kwh_usage": 2.54,
+    "voltage": 240,
+    "customer_id": "CUST_8147",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_381",
+    "timestamp": "2025-06-10T13:00:07.432579Z",
+    "kwh_usage": 3.32,
+    "voltage": 240,
+    "customer_id": "CUST_1569",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_420",
+    "timestamp": "2025-06-10T17:25:07.432649Z",
+    "kwh_usage": 2.28,
+    "voltage": 240,
+    "customer_id": "CUST_6587",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_224",
+    "timestamp": "2025-06-10T04:37:07.432705Z",
+    "kwh_usage": 3.89,
+    "voltage": 240,
+    "customer_id": "CUST_3853",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_370",
+    "timestamp": "2025-06-10T16:26:07.432790Z",
+    "kwh_usage": 3.3,
+    "voltage": 230,
+    "customer_id": "CUST_2348",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_134",
+    "timestamp": "2025-06-10T01:04:07.432868Z",
+    "kwh_usage": 1.57,
+    "voltage": 240,
+    "customer_id": "CUST_3581",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_978",
+    "timestamp": "2025-06-10T17:29:07.432899Z",
+    "kwh_usage": 0.87,
+    "voltage": 230,
+    "customer_id": "CUST_1407",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_907",
+    "timestamp": "2025-06-10T06:39:07.432923Z",
+    "kwh_usage": 4.48,
+    "voltage": 230,
+    "customer_id": "CUST_8761",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_367",
+    "timestamp": "2025-06-10T13:45:07.432947Z",
+    "kwh_usage": 2.73,
+    "voltage": 240,
+    "customer_id": "CUST_4019",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_654",
+    "timestamp": "2025-06-10T10:53:07.432971Z",
+    "kwh_usage": 4.19,
+    "voltage": 230,
+    "customer_id": "CUST_9368",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_920",
+    "timestamp": "2025-06-10T13:41:07.432994Z",
+    "kwh_usage": 4.4,
+    "voltage": 230,
+    "customer_id": "CUST_2718",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_470",
+    "timestamp": "2025-06-10T06:30:07.433050Z",
+    "kwh_usage": 4.92,
+    "voltage": 240,
+    "customer_id": "CUST_2500",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_190",
+    "timestamp": "2025-06-10T10:25:07.433108Z",
+    "kwh_usage": 0.94,
+    "voltage": 230,
+    "customer_id": "CUST_9749",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_751",
+    "timestamp": "2025-06-09T23:05:07.433150Z",
+    "kwh_usage": 1.68,
+    "voltage": 240,
+    "customer_id": "CUST_1727",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_833",
+    "timestamp": "2025-06-10T04:18:07.433177Z",
+    "kwh_usage": 4.46,
+    "voltage": 230,
+    "customer_id": "CUST_3114",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_198",
+    "timestamp": "2025-06-10T08:30:07.433209Z",
+    "kwh_usage": 1.94,
+    "voltage": 240,
+    "customer_id": "CUST_4491",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_461",
+    "timestamp": "2025-06-09T23:24:07.433237Z",
+    "kwh_usage": 2.86,
+    "voltage": 230,
+    "customer_id": "CUST_1542",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_260",
+    "timestamp": "2025-06-10T13:31:07.433300Z",
+    "kwh_usage": 1.58,
+    "voltage": 240,
+    "customer_id": "CUST_9455",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_723",
+    "timestamp": "2025-06-10T08:53:07.433370Z",
+    "kwh_usage": 3.89,
+    "voltage": 230,
+    "customer_id": "CUST_9672",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_142",
+    "timestamp": "2025-06-10T10:42:07.433415Z",
+    "kwh_usage": 3.15,
+    "voltage": 240,
+    "customer_id": "CUST_4997",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_204",
+    "timestamp": "2025-06-10T17:07:07.433441Z",
+    "kwh_usage": 1.15,
+    "voltage": 230,
+    "customer_id": "CUST_5539",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_771",
+    "timestamp": "2025-06-10T08:38:07.433473Z",
+    "kwh_usage": 1.97,
+    "voltage": 240,
+    "customer_id": "CUST_6504",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_487",
+    "timestamp": "2025-06-10T08:53:07.433501Z",
+    "kwh_usage": 3.62,
+    "voltage": 240,
+    "customer_id": "CUST_5501",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_545",
+    "timestamp": "2025-06-10T01:59:07.433566Z",
+    "kwh_usage": 1.21,
+    "voltage": 240,
+    "customer_id": "CUST_4603",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_335",
+    "timestamp": "2025-06-10T12:42:07.433636Z",
+    "kwh_usage": 1.72,
+    "voltage": 230,
+    "customer_id": "CUST_8006",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_941",
+    "timestamp": "2025-06-10T06:24:07.433695Z",
+    "kwh_usage": 1.66,
+    "voltage": 240,
+    "customer_id": "CUST_4739",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_546",
+    "timestamp": "2025-06-10T17:10:07.433769Z",
+    "kwh_usage": 3.7,
+    "voltage": 230,
+    "customer_id": "CUST_2718",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_958",
+    "timestamp": "2025-06-10T07:13:07.433826Z",
+    "kwh_usage": 1.74,
+    "voltage": 230,
+    "customer_id": "CUST_3658",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_925",
+    "timestamp": "2025-06-10T02:42:07.433876Z",
+    "kwh_usage": 2.45,
+    "voltage": 230,
+    "customer_id": "CUST_6114",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_574",
+    "timestamp": "2025-06-10T04:25:07.433903Z",
+    "kwh_usage": 3.62,
+    "voltage": 230,
+    "customer_id": "CUST_7300",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_697",
+    "timestamp": "2025-06-10T05:25:07.433927Z",
+    "kwh_usage": 4.51,
+    "voltage": 230,
+    "customer_id": "CUST_3219",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_246",
+    "timestamp": "2025-06-10T02:12:07.433951Z",
+    "kwh_usage": 3.14,
+    "voltage": 230,
+    "customer_id": "CUST_2605",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_217",
+    "timestamp": "2025-06-09T22:46:07.433975Z",
+    "kwh_usage": 3.59,
+    "voltage": 230,
+    "customer_id": "CUST_9782",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_159",
+    "timestamp": "2025-06-09T23:53:07.434009Z",
+    "kwh_usage": 1.29,
+    "voltage": 240,
+    "customer_id": "CUST_7042",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_718",
+    "timestamp": "2025-06-10T14:51:07.434077Z",
+    "kwh_usage": 3.51,
+    "voltage": 240,
+    "customer_id": "CUST_2359",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_206",
+    "timestamp": "2025-06-10T09:31:07.434119Z",
+    "kwh_usage": 3.87,
+    "voltage": 230,
+    "customer_id": "CUST_7015",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_389",
+    "timestamp": "2025-06-10T09:01:07.434144Z",
+    "kwh_usage": 3.24,
+    "voltage": 240,
+    "customer_id": "CUST_3790",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_897",
+    "timestamp": "2025-06-10T08:00:07.434183Z",
+    "kwh_usage": 1.02,
+    "voltage": 230,
+    "customer_id": "CUST_3808",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_370",
+    "timestamp": "2025-06-10T03:45:07.434207Z",
+    "kwh_usage": 3.63,
+    "voltage": 240,
+    "customer_id": "CUST_8842",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_882",
+    "timestamp": "2025-06-10T01:07:07.434237Z",
+    "kwh_usage": 2.64,
+    "voltage": 240,
+    "customer_id": "CUST_7527",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_740",
+    "timestamp": "2025-06-10T01:39:07.434319Z",
+    "kwh_usage": 0.86,
+    "voltage": 240,
+    "customer_id": "CUST_8699",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_601",
+    "timestamp": "2025-06-10T08:33:07.434366Z",
+    "kwh_usage": 3.58,
+    "voltage": 240,
+    "customer_id": "CUST_8508",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_626",
+    "timestamp": "2025-06-10T01:31:07.434391Z",
+    "kwh_usage": 4.18,
+    "voltage": 230,
+    "customer_id": "CUST_3404",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_375",
+    "timestamp": "2025-06-10T18:41:07.434415Z",
+    "kwh_usage": 3.77,
+    "voltage": 240,
+    "customer_id": "CUST_8966",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_117",
+    "timestamp": "2025-06-10T21:06:07.434440Z",
+    "kwh_usage": 1.08,
+    "voltage": 240,
+    "customer_id": "CUST_3125",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_871",
+    "timestamp": "2025-06-09T22:32:07.434464Z",
+    "kwh_usage": 2.87,
+    "voltage": 230,
+    "customer_id": "CUST_9193",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_577",
+    "timestamp": "2025-06-10T15:12:07.434510Z",
+    "kwh_usage": 1.24,
+    "voltage": 230,
+    "customer_id": "CUST_5681",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_223",
+    "timestamp": "2025-06-10T09:27:07.434559Z",
+    "kwh_usage": 0.76,
+    "voltage": 230,
+    "customer_id": "CUST_6829",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_971",
+    "timestamp": "2025-06-10T19:24:07.434586Z",
+    "kwh_usage": 4.65,
+    "voltage": 230,
+    "customer_id": "CUST_8080",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_456",
+    "timestamp": "2025-06-10T07:30:07.434611Z",
+    "kwh_usage": 2.1,
+    "voltage": 240,
+    "customer_id": "CUST_7365",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_839",
+    "timestamp": "2025-06-10T12:14:07.434634Z",
+    "kwh_usage": 0.83,
+    "voltage": 230,
+    "customer_id": "CUST_6055",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_626",
+    "timestamp": "2025-06-10T13:58:07.434658Z",
+    "kwh_usage": 4.01,
+    "voltage": 240,
+    "customer_id": "CUST_9588",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_734",
+    "timestamp": "2025-06-10T08:07:07.434702Z",
+    "kwh_usage": 2.2,
+    "voltage": 240,
+    "customer_id": "CUST_7773",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_850",
+    "timestamp": "2025-06-10T06:35:07.434774Z",
+    "kwh_usage": 0.94,
+    "voltage": 230,
+    "customer_id": "CUST_6496",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_291",
+    "timestamp": "2025-06-10T03:02:07.434803Z",
+    "kwh_usage": 1.69,
+    "voltage": 240,
+    "customer_id": "CUST_4499",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_218",
+    "timestamp": "2025-06-10T21:06:07.434828Z",
+    "kwh_usage": 2.45,
+    "voltage": 240,
+    "customer_id": "CUST_4106",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_434",
+    "timestamp": "2025-06-10T15:10:07.434851Z",
+    "kwh_usage": 1.69,
+    "voltage": 230,
+    "customer_id": "CUST_8187",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_396",
+    "timestamp": "2025-06-10T06:51:07.434875Z",
+    "kwh_usage": 2.2,
+    "voltage": 230,
+    "customer_id": "CUST_2699",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_305",
+    "timestamp": "2025-06-10T00:11:07.434948Z",
+    "kwh_usage": 1.5,
+    "voltage": 240,
+    "customer_id": "CUST_7911",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_676",
+    "timestamp": "2025-06-10T16:48:07.435000Z",
+    "kwh_usage": 2.83,
+    "voltage": 240,
+    "customer_id": "CUST_7923",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_555",
+    "timestamp": "2025-06-10T00:32:07.435057Z",
+    "kwh_usage": 4.95,
+    "voltage": 240,
+    "customer_id": "CUST_6049",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_386",
+    "timestamp": "2025-06-10T10:29:07.435083Z",
+    "kwh_usage": 4.13,
+    "voltage": 230,
+    "customer_id": "CUST_5800",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_143",
+    "timestamp": "2025-06-10T18:20:07.435108Z",
+    "kwh_usage": 0.84,
+    "voltage": 240,
+    "customer_id": "CUST_8764",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_128",
+    "timestamp": "2025-06-10T09:41:07.435131Z",
+    "kwh_usage": 3.11,
+    "voltage": 230,
+    "customer_id": "CUST_3798",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_518",
+    "timestamp": "2025-06-10T19:01:07.435154Z",
+    "kwh_usage": 0.79,
+    "voltage": 230,
+    "customer_id": "CUST_6219",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_305",
+    "timestamp": "2025-06-10T20:04:07.435212Z",
+    "kwh_usage": 4.15,
+    "voltage": 230,
+    "customer_id": "CUST_1489",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_758",
+    "timestamp": "2025-06-10T17:05:07.435266Z",
+    "kwh_usage": 4.03,
+    "voltage": 240,
+    "customer_id": "CUST_4384",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_238",
+    "timestamp": "2025-06-10T15:58:07.435308Z",
+    "kwh_usage": 3.09,
+    "voltage": 230,
+    "customer_id": "CUST_5868",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_151",
+    "timestamp": "2025-06-10T03:28:07.435333Z",
+    "kwh_usage": 2.57,
+    "voltage": 240,
+    "customer_id": "CUST_5456",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "HAMILTON_934",
+    "timestamp": "2025-06-10T06:42:07.435356Z",
+    "kwh_usage": 4.08,
+    "voltage": 230,
+    "customer_id": "CUST_5169",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_823",
+    "timestamp": "2025-06-10T07:28:07.435395Z",
+    "kwh_usage": 3.66,
+    "voltage": 230,
+    "customer_id": "CUST_3750",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "HAMILTON_131",
+    "timestamp": "2025-06-10T15:27:07.435420Z",
+    "kwh_usage": 4.78,
+    "voltage": 230,
+    "customer_id": "CUST_1024",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_942",
+    "timestamp": "2025-06-10T04:26:07.435444Z",
+    "kwh_usage": 2.72,
+    "voltage": 230,
+    "customer_id": "CUST_1406",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_132",
+    "timestamp": "2025-06-09T21:30:07.435469Z",
+    "kwh_usage": 2.51,
+    "voltage": 230,
+    "customer_id": "CUST_9277",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_476",
+    "timestamp": "2025-06-10T05:38:07.435515Z",
+    "kwh_usage": 3.44,
+    "voltage": 230,
+    "customer_id": "CUST_8916",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_994",
+    "timestamp": "2025-06-10T01:49:07.435564Z",
+    "kwh_usage": 4.25,
+    "voltage": 230,
+    "customer_id": "CUST_9877",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_772",
+    "timestamp": "2025-06-10T14:39:07.435589Z",
+    "kwh_usage": 1.78,
+    "voltage": 240,
+    "customer_id": "CUST_9555",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_224",
+    "timestamp": "2025-06-10T03:04:07.435614Z",
+    "kwh_usage": 1.25,
+    "voltage": 240,
+    "customer_id": "CUST_8033",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_998",
+    "timestamp": "2025-06-10T14:19:07.435637Z",
+    "kwh_usage": 4.64,
+    "voltage": 230,
+    "customer_id": "CUST_7688",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_304",
+    "timestamp": "2025-06-10T11:24:07.435686Z",
+    "kwh_usage": 4.19,
+    "voltage": 230,
+    "customer_id": "CUST_7530",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_203",
+    "timestamp": "2025-06-09T22:38:07.435775Z",
+    "kwh_usage": 3.38,
+    "voltage": 230,
+    "customer_id": "CUST_2871",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_928",
+    "timestamp": "2025-06-10T18:40:07.435808Z",
+    "kwh_usage": 1.58,
+    "voltage": 230,
+    "customer_id": "CUST_4552",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_289",
+    "timestamp": "2025-06-10T06:35:07.435833Z",
+    "kwh_usage": 2.57,
+    "voltage": 240,
+    "customer_id": "CUST_2613",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_946",
+    "timestamp": "2025-06-09T23:52:07.435858Z",
+    "kwh_usage": 0.75,
+    "voltage": 240,
+    "customer_id": "CUST_7219",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_812",
+    "timestamp": "2025-06-10T01:08:07.435882Z",
+    "kwh_usage": 4.66,
+    "voltage": 240,
+    "customer_id": "CUST_6679",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_955",
+    "timestamp": "2025-06-10T20:12:07.435907Z",
+    "kwh_usage": 3.91,
+    "voltage": 240,
+    "customer_id": "CUST_9938",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_116",
+    "timestamp": "2025-06-10T04:05:07.435954Z",
+    "kwh_usage": 3.74,
+    "voltage": 230,
+    "customer_id": "CUST_6329",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_185",
+    "timestamp": "2025-06-10T06:33:07.436017Z",
+    "kwh_usage": 3.86,
+    "voltage": 230,
+    "customer_id": "CUST_1399",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_400",
+    "timestamp": "2025-06-10T03:48:07.436068Z",
+    "kwh_usage": 2.24,
+    "voltage": 230,
+    "customer_id": "CUST_7011",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_950",
+    "timestamp": "2025-06-10T06:11:07.436094Z",
+    "kwh_usage": 2.11,
+    "voltage": 230,
+    "customer_id": "CUST_5043",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_606",
+    "timestamp": "2025-06-10T01:43:07.436119Z",
+    "kwh_usage": 2.12,
+    "voltage": 240,
+    "customer_id": "CUST_7585",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_488",
+    "timestamp": "2025-06-10T12:42:07.436143Z",
+    "kwh_usage": 3.04,
+    "voltage": 230,
+    "customer_id": "CUST_4661",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_969",
+    "timestamp": "2025-06-10T19:43:07.436167Z",
+    "kwh_usage": 3.37,
+    "voltage": 230,
+    "customer_id": "CUST_7198",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_824",
+    "timestamp": "2025-06-10T04:52:07.436224Z",
+    "kwh_usage": 4.12,
+    "voltage": 240,
+    "customer_id": "CUST_5559",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_629",
+    "timestamp": "2025-06-10T18:59:07.436273Z",
+    "kwh_usage": 3.75,
+    "voltage": 240,
+    "customer_id": "CUST_5089",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_483",
+    "timestamp": "2025-06-10T17:26:07.436316Z",
+    "kwh_usage": 1.14,
+    "voltage": 240,
+    "customer_id": "CUST_2381",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_638",
+    "timestamp": "2025-06-10T17:22:07.436341Z",
+    "kwh_usage": 0.9,
+    "voltage": 230,
+    "customer_id": "CUST_6577",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_574",
+    "timestamp": "2025-06-10T01:23:07.436365Z",
+    "kwh_usage": 2.48,
+    "voltage": 240,
+    "customer_id": "CUST_8680",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_585",
+    "timestamp": "2025-06-10T13:32:07.436389Z",
+    "kwh_usage": 3.4,
+    "voltage": 240,
+    "customer_id": "CUST_6995",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_729",
+    "timestamp": "2025-06-10T12:31:07.436433Z",
+    "kwh_usage": 4.05,
+    "voltage": 230,
+    "customer_id": "CUST_5513",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_482",
+    "timestamp": "2025-06-10T09:40:07.436523Z",
+    "kwh_usage": 3.31,
+    "voltage": 230,
+    "customer_id": "CUST_1843",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_705",
+    "timestamp": "2025-06-10T19:51:07.436594Z",
+    "kwh_usage": 0.82,
+    "voltage": 230,
+    "customer_id": "CUST_8234",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_834",
+    "timestamp": "2025-06-10T17:47:07.436648Z",
+    "kwh_usage": 3.67,
+    "voltage": 240,
+    "customer_id": "CUST_6342",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_855",
+    "timestamp": "2025-06-10T10:56:07.436705Z",
+    "kwh_usage": 4.36,
+    "voltage": 240,
+    "customer_id": "CUST_1253",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "HAMILTON_246",
+    "timestamp": "2025-06-10T00:44:07.436789Z",
+    "kwh_usage": 0.59,
+    "voltage": 230,
+    "customer_id": "CUST_9321",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_993",
+    "timestamp": "2025-06-10T08:26:07.436820Z",
+    "kwh_usage": 4.89,
+    "voltage": 230,
+    "customer_id": "CUST_7899",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_168",
+    "timestamp": "2025-06-10T11:27:07.436844Z",
+    "kwh_usage": 3.52,
+    "voltage": 240,
+    "customer_id": "CUST_1007",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_977",
+    "timestamp": "2025-06-09T23:08:07.436868Z",
+    "kwh_usage": 1.39,
+    "voltage": 240,
+    "customer_id": "CUST_7992",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_229",
+    "timestamp": "2025-06-10T19:43:07.436892Z",
+    "kwh_usage": 3.74,
+    "voltage": 240,
+    "customer_id": "CUST_9288",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_112",
+    "timestamp": "2025-06-10T16:29:07.436950Z",
+    "kwh_usage": 2.11,
+    "voltage": 230,
+    "customer_id": "CUST_4712",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_614",
+    "timestamp": "2025-06-10T19:33:07.437002Z",
+    "kwh_usage": 4.89,
+    "voltage": 240,
+    "customer_id": "CUST_3560",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_495",
+    "timestamp": "2025-06-10T13:56:07.437052Z",
+    "kwh_usage": 2.26,
+    "voltage": 240,
+    "customer_id": "CUST_5466",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_658",
+    "timestamp": "2025-06-10T16:38:07.437077Z",
+    "kwh_usage": 4.95,
+    "voltage": 230,
+    "customer_id": "CUST_5763",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_926",
+    "timestamp": "2025-06-10T00:25:07.437101Z",
+    "kwh_usage": 4.87,
+    "voltage": 240,
+    "customer_id": "CUST_9431",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_137",
+    "timestamp": "2025-06-10T00:23:07.437126Z",
+    "kwh_usage": 1.94,
+    "voltage": 240,
+    "customer_id": "CUST_1065",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_996",
+    "timestamp": "2025-06-10T11:07:07.437150Z",
+    "kwh_usage": 1.58,
+    "voltage": 230,
+    "customer_id": "CUST_1780",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_652",
+    "timestamp": "2025-06-10T14:21:07.437211Z",
+    "kwh_usage": 1.58,
+    "voltage": 230,
+    "customer_id": "CUST_7636",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_248",
+    "timestamp": "2025-06-10T03:50:07.437248Z",
+    "kwh_usage": 0.65,
+    "voltage": 230,
+    "customer_id": "CUST_8820",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_136",
+    "timestamp": "2025-06-10T11:31:07.437286Z",
+    "kwh_usage": 3.96,
+    "voltage": 240,
+    "customer_id": "CUST_6828",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_629",
+    "timestamp": "2025-06-10T14:04:07.437313Z",
+    "kwh_usage": 3.72,
+    "voltage": 230,
+    "customer_id": "CUST_8935",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_531",
+    "timestamp": "2025-06-10T04:18:07.437337Z",
+    "kwh_usage": 4.02,
+    "voltage": 240,
+    "customer_id": "CUST_9169",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_481",
+    "timestamp": "2025-06-10T18:16:07.437405Z",
+    "kwh_usage": 2.02,
+    "voltage": 240,
+    "customer_id": "CUST_2738",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_449",
+    "timestamp": "2025-06-10T12:16:07.437447Z",
+    "kwh_usage": 1.73,
+    "voltage": 240,
+    "customer_id": "CUST_2649",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_266",
+    "timestamp": "2025-06-10T00:06:07.437472Z",
+    "kwh_usage": 4.62,
+    "voltage": 230,
+    "customer_id": "CUST_2831",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_162",
+    "timestamp": "2025-06-09T21:41:07.437497Z",
+    "kwh_usage": 4.67,
+    "voltage": 230,
+    "customer_id": "CUST_2106",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_137",
+    "timestamp": "2025-06-10T01:37:07.437520Z",
+    "kwh_usage": 1.91,
+    "voltage": 240,
+    "customer_id": "CUST_1012",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_672",
+    "timestamp": "2025-06-10T20:31:07.437545Z",
+    "kwh_usage": 1.02,
+    "voltage": 230,
+    "customer_id": "CUST_3288",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_529",
+    "timestamp": "2025-06-10T16:21:07.437598Z",
+    "kwh_usage": 2.55,
+    "voltage": 240,
+    "customer_id": "CUST_2635",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_549",
+    "timestamp": "2025-06-09T23:22:07.437666Z",
+    "kwh_usage": 3.88,
+    "voltage": 240,
+    "customer_id": "CUST_2086",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_889",
+    "timestamp": "2025-06-10T01:49:07.437720Z",
+    "kwh_usage": 1.91,
+    "voltage": 240,
+    "customer_id": "CUST_2125",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_488",
+    "timestamp": "2025-06-10T20:03:07.437806Z",
+    "kwh_usage": 2.05,
+    "voltage": 230,
+    "customer_id": "CUST_2658",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_572",
+    "timestamp": "2025-06-10T16:13:07.437858Z",
+    "kwh_usage": 2.1,
+    "voltage": 240,
+    "customer_id": "CUST_6501",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_112",
+    "timestamp": "2025-06-10T00:25:07.437884Z",
+    "kwh_usage": 4.28,
+    "voltage": 240,
+    "customer_id": "CUST_4766",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_730",
+    "timestamp": "2025-06-10T04:25:07.437908Z",
+    "kwh_usage": 2.75,
+    "voltage": 240,
+    "customer_id": "CUST_6399",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_513",
+    "timestamp": "2025-06-10T13:39:07.437931Z",
+    "kwh_usage": 2.38,
+    "voltage": 230,
+    "customer_id": "CUST_5154",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "HAMILTON_455",
+    "timestamp": "2025-06-10T09:02:07.437957Z",
+    "kwh_usage": 2.2,
+    "voltage": 230,
+    "customer_id": "CUST_5027",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_981",
+    "timestamp": "2025-06-09T22:40:07.437997Z",
+    "kwh_usage": 3.37,
+    "voltage": 230,
+    "customer_id": "CUST_5164",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_456",
+    "timestamp": "2025-06-10T11:50:07.438056Z",
+    "kwh_usage": 2.2,
+    "voltage": 230,
+    "customer_id": "CUST_1355",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_369",
+    "timestamp": "2025-06-10T00:45:07.438123Z",
+    "kwh_usage": 2.86,
+    "voltage": 240,
+    "customer_id": "CUST_6956",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_497",
+    "timestamp": "2025-06-10T12:41:07.438153Z",
+    "kwh_usage": 2.81,
+    "voltage": 230,
+    "customer_id": "CUST_2305",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_428",
+    "timestamp": "2025-06-10T14:36:07.438177Z",
+    "kwh_usage": 1.27,
+    "voltage": 240,
+    "customer_id": "CUST_7412",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_821",
+    "timestamp": "2025-06-10T20:24:07.438209Z",
+    "kwh_usage": 4.02,
+    "voltage": 230,
+    "customer_id": "CUST_3088",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_889",
+    "timestamp": "2025-06-10T05:36:07.438260Z",
+    "kwh_usage": 0.91,
+    "voltage": 230,
+    "customer_id": "CUST_9187",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_188",
+    "timestamp": "2025-06-10T16:34:07.438336Z",
+    "kwh_usage": 3.41,
+    "voltage": 240,
+    "customer_id": "CUST_3693",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_914",
+    "timestamp": "2025-06-10T06:13:07.438374Z",
+    "kwh_usage": 4.85,
+    "voltage": 230,
+    "customer_id": "CUST_6187",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_558",
+    "timestamp": "2025-06-10T12:23:07.438399Z",
+    "kwh_usage": 1.25,
+    "voltage": 230,
+    "customer_id": "CUST_8358",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_257",
+    "timestamp": "2025-06-09T22:35:07.438423Z",
+    "kwh_usage": 0.85,
+    "voltage": 230,
+    "customer_id": "CUST_8649",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_240",
+    "timestamp": "2025-06-10T12:25:07.438447Z",
+    "kwh_usage": 2.48,
+    "voltage": 230,
+    "customer_id": "CUST_4873",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_398",
+    "timestamp": "2025-06-10T10:59:07.438470Z",
+    "kwh_usage": 3.47,
+    "voltage": 240,
+    "customer_id": "CUST_4856",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_519",
+    "timestamp": "2025-06-10T20:39:07.438528Z",
+    "kwh_usage": 4.92,
+    "voltage": 230,
+    "customer_id": "CUST_8784",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_381",
+    "timestamp": "2025-06-10T09:05:07.438566Z",
+    "kwh_usage": 3.39,
+    "voltage": 240,
+    "customer_id": "CUST_7889",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_101",
+    "timestamp": "2025-06-10T06:59:07.438591Z",
+    "kwh_usage": 0.98,
+    "voltage": 230,
+    "customer_id": "CUST_5199",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_289",
+    "timestamp": "2025-06-10T18:55:07.438615Z",
+    "kwh_usage": 1.72,
+    "voltage": 240,
+    "customer_id": "CUST_3018",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_631",
+    "timestamp": "2025-06-10T08:57:07.438639Z",
+    "kwh_usage": 1.47,
+    "voltage": 240,
+    "customer_id": "CUST_2570",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_303",
+    "timestamp": "2025-06-10T09:26:07.438663Z",
+    "kwh_usage": 3.57,
+    "voltage": 230,
+    "customer_id": "CUST_8155",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_529",
+    "timestamp": "2025-06-10T04:38:07.438729Z",
+    "kwh_usage": 4.97,
+    "voltage": 240,
+    "customer_id": "CUST_5351",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_914",
+    "timestamp": "2025-06-09T21:59:07.438789Z",
+    "kwh_usage": 4.99,
+    "voltage": 240,
+    "customer_id": "CUST_3166",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_846",
+    "timestamp": "2025-06-10T02:08:07.438827Z",
+    "kwh_usage": 3.44,
+    "voltage": 240,
+    "customer_id": "CUST_1654",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_552",
+    "timestamp": "2025-06-09T22:10:07.438852Z",
+    "kwh_usage": 4.27,
+    "voltage": 240,
+    "customer_id": "CUST_1978",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_536",
+    "timestamp": "2025-06-10T17:00:07.438876Z",
+    "kwh_usage": 3.27,
+    "voltage": 230,
+    "customer_id": "CUST_5215",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_929",
+    "timestamp": "2025-06-10T08:43:07.438936Z",
+    "kwh_usage": 1.96,
+    "voltage": 240,
+    "customer_id": "CUST_6429",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_964",
+    "timestamp": "2025-06-10T05:56:07.439006Z",
+    "kwh_usage": 3.33,
+    "voltage": 240,
+    "customer_id": "CUST_2873",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_734",
+    "timestamp": "2025-06-10T15:13:07.439039Z",
+    "kwh_usage": 1.31,
+    "voltage": 240,
+    "customer_id": "CUST_7851",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_843",
+    "timestamp": "2025-06-10T02:46:07.439064Z",
+    "kwh_usage": 0.62,
+    "voltage": 230,
+    "customer_id": "CUST_1360",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_563",
+    "timestamp": "2025-06-10T02:43:07.439100Z",
+    "kwh_usage": 4.87,
+    "voltage": 240,
+    "customer_id": "CUST_9521",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_383",
+    "timestamp": "2025-06-09T22:04:07.439126Z",
+    "kwh_usage": 2.47,
+    "voltage": 230,
+    "customer_id": "CUST_8758",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_287",
+    "timestamp": "2025-06-10T08:40:07.439176Z",
+    "kwh_usage": 1.92,
+    "voltage": 230,
+    "customer_id": "CUST_7590",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_864",
+    "timestamp": "2025-06-10T12:10:07.439227Z",
+    "kwh_usage": 3.05,
+    "voltage": 230,
+    "customer_id": "CUST_8494",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_262",
+    "timestamp": "2025-06-09T22:05:07.439277Z",
+    "kwh_usage": 3.79,
+    "voltage": 240,
+    "customer_id": "CUST_3956",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_808",
+    "timestamp": "2025-06-10T15:12:07.439305Z",
+    "kwh_usage": 2.89,
+    "voltage": 230,
+    "customer_id": "CUST_3968",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_272",
+    "timestamp": "2025-06-09T22:42:07.439329Z",
+    "kwh_usage": 2.87,
+    "voltage": 230,
+    "customer_id": "CUST_9963",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_105",
+    "timestamp": "2025-06-10T08:54:07.439353Z",
+    "kwh_usage": 3.15,
+    "voltage": 240,
+    "customer_id": "CUST_3211",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_907",
+    "timestamp": "2025-06-10T13:33:07.439377Z",
+    "kwh_usage": 4.82,
+    "voltage": 230,
+    "customer_id": "CUST_7838",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_772",
+    "timestamp": "2025-06-09T21:30:07.439440Z",
+    "kwh_usage": 3.8,
+    "voltage": 240,
+    "customer_id": "CUST_6688",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_333",
+    "timestamp": "2025-06-10T03:44:07.439488Z",
+    "kwh_usage": 1.02,
+    "voltage": 240,
+    "customer_id": "CUST_7518",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_199",
+    "timestamp": "2025-06-10T11:44:07.439535Z",
+    "kwh_usage": 4.62,
+    "voltage": 240,
+    "customer_id": "CUST_8364",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_338",
+    "timestamp": "2025-06-10T05:59:07.439560Z",
+    "kwh_usage": 1.36,
+    "voltage": 230,
+    "customer_id": "CUST_4144",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_759",
+    "timestamp": "2025-06-10T20:58:07.439596Z",
+    "kwh_usage": 0.58,
+    "voltage": 240,
+    "customer_id": "CUST_7730",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_263",
+    "timestamp": "2025-06-10T08:23:07.439622Z",
+    "kwh_usage": 2.37,
+    "voltage": 240,
+    "customer_id": "CUST_2345",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_392",
+    "timestamp": "2025-06-10T07:14:07.439646Z",
+    "kwh_usage": 4.96,
+    "voltage": 240,
+    "customer_id": "CUST_9911",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_496",
+    "timestamp": "2025-06-10T18:50:07.439701Z",
+    "kwh_usage": 3.02,
+    "voltage": 230,
+    "customer_id": "CUST_8834",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "HAMILTON_939",
+    "timestamp": "2025-06-10T13:35:07.439775Z",
+    "kwh_usage": 1.9,
+    "voltage": 230,
+    "customer_id": "CUST_3252",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_327",
+    "timestamp": "2025-06-09T23:59:07.439803Z",
+    "kwh_usage": 4.52,
+    "voltage": 230,
+    "customer_id": "CUST_7396",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_964",
+    "timestamp": "2025-06-10T10:27:07.439828Z",
+    "kwh_usage": 1.18,
+    "voltage": 240,
+    "customer_id": "CUST_7868",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_569",
+    "timestamp": "2025-06-10T19:46:07.439851Z",
+    "kwh_usage": 3.45,
+    "voltage": 230,
+    "customer_id": "CUST_2042",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_665",
+    "timestamp": "2025-06-10T00:22:07.439897Z",
+    "kwh_usage": 1.5,
+    "voltage": 230,
+    "customer_id": "CUST_5321",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_660",
+    "timestamp": "2025-06-10T02:01:07.439967Z",
+    "kwh_usage": 0.59,
+    "voltage": 240,
+    "customer_id": "CUST_4896",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_233",
+    "timestamp": "2025-06-10T02:38:07.440014Z",
+    "kwh_usage": 2.11,
+    "voltage": 240,
+    "customer_id": "CUST_3245",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_299",
+    "timestamp": "2025-06-10T18:44:07.440039Z",
+    "kwh_usage": 2.25,
+    "voltage": 230,
+    "customer_id": "CUST_4388",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_938",
+    "timestamp": "2025-06-10T13:00:07.440065Z",
+    "kwh_usage": 0.51,
+    "voltage": 230,
+    "customer_id": "CUST_9571",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_625",
+    "timestamp": "2025-06-09T23:04:07.440089Z",
+    "kwh_usage": 3.88,
+    "voltage": 240,
+    "customer_id": "CUST_8051",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_644",
+    "timestamp": "2025-06-10T07:05:07.440114Z",
+    "kwh_usage": 5.0,
+    "voltage": 230,
+    "customer_id": "CUST_3412",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_784",
+    "timestamp": "2025-06-09T22:49:07.440170Z",
+    "kwh_usage": 4.78,
+    "voltage": 240,
+    "customer_id": "CUST_5938",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_403",
+    "timestamp": "2025-06-09T22:37:07.440226Z",
+    "kwh_usage": 1.95,
+    "voltage": 240,
+    "customer_id": "CUST_7712",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "HAMILTON_282",
+    "timestamp": "2025-06-10T05:52:07.440262Z",
+    "kwh_usage": 3.43,
+    "voltage": 230,
+    "customer_id": "CUST_9281",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_376",
+    "timestamp": "2025-06-09T23:29:07.440287Z",
+    "kwh_usage": 4.85,
+    "voltage": 240,
+    "customer_id": "CUST_6830",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_405",
+    "timestamp": "2025-06-09T22:04:07.440324Z",
+    "kwh_usage": 3.07,
+    "voltage": 230,
+    "customer_id": "CUST_8261",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_446",
+    "timestamp": "2025-06-10T09:58:07.440349Z",
+    "kwh_usage": 1.36,
+    "voltage": 230,
+    "customer_id": "CUST_7477",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_431",
+    "timestamp": "2025-06-10T00:34:07.440388Z",
+    "kwh_usage": 3.55,
+    "voltage": 230,
+    "customer_id": "CUST_6412",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_103",
+    "timestamp": "2025-06-10T18:01:07.440440Z",
+    "kwh_usage": 1.37,
+    "voltage": 230,
+    "customer_id": "CUST_6030",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_245",
+    "timestamp": "2025-06-10T12:11:07.440466Z",
+    "kwh_usage": 4.7,
+    "voltage": 230,
+    "customer_id": "CUST_8908",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_651",
+    "timestamp": "2025-06-10T09:59:07.440490Z",
+    "kwh_usage": 1.44,
+    "voltage": 240,
+    "customer_id": "CUST_6502",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_219",
+    "timestamp": "2025-06-10T16:38:07.440513Z",
+    "kwh_usage": 2.08,
+    "voltage": 230,
+    "customer_id": "CUST_9007",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_237",
+    "timestamp": "2025-06-10T14:31:07.440536Z",
+    "kwh_usage": 3.43,
+    "voltage": 240,
+    "customer_id": "CUST_1693",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_846",
+    "timestamp": "2025-06-10T12:56:07.440571Z",
+    "kwh_usage": 2.24,
+    "voltage": 240,
+    "customer_id": "CUST_2264",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_210",
+    "timestamp": "2025-06-10T19:33:07.440638Z",
+    "kwh_usage": 4.79,
+    "voltage": 230,
+    "customer_id": "CUST_8557",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_185",
+    "timestamp": "2025-06-09T23:47:07.440694Z",
+    "kwh_usage": 1.41,
+    "voltage": 240,
+    "customer_id": "CUST_6209",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_723",
+    "timestamp": "2025-06-10T01:17:07.440785Z",
+    "kwh_usage": 2.37,
+    "voltage": 240,
+    "customer_id": "CUST_9765",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_679",
+    "timestamp": "2025-06-10T10:41:07.440841Z",
+    "kwh_usage": 2.07,
+    "voltage": 230,
+    "customer_id": "CUST_4711",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_443",
+    "timestamp": "2025-06-10T13:58:07.440893Z",
+    "kwh_usage": 3.18,
+    "voltage": 240,
+    "customer_id": "CUST_7423",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_392",
+    "timestamp": "2025-06-10T13:51:07.440920Z",
+    "kwh_usage": 0.76,
+    "voltage": 240,
+    "customer_id": "CUST_9095",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_970",
+    "timestamp": "2025-06-09T22:53:07.440944Z",
+    "kwh_usage": 1.42,
+    "voltage": 240,
+    "customer_id": "CUST_7541",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_988",
+    "timestamp": "2025-06-10T05:08:07.440968Z",
+    "kwh_usage": 3.97,
+    "voltage": 240,
+    "customer_id": "CUST_3479",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_175",
+    "timestamp": "2025-06-10T17:57:07.440991Z",
+    "kwh_usage": 4.85,
+    "voltage": 230,
+    "customer_id": "CUST_6206",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_184",
+    "timestamp": "2025-06-09T22:51:07.441031Z",
+    "kwh_usage": 1.73,
+    "voltage": 240,
+    "customer_id": "CUST_6567",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_232",
+    "timestamp": "2025-06-09T22:02:07.441076Z",
+    "kwh_usage": 3.13,
+    "voltage": 230,
+    "customer_id": "CUST_9038",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_594",
+    "timestamp": "2025-06-10T21:06:07.441146Z",
+    "kwh_usage": 0.59,
+    "voltage": 240,
+    "customer_id": "CUST_7893",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_364",
+    "timestamp": "2025-06-10T17:03:07.441176Z",
+    "kwh_usage": 1.96,
+    "voltage": 230,
+    "customer_id": "CUST_7498",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_384",
+    "timestamp": "2025-06-09T22:01:07.441202Z",
+    "kwh_usage": 2.66,
+    "voltage": 240,
+    "customer_id": "CUST_9295",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_628",
+    "timestamp": "2025-06-10T03:22:07.441227Z",
+    "kwh_usage": 3.07,
+    "voltage": 240,
+    "customer_id": "CUST_9549",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_173",
+    "timestamp": "2025-06-10T04:00:07.441250Z",
+    "kwh_usage": 1.15,
+    "voltage": 240,
+    "customer_id": "CUST_4659",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_749",
+    "timestamp": "2025-06-10T07:31:07.441281Z",
+    "kwh_usage": 1.71,
+    "voltage": 230,
+    "customer_id": "CUST_2192",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_527",
+    "timestamp": "2025-06-10T10:47:07.441333Z",
+    "kwh_usage": 2.02,
+    "voltage": 240,
+    "customer_id": "CUST_7131",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_517",
+    "timestamp": "2025-06-10T14:11:07.441394Z",
+    "kwh_usage": 1.69,
+    "voltage": 240,
+    "customer_id": "CUST_8503",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_401",
+    "timestamp": "2025-06-09T22:33:07.441435Z",
+    "kwh_usage": 4.82,
+    "voltage": 240,
+    "customer_id": "CUST_9940",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_911",
+    "timestamp": "2025-06-09T23:20:07.441461Z",
+    "kwh_usage": 2.29,
+    "voltage": 230,
+    "customer_id": "CUST_8201",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_260",
+    "timestamp": "2025-06-10T01:56:07.441485Z",
+    "kwh_usage": 2.18,
+    "voltage": 240,
+    "customer_id": "CUST_9695",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "HAMILTON_398",
+    "timestamp": "2025-06-10T02:26:07.441509Z",
+    "kwh_usage": 4.14,
+    "voltage": 240,
+    "customer_id": "CUST_5653",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_539",
+    "timestamp": "2025-06-10T16:34:07.441555Z",
+    "kwh_usage": 1.48,
+    "voltage": 230,
+    "customer_id": "CUST_3894",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_469",
+    "timestamp": "2025-06-10T10:24:07.441624Z",
+    "kwh_usage": 2.2,
+    "voltage": 230,
+    "customer_id": "CUST_7860",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_897",
+    "timestamp": "2025-06-10T04:42:07.441692Z",
+    "kwh_usage": 2.35,
+    "voltage": 240,
+    "customer_id": "CUST_2195",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_814",
+    "timestamp": "2025-06-10T17:41:07.441769Z",
+    "kwh_usage": 2.87,
+    "voltage": 240,
+    "customer_id": "CUST_1760",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_532",
+    "timestamp": "2025-06-10T02:24:07.441799Z",
+    "kwh_usage": 4.61,
+    "voltage": 230,
+    "customer_id": "CUST_6710",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_730",
+    "timestamp": "2025-06-10T18:26:07.441823Z",
+    "kwh_usage": 0.73,
+    "voltage": 230,
+    "customer_id": "CUST_9724",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_813",
+    "timestamp": "2025-06-10T07:18:07.441847Z",
+    "kwh_usage": 0.87,
+    "voltage": 230,
+    "customer_id": "CUST_4410",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_460",
+    "timestamp": "2025-06-10T00:38:07.441897Z",
+    "kwh_usage": 3.47,
+    "voltage": 230,
+    "customer_id": "CUST_9671",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "HAMILTON_423",
+    "timestamp": "2025-06-10T03:35:07.441954Z",
+    "kwh_usage": 2.54,
+    "voltage": 230,
+    "customer_id": "CUST_7861",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_380",
+    "timestamp": "2025-06-10T09:36:07.441983Z",
+    "kwh_usage": 4.71,
+    "voltage": 230,
+    "customer_id": "CUST_9595",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_586",
+    "timestamp": "2025-06-10T09:09:07.442008Z",
+    "kwh_usage": 1.34,
+    "voltage": 230,
+    "customer_id": "CUST_7830",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_502",
+    "timestamp": "2025-06-10T16:13:07.442032Z",
+    "kwh_usage": 2.05,
+    "voltage": 230,
+    "customer_id": "CUST_7460",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_315",
+    "timestamp": "2025-06-10T08:10:07.442055Z",
+    "kwh_usage": 2.96,
+    "voltage": 230,
+    "customer_id": "CUST_3090",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_231",
+    "timestamp": "2025-06-10T15:31:07.442079Z",
+    "kwh_usage": 4.06,
+    "voltage": 230,
+    "customer_id": "CUST_3357",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_649",
+    "timestamp": "2025-06-10T00:46:07.442102Z",
+    "kwh_usage": 4.78,
+    "voltage": 230,
+    "customer_id": "CUST_9345",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_604",
+    "timestamp": "2025-06-10T04:12:07.442129Z",
+    "kwh_usage": 1.49,
+    "voltage": 240,
+    "customer_id": "CUST_4056",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_572",
+    "timestamp": "2025-06-10T10:07:07.442153Z",
+    "kwh_usage": 2.32,
+    "voltage": 230,
+    "customer_id": "CUST_3637",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_707",
+    "timestamp": "2025-06-10T11:25:07.442176Z",
+    "kwh_usage": 3.9,
+    "voltage": 240,
+    "customer_id": "CUST_8224",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_690",
+    "timestamp": "2025-06-10T19:07:07.442200Z",
+    "kwh_usage": 0.55,
+    "voltage": 240,
+    "customer_id": "CUST_3360",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_678",
+    "timestamp": "2025-06-10T12:15:07.442225Z",
+    "kwh_usage": 3.47,
+    "voltage": 230,
+    "customer_id": "CUST_6631",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_125",
+    "timestamp": "2025-06-10T11:16:07.442248Z",
+    "kwh_usage": 4.17,
+    "voltage": 230,
+    "customer_id": "CUST_6733",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "HAMILTON_119",
+    "timestamp": "2025-06-10T02:58:07.442313Z",
+    "kwh_usage": 4.51,
+    "voltage": 240,
+    "customer_id": "CUST_2086",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_593",
+    "timestamp": "2025-06-09T22:20:07.442372Z",
+    "kwh_usage": 3.99,
+    "voltage": 240,
+    "customer_id": "CUST_4134",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_999",
+    "timestamp": "2025-06-10T08:04:07.442399Z",
+    "kwh_usage": 3.54,
+    "voltage": 240,
+    "customer_id": "CUST_5938",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_742",
+    "timestamp": "2025-06-10T04:37:07.442423Z",
+    "kwh_usage": 1.25,
+    "voltage": 230,
+    "customer_id": "CUST_1811",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_887",
+    "timestamp": "2025-06-10T15:41:07.442447Z",
+    "kwh_usage": 4.0,
+    "voltage": 240,
+    "customer_id": "CUST_6990",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_562",
+    "timestamp": "2025-06-10T06:49:07.442471Z",
+    "kwh_usage": 3.84,
+    "voltage": 240,
+    "customer_id": "CUST_7368",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_210",
+    "timestamp": "2025-06-10T00:17:07.442506Z",
+    "kwh_usage": 1.51,
+    "voltage": 240,
+    "customer_id": "CUST_9020",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_766",
+    "timestamp": "2025-06-10T14:54:07.442532Z",
+    "kwh_usage": 3.57,
+    "voltage": 240,
+    "customer_id": "CUST_9293",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_688",
+    "timestamp": "2025-06-10T08:06:07.442556Z",
+    "kwh_usage": 3.98,
+    "voltage": 240,
+    "customer_id": "CUST_1866",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_761",
+    "timestamp": "2025-06-10T07:11:07.442604Z",
+    "kwh_usage": 3.62,
+    "voltage": 230,
+    "customer_id": "CUST_7062",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_929",
+    "timestamp": "2025-06-10T09:22:07.442671Z",
+    "kwh_usage": 3.63,
+    "voltage": 230,
+    "customer_id": "CUST_4856",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_623",
+    "timestamp": "2025-06-10T04:42:07.442738Z",
+    "kwh_usage": 1.12,
+    "voltage": 230,
+    "customer_id": "CUST_4809",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_691",
+    "timestamp": "2025-06-09T21:49:07.442794Z",
+    "kwh_usage": 4.13,
+    "voltage": 230,
+    "customer_id": "CUST_7837",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_715",
+    "timestamp": "2025-06-09T22:35:07.442819Z",
+    "kwh_usage": 1.91,
+    "voltage": 240,
+    "customer_id": "CUST_6815",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_288",
+    "timestamp": "2025-06-10T02:22:07.442843Z",
+    "kwh_usage": 2.97,
+    "voltage": 240,
+    "customer_id": "CUST_7854",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_311",
+    "timestamp": "2025-06-10T06:07:07.442866Z",
+    "kwh_usage": 1.82,
+    "voltage": 230,
+    "customer_id": "CUST_5249",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_586",
+    "timestamp": "2025-06-10T03:08:07.442890Z",
+    "kwh_usage": 2.33,
+    "voltage": 240,
+    "customer_id": "CUST_6956",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_589",
+    "timestamp": "2025-06-10T01:37:07.442937Z",
+    "kwh_usage": 1.7,
+    "voltage": 240,
+    "customer_id": "CUST_4458",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_823",
+    "timestamp": "2025-06-10T17:41:07.442999Z",
+    "kwh_usage": 2.56,
+    "voltage": 230,
+    "customer_id": "CUST_2981",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_177",
+    "timestamp": "2025-06-10T14:11:07.443049Z",
+    "kwh_usage": 4.58,
+    "voltage": 230,
+    "customer_id": "CUST_2397",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_860",
+    "timestamp": "2025-06-10T13:06:07.443089Z",
+    "kwh_usage": 2.87,
+    "voltage": 230,
+    "customer_id": "CUST_4236",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_665",
+    "timestamp": "2025-06-10T07:57:07.443125Z",
+    "kwh_usage": 3.32,
+    "voltage": 240,
+    "customer_id": "CUST_5551",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_105",
+    "timestamp": "2025-06-10T05:38:07.443153Z",
+    "kwh_usage": 1.62,
+    "voltage": 230,
+    "customer_id": "CUST_6062",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_832",
+    "timestamp": "2025-06-10T00:35:07.443212Z",
+    "kwh_usage": 1.12,
+    "voltage": 230,
+    "customer_id": "CUST_4469",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_545",
+    "timestamp": "2025-06-10T02:53:07.443250Z",
+    "kwh_usage": 2.62,
+    "voltage": 240,
+    "customer_id": "CUST_2902",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_902",
+    "timestamp": "2025-06-10T14:32:07.443294Z",
+    "kwh_usage": 4.22,
+    "voltage": 240,
+    "customer_id": "CUST_2885",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_225",
+    "timestamp": "2025-06-10T15:13:07.443321Z",
+    "kwh_usage": 2.78,
+    "voltage": 240,
+    "customer_id": "CUST_8538",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_160",
+    "timestamp": "2025-06-10T18:55:07.443345Z",
+    "kwh_usage": 2.32,
+    "voltage": 230,
+    "customer_id": "CUST_1447",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_990",
+    "timestamp": "2025-06-10T16:23:07.443386Z",
+    "kwh_usage": 0.73,
+    "voltage": 240,
+    "customer_id": "CUST_5179",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_730",
+    "timestamp": "2025-06-10T07:41:07.443439Z",
+    "kwh_usage": 1.82,
+    "voltage": 240,
+    "customer_id": "CUST_9139",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_333",
+    "timestamp": "2025-06-10T13:35:07.443466Z",
+    "kwh_usage": 1.23,
+    "voltage": 230,
+    "customer_id": "CUST_8692",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_295",
+    "timestamp": "2025-06-10T18:25:07.443490Z",
+    "kwh_usage": 0.7,
+    "voltage": 240,
+    "customer_id": "CUST_3533",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "HAMILTON_704",
+    "timestamp": "2025-06-10T18:05:07.443514Z",
+    "kwh_usage": 4.14,
+    "voltage": 240,
+    "customer_id": "CUST_4367",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_749",
+    "timestamp": "2025-06-10T13:20:07.443537Z",
+    "kwh_usage": 0.74,
+    "voltage": 240,
+    "customer_id": "CUST_4798",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_900",
+    "timestamp": "2025-06-10T04:23:07.443576Z",
+    "kwh_usage": 2.25,
+    "voltage": 230,
+    "customer_id": "CUST_8064",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_881",
+    "timestamp": "2025-06-10T07:58:07.443644Z",
+    "kwh_usage": 1.6,
+    "voltage": 230,
+    "customer_id": "CUST_6824",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_741",
+    "timestamp": "2025-06-10T09:16:07.443705Z",
+    "kwh_usage": 2.85,
+    "voltage": 240,
+    "customer_id": "CUST_4729",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_984",
+    "timestamp": "2025-06-10T13:59:07.443775Z",
+    "kwh_usage": 2.77,
+    "voltage": 240,
+    "customer_id": "CUST_4142",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_396",
+    "timestamp": "2025-06-09T22:44:07.443804Z",
+    "kwh_usage": 3.23,
+    "voltage": 230,
+    "customer_id": "CUST_9227",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_125",
+    "timestamp": "2025-06-09T22:56:07.443828Z",
+    "kwh_usage": 1.83,
+    "voltage": 230,
+    "customer_id": "CUST_9388",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "HAMILTON_670",
+    "timestamp": "2025-06-10T16:15:07.443852Z",
+    "kwh_usage": 1.54,
+    "voltage": 240,
+    "customer_id": "CUST_3553",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_507",
+    "timestamp": "2025-06-09T22:51:07.443880Z",
+    "kwh_usage": 1.53,
+    "voltage": 240,
+    "customer_id": "CUST_6484",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_849",
+    "timestamp": "2025-06-10T13:04:07.443966Z",
+    "kwh_usage": 4.55,
+    "voltage": 240,
+    "customer_id": "CUST_4370",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_671",
+    "timestamp": "2025-06-09T21:49:07.444005Z",
+    "kwh_usage": 4.99,
+    "voltage": 240,
+    "customer_id": "CUST_2481",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_680",
+    "timestamp": "2025-06-10T16:20:07.444030Z",
+    "kwh_usage": 4.91,
+    "voltage": 230,
+    "customer_id": "CUST_1316",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_384",
+    "timestamp": "2025-06-10T09:52:07.444065Z",
+    "kwh_usage": 1.13,
+    "voltage": 230,
+    "customer_id": "CUST_5598",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_538",
+    "timestamp": "2025-06-10T02:31:07.444089Z",
+    "kwh_usage": 0.92,
+    "voltage": 240,
+    "customer_id": "CUST_9544",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_722",
+    "timestamp": "2025-06-10T18:18:07.444127Z",
+    "kwh_usage": 1.93,
+    "voltage": 240,
+    "customer_id": "CUST_4819",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_678",
+    "timestamp": "2025-06-10T06:04:07.444175Z",
+    "kwh_usage": 0.57,
+    "voltage": 240,
+    "customer_id": "CUST_6459",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_259",
+    "timestamp": "2025-06-10T20:58:07.444234Z",
+    "kwh_usage": 2.64,
+    "voltage": 230,
+    "customer_id": "CUST_1999",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_745",
+    "timestamp": "2025-06-10T07:05:07.444270Z",
+    "kwh_usage": 1.48,
+    "voltage": 240,
+    "customer_id": "CUST_8533",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_611",
+    "timestamp": "2025-06-10T08:30:07.444295Z",
+    "kwh_usage": 4.14,
+    "voltage": 230,
+    "customer_id": "CUST_8369",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_639",
+    "timestamp": "2025-06-10T08:32:07.444320Z",
+    "kwh_usage": 3.02,
+    "voltage": 230,
+    "customer_id": "CUST_7372",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_698",
+    "timestamp": "2025-06-10T04:13:07.444343Z",
+    "kwh_usage": 1.82,
+    "voltage": 240,
+    "customer_id": "CUST_6563",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_735",
+    "timestamp": "2025-06-10T00:27:07.444366Z",
+    "kwh_usage": 4.96,
+    "voltage": 240,
+    "customer_id": "CUST_8780",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_698",
+    "timestamp": "2025-06-10T00:10:07.444416Z",
+    "kwh_usage": 2.66,
+    "voltage": 240,
+    "customer_id": "CUST_5018",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_774",
+    "timestamp": "2025-06-10T16:46:07.444458Z",
+    "kwh_usage": 0.58,
+    "voltage": 230,
+    "customer_id": "CUST_4138",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_828",
+    "timestamp": "2025-06-10T20:02:07.444485Z",
+    "kwh_usage": 3.2,
+    "voltage": 240,
+    "customer_id": "CUST_1988",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_327",
+    "timestamp": "2025-06-10T01:08:07.444510Z",
+    "kwh_usage": 1.05,
+    "voltage": 230,
+    "customer_id": "CUST_1843",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_167",
+    "timestamp": "2025-06-10T06:14:07.444534Z",
+    "kwh_usage": 0.92,
+    "voltage": 230,
+    "customer_id": "CUST_1619",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "HAMILTON_732",
+    "timestamp": "2025-06-10T14:39:07.444558Z",
+    "kwh_usage": 2.61,
+    "voltage": 230,
+    "customer_id": "CUST_9730",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_801",
+    "timestamp": "2025-06-10T04:22:07.444604Z",
+    "kwh_usage": 4.3,
+    "voltage": 230,
+    "customer_id": "CUST_5183",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_678",
+    "timestamp": "2025-06-10T14:13:07.444675Z",
+    "kwh_usage": 4.54,
+    "voltage": 230,
+    "customer_id": "CUST_3881",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_445",
+    "timestamp": "2025-06-10T20:19:07.444730Z",
+    "kwh_usage": 4.8,
+    "voltage": 240,
+    "customer_id": "CUST_2004",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_369",
+    "timestamp": "2025-06-10T17:53:07.444818Z",
+    "kwh_usage": 1.91,
+    "voltage": 240,
+    "customer_id": "CUST_5891",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_759",
+    "timestamp": "2025-06-09T23:11:07.444887Z",
+    "kwh_usage": 4.75,
+    "voltage": 230,
+    "customer_id": "CUST_9157",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_892",
+    "timestamp": "2025-06-10T17:03:07.444924Z",
+    "kwh_usage": 2.18,
+    "voltage": 230,
+    "customer_id": "CUST_8645",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_858",
+    "timestamp": "2025-06-10T03:12:07.444948Z",
+    "kwh_usage": 3.59,
+    "voltage": 230,
+    "customer_id": "CUST_8636",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_573",
+    "timestamp": "2025-06-09T21:45:07.444972Z",
+    "kwh_usage": 3.89,
+    "voltage": 230,
+    "customer_id": "CUST_8877",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_386",
+    "timestamp": "2025-06-10T19:32:07.444994Z",
+    "kwh_usage": 4.51,
+    "voltage": 240,
+    "customer_id": "CUST_3425",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_697",
+    "timestamp": "2025-06-10T11:53:07.445018Z",
+    "kwh_usage": 0.67,
+    "voltage": 240,
+    "customer_id": "CUST_6892",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_708",
+    "timestamp": "2025-06-10T10:40:07.445069Z",
+    "kwh_usage": 1.91,
+    "voltage": 230,
+    "customer_id": "CUST_6748",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_290",
+    "timestamp": "2025-06-10T07:56:07.445119Z",
+    "kwh_usage": 4.0,
+    "voltage": 240,
+    "customer_id": "CUST_2768",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_852",
+    "timestamp": "2025-06-10T08:09:07.445170Z",
+    "kwh_usage": 4.09,
+    "voltage": 240,
+    "customer_id": "CUST_3659",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_488",
+    "timestamp": "2025-06-10T14:29:07.445198Z",
+    "kwh_usage": 1.79,
+    "voltage": 230,
+    "customer_id": "CUST_6274",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_585",
+    "timestamp": "2025-06-10T04:05:07.445222Z",
+    "kwh_usage": 2.66,
+    "voltage": 230,
+    "customer_id": "CUST_4393",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_607",
+    "timestamp": "2025-06-10T02:43:07.445258Z",
+    "kwh_usage": 3.34,
+    "voltage": 230,
+    "customer_id": "CUST_1104",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_464",
+    "timestamp": "2025-06-10T10:19:07.445286Z",
+    "kwh_usage": 0.74,
+    "voltage": 240,
+    "customer_id": "CUST_7838",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_907",
+    "timestamp": "2025-06-10T11:02:07.445345Z",
+    "kwh_usage": 3.03,
+    "voltage": 240,
+    "customer_id": "CUST_9740",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_566",
+    "timestamp": "2025-06-10T11:34:07.445381Z",
+    "kwh_usage": 2.13,
+    "voltage": 230,
+    "customer_id": "CUST_2857",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_704",
+    "timestamp": "2025-06-10T19:18:07.445405Z",
+    "kwh_usage": 3.95,
+    "voltage": 240,
+    "customer_id": "CUST_6406",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_515",
+    "timestamp": "2025-06-10T10:00:07.445429Z",
+    "kwh_usage": 1.11,
+    "voltage": 230,
+    "customer_id": "CUST_4397",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_722",
+    "timestamp": "2025-06-10T09:35:07.445452Z",
+    "kwh_usage": 2.64,
+    "voltage": 240,
+    "customer_id": "CUST_4614",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_500",
+    "timestamp": "2025-06-10T21:12:07.445477Z",
+    "kwh_usage": 1.98,
+    "voltage": 240,
+    "customer_id": "CUST_6910",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "HAMILTON_318",
+    "timestamp": "2025-06-10T17:31:07.445530Z",
+    "kwh_usage": 3.63,
+    "voltage": 240,
+    "customer_id": "CUST_9501",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_660",
+    "timestamp": "2025-06-10T08:11:07.445604Z",
+    "kwh_usage": 1.72,
+    "voltage": 230,
+    "customer_id": "CUST_9860",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_513",
+    "timestamp": "2025-06-10T21:20:07.445670Z",
+    "kwh_usage": 4.03,
+    "voltage": 240,
+    "customer_id": "CUST_1187",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_696",
+    "timestamp": "2025-06-10T19:30:07.445726Z",
+    "kwh_usage": 4.55,
+    "voltage": 230,
+    "customer_id": "CUST_2456",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_830",
+    "timestamp": "2025-06-10T15:23:07.445794Z",
+    "kwh_usage": 1.85,
+    "voltage": 240,
+    "customer_id": "CUST_6815",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_728",
+    "timestamp": "2025-06-10T07:15:07.445867Z",
+    "kwh_usage": 1.13,
+    "voltage": 230,
+    "customer_id": "CUST_5353",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_853",
+    "timestamp": "2025-06-10T20:01:07.445899Z",
+    "kwh_usage": 2.31,
+    "voltage": 240,
+    "customer_id": "CUST_3633",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_391",
+    "timestamp": "2025-06-10T01:07:07.445924Z",
+    "kwh_usage": 2.99,
+    "voltage": 230,
+    "customer_id": "CUST_7800",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_998",
+    "timestamp": "2025-06-09T22:42:07.445947Z",
+    "kwh_usage": 2.0,
+    "voltage": 240,
+    "customer_id": "CUST_9274",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_206",
+    "timestamp": "2025-06-10T18:45:07.445971Z",
+    "kwh_usage": 3.8,
+    "voltage": 240,
+    "customer_id": "CUST_6508",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_203",
+    "timestamp": "2025-06-10T10:51:07.445995Z",
+    "kwh_usage": 2.76,
+    "voltage": 230,
+    "customer_id": "CUST_4393",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_150",
+    "timestamp": "2025-06-10T03:15:07.446019Z",
+    "kwh_usage": 0.98,
+    "voltage": 230,
+    "customer_id": "CUST_5790",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_683",
+    "timestamp": "2025-06-10T16:16:07.446067Z",
+    "kwh_usage": 3.86,
+    "voltage": 230,
+    "customer_id": "CUST_3977",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_367",
+    "timestamp": "2025-06-10T14:18:07.446132Z",
+    "kwh_usage": 3.63,
+    "voltage": 230,
+    "customer_id": "CUST_5402",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_488",
+    "timestamp": "2025-06-10T17:00:07.446161Z",
+    "kwh_usage": 3.9,
+    "voltage": 240,
+    "customer_id": "CUST_5221",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_502",
+    "timestamp": "2025-06-10T02:26:07.446185Z",
+    "kwh_usage": 1.19,
+    "voltage": 230,
+    "customer_id": "CUST_9378",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_542",
+    "timestamp": "2025-06-10T17:46:07.446208Z",
+    "kwh_usage": 1.49,
+    "voltage": 240,
+    "customer_id": "CUST_5885",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_957",
+    "timestamp": "2025-06-10T12:54:07.446233Z",
+    "kwh_usage": 4.01,
+    "voltage": 240,
+    "customer_id": "CUST_1743",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_799",
+    "timestamp": "2025-06-10T20:52:07.446259Z",
+    "kwh_usage": 2.43,
+    "voltage": 240,
+    "customer_id": "CUST_9186",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_420",
+    "timestamp": "2025-06-10T12:11:07.446308Z",
+    "kwh_usage": 1.58,
+    "voltage": 240,
+    "customer_id": "CUST_1255",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_922",
+    "timestamp": "2025-06-10T01:36:07.446339Z",
+    "kwh_usage": 3.6,
+    "voltage": 230,
+    "customer_id": "CUST_9854",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_217",
+    "timestamp": "2025-06-10T04:07:07.446407Z",
+    "kwh_usage": 3.08,
+    "voltage": 240,
+    "customer_id": "CUST_9017",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_193",
+    "timestamp": "2025-06-10T05:04:07.446460Z",
+    "kwh_usage": 3.7,
+    "voltage": 240,
+    "customer_id": "CUST_5866",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_508",
+    "timestamp": "2025-06-10T08:12:07.446489Z",
+    "kwh_usage": 2.57,
+    "voltage": 240,
+    "customer_id": "CUST_1117",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_732",
+    "timestamp": "2025-06-10T13:06:07.446513Z",
+    "kwh_usage": 4.7,
+    "voltage": 240,
+    "customer_id": "CUST_7769",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_272",
+    "timestamp": "2025-06-10T07:25:07.446536Z",
+    "kwh_usage": 0.64,
+    "voltage": 240,
+    "customer_id": "CUST_4497",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_262",
+    "timestamp": "2025-06-10T20:48:07.446579Z",
+    "kwh_usage": 4.52,
+    "voltage": 240,
+    "customer_id": "CUST_1727",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_493",
+    "timestamp": "2025-06-10T04:41:07.446644Z",
+    "kwh_usage": 2.58,
+    "voltage": 240,
+    "customer_id": "CUST_2028",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_234",
+    "timestamp": "2025-06-10T17:44:07.446710Z",
+    "kwh_usage": 4.01,
+    "voltage": 230,
+    "customer_id": "CUST_3057",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_410",
+    "timestamp": "2025-06-10T10:35:07.446777Z",
+    "kwh_usage": 2.24,
+    "voltage": 240,
+    "customer_id": "CUST_4601",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_855",
+    "timestamp": "2025-06-10T03:37:07.446805Z",
+    "kwh_usage": 4.49,
+    "voltage": 240,
+    "customer_id": "CUST_1104",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_491",
+    "timestamp": "2025-06-10T04:38:07.446830Z",
+    "kwh_usage": 3.32,
+    "voltage": 230,
+    "customer_id": "CUST_9002",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_262",
+    "timestamp": "2025-06-10T04:13:07.446898Z",
+    "kwh_usage": 2.29,
+    "voltage": 240,
+    "customer_id": "CUST_8565",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_327",
+    "timestamp": "2025-06-10T03:06:07.446929Z",
+    "kwh_usage": 3.39,
+    "voltage": 230,
+    "customer_id": "CUST_2595",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_193",
+    "timestamp": "2025-06-10T17:43:07.446953Z",
+    "kwh_usage": 1.16,
+    "voltage": 240,
+    "customer_id": "CUST_4022",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_553",
+    "timestamp": "2025-06-09T21:53:07.446976Z",
+    "kwh_usage": 4.46,
+    "voltage": 230,
+    "customer_id": "CUST_9740",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_191",
+    "timestamp": "2025-06-10T00:17:07.447000Z",
+    "kwh_usage": 2.22,
+    "voltage": 230,
+    "customer_id": "CUST_1825",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_629",
+    "timestamp": "2025-06-10T02:31:07.447024Z",
+    "kwh_usage": 0.96,
+    "voltage": 240,
+    "customer_id": "CUST_4810",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_428",
+    "timestamp": "2025-06-10T20:02:07.447080Z",
+    "kwh_usage": 2.88,
+    "voltage": 240,
+    "customer_id": "CUST_3719",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_517",
+    "timestamp": "2025-06-10T21:28:07.447153Z",
+    "kwh_usage": 4.15,
+    "voltage": 240,
+    "customer_id": "CUST_5182",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_825",
+    "timestamp": "2025-06-10T13:58:07.447190Z",
+    "kwh_usage": 4.07,
+    "voltage": 240,
+    "customer_id": "CUST_7396",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_352",
+    "timestamp": "2025-06-10T20:16:07.447214Z",
+    "kwh_usage": 2.47,
+    "voltage": 240,
+    "customer_id": "CUST_1766",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_446",
+    "timestamp": "2025-06-10T02:50:07.447237Z",
+    "kwh_usage": 3.34,
+    "voltage": 230,
+    "customer_id": "CUST_7659",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_898",
+    "timestamp": "2025-06-10T02:54:07.447271Z",
+    "kwh_usage": 4.3,
+    "voltage": 240,
+    "customer_id": "CUST_9035",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_743",
+    "timestamp": "2025-06-10T00:47:07.447327Z",
+    "kwh_usage": 1.15,
+    "voltage": 230,
+    "customer_id": "CUST_3275",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_334",
+    "timestamp": "2025-06-10T21:25:07.447382Z",
+    "kwh_usage": 2.53,
+    "voltage": 230,
+    "customer_id": "CUST_3518",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_941",
+    "timestamp": "2025-06-10T03:32:07.447432Z",
+    "kwh_usage": 2.25,
+    "voltage": 230,
+    "customer_id": "CUST_9736",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_369",
+    "timestamp": "2025-06-09T22:02:07.447460Z",
+    "kwh_usage": 2.48,
+    "voltage": 230,
+    "customer_id": "CUST_3195",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_843",
+    "timestamp": "2025-06-10T00:09:07.447486Z",
+    "kwh_usage": 3.02,
+    "voltage": 230,
+    "customer_id": "CUST_8377",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_767",
+    "timestamp": "2025-06-10T05:42:07.447510Z",
+    "kwh_usage": 3.66,
+    "voltage": 240,
+    "customer_id": "CUST_3187",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_504",
+    "timestamp": "2025-06-10T05:52:07.447533Z",
+    "kwh_usage": 3.55,
+    "voltage": 240,
+    "customer_id": "CUST_5134",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_720",
+    "timestamp": "2025-06-10T09:06:07.447575Z",
+    "kwh_usage": 1.7,
+    "voltage": 240,
+    "customer_id": "CUST_9792",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_738",
+    "timestamp": "2025-06-10T04:46:07.447642Z",
+    "kwh_usage": 1.24,
+    "voltage": 240,
+    "customer_id": "CUST_4462",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_848",
+    "timestamp": "2025-06-10T16:45:07.447710Z",
+    "kwh_usage": 1.55,
+    "voltage": 230,
+    "customer_id": "CUST_5934",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_182",
+    "timestamp": "2025-06-10T12:26:07.447774Z",
+    "kwh_usage": 1.39,
+    "voltage": 230,
+    "customer_id": "CUST_9495",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_860",
+    "timestamp": "2025-06-10T03:50:07.447802Z",
+    "kwh_usage": 2.0,
+    "voltage": 230,
+    "customer_id": "CUST_2676",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_301",
+    "timestamp": "2025-06-10T07:48:07.447826Z",
+    "kwh_usage": 0.73,
+    "voltage": 240,
+    "customer_id": "CUST_9149",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_160",
+    "timestamp": "2025-06-09T22:54:07.447850Z",
+    "kwh_usage": 4.09,
+    "voltage": 240,
+    "customer_id": "CUST_3187",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_918",
+    "timestamp": "2025-06-10T06:03:07.447886Z",
+    "kwh_usage": 3.47,
+    "voltage": 230,
+    "customer_id": "CUST_4838",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_738",
+    "timestamp": "2025-06-10T04:17:07.447911Z",
+    "kwh_usage": 3.81,
+    "voltage": 230,
+    "customer_id": "CUST_6837",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_238",
+    "timestamp": "2025-06-10T10:33:07.447935Z",
+    "kwh_usage": 2.85,
+    "voltage": 240,
+    "customer_id": "CUST_4374",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_539",
+    "timestamp": "2025-06-10T08:25:07.447958Z",
+    "kwh_usage": 2.4,
+    "voltage": 230,
+    "customer_id": "CUST_2304",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_324",
+    "timestamp": "2025-06-10T14:56:07.447990Z",
+    "kwh_usage": 4.16,
+    "voltage": 230,
+    "customer_id": "CUST_9235",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_984",
+    "timestamp": "2025-06-10T12:47:07.448015Z",
+    "kwh_usage": 3.07,
+    "voltage": 230,
+    "customer_id": "CUST_2757",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_871",
+    "timestamp": "2025-06-10T02:39:07.448039Z",
+    "kwh_usage": 3.59,
+    "voltage": 240,
+    "customer_id": "CUST_6416",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_464",
+    "timestamp": "2025-06-09T23:31:07.448072Z",
+    "kwh_usage": 3.35,
+    "voltage": 230,
+    "customer_id": "CUST_4473",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_513",
+    "timestamp": "2025-06-10T07:47:07.448097Z",
+    "kwh_usage": 3.74,
+    "voltage": 240,
+    "customer_id": "CUST_2216",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_602",
+    "timestamp": "2025-06-10T20:42:07.448120Z",
+    "kwh_usage": 4.7,
+    "voltage": 240,
+    "customer_id": "CUST_3519",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_144",
+    "timestamp": "2025-06-10T20:48:07.448143Z",
+    "kwh_usage": 2.07,
+    "voltage": 230,
+    "customer_id": "CUST_7655",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_139",
+    "timestamp": "2025-06-10T18:14:07.448166Z",
+    "kwh_usage": 4.48,
+    "voltage": 230,
+    "customer_id": "CUST_3934",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_874",
+    "timestamp": "2025-06-10T11:08:07.448191Z",
+    "kwh_usage": 2.45,
+    "voltage": 230,
+    "customer_id": "CUST_6783",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_959",
+    "timestamp": "2025-06-10T11:54:07.448214Z",
+    "kwh_usage": 2.11,
+    "voltage": 240,
+    "customer_id": "CUST_2740",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_844",
+    "timestamp": "2025-06-09T22:01:07.448239Z",
+    "kwh_usage": 1.58,
+    "voltage": 240,
+    "customer_id": "CUST_3558",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_287",
+    "timestamp": "2025-06-10T03:25:07.448264Z",
+    "kwh_usage": 3.97,
+    "voltage": 230,
+    "customer_id": "CUST_8057",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_162",
+    "timestamp": "2025-06-10T12:42:07.448287Z",
+    "kwh_usage": 3.87,
+    "voltage": 230,
+    "customer_id": "CUST_4963",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_473",
+    "timestamp": "2025-06-10T00:38:07.448311Z",
+    "kwh_usage": 0.92,
+    "voltage": 230,
+    "customer_id": "CUST_3595",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_778",
+    "timestamp": "2025-06-10T01:57:07.448334Z",
+    "kwh_usage": 3.08,
+    "voltage": 230,
+    "customer_id": "CUST_2668",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_109",
+    "timestamp": "2025-06-09T23:53:07.448358Z",
+    "kwh_usage": 3.07,
+    "voltage": 230,
+    "customer_id": "CUST_9950",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_687",
+    "timestamp": "2025-06-10T08:40:07.448391Z",
+    "kwh_usage": 3.46,
+    "voltage": 240,
+    "customer_id": "CUST_7645",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_949",
+    "timestamp": "2025-06-09T21:36:07.448417Z",
+    "kwh_usage": 1.52,
+    "voltage": 240,
+    "customer_id": "CUST_6091",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_222",
+    "timestamp": "2025-06-10T20:49:07.448440Z",
+    "kwh_usage": 0.98,
+    "voltage": 240,
+    "customer_id": "CUST_7442",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_203",
+    "timestamp": "2025-06-10T17:24:07.448465Z",
+    "kwh_usage": 0.57,
+    "voltage": 230,
+    "customer_id": "CUST_6400",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_254",
+    "timestamp": "2025-06-10T13:31:07.448489Z",
+    "kwh_usage": 1.42,
+    "voltage": 240,
+    "customer_id": "CUST_8663",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_947",
+    "timestamp": "2025-06-10T14:01:07.448512Z",
+    "kwh_usage": 4.2,
+    "voltage": 230,
+    "customer_id": "CUST_1804",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_180",
+    "timestamp": "2025-06-10T14:58:07.448536Z",
+    "kwh_usage": 3.13,
+    "voltage": 230,
+    "customer_id": "CUST_5098",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_760",
+    "timestamp": "2025-06-10T12:57:07.448560Z",
+    "kwh_usage": 3.42,
+    "voltage": 240,
+    "customer_id": "CUST_6015",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_945",
+    "timestamp": "2025-06-10T01:46:07.448592Z",
+    "kwh_usage": 4.27,
+    "voltage": 230,
+    "customer_id": "CUST_7307",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_134",
+    "timestamp": "2025-06-10T17:33:07.448618Z",
+    "kwh_usage": 2.62,
+    "voltage": 230,
+    "customer_id": "CUST_3380",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "HAMILTON_122",
+    "timestamp": "2025-06-10T07:51:07.448643Z",
+    "kwh_usage": 3.2,
+    "voltage": 240,
+    "customer_id": "CUST_6532",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_722",
+    "timestamp": "2025-06-10T19:42:07.448666Z",
+    "kwh_usage": 1.0,
+    "voltage": 230,
+    "customer_id": "CUST_6562",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_757",
+    "timestamp": "2025-06-10T20:07:07.448689Z",
+    "kwh_usage": 4.95,
+    "voltage": 240,
+    "customer_id": "CUST_9788",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_886",
+    "timestamp": "2025-06-09T21:31:07.448714Z",
+    "kwh_usage": 1.88,
+    "voltage": 240,
+    "customer_id": "CUST_3800",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_806",
+    "timestamp": "2025-06-10T01:05:07.448738Z",
+    "kwh_usage": 2.24,
+    "voltage": 240,
+    "customer_id": "CUST_5697",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_833",
+    "timestamp": "2025-06-10T16:15:07.448801Z",
+    "kwh_usage": 3.36,
+    "voltage": 230,
+    "customer_id": "CUST_1229",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_184",
+    "timestamp": "2025-06-10T18:27:07.448838Z",
+    "kwh_usage": 4.24,
+    "voltage": 240,
+    "customer_id": "CUST_4293",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_734",
+    "timestamp": "2025-06-10T16:46:07.448862Z",
+    "kwh_usage": 2.12,
+    "voltage": 240,
+    "customer_id": "CUST_1118",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_751",
+    "timestamp": "2025-06-10T06:06:07.448887Z",
+    "kwh_usage": 4.45,
+    "voltage": 230,
+    "customer_id": "CUST_8324",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_242",
+    "timestamp": "2025-06-10T13:12:07.448919Z",
+    "kwh_usage": 4.89,
+    "voltage": 240,
+    "customer_id": "CUST_3348",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_776",
+    "timestamp": "2025-06-10T09:32:07.448945Z",
+    "kwh_usage": 1.24,
+    "voltage": 230,
+    "customer_id": "CUST_6435",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_854",
+    "timestamp": "2025-06-10T14:02:07.448969Z",
+    "kwh_usage": 1.93,
+    "voltage": 240,
+    "customer_id": "CUST_3982",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_907",
+    "timestamp": "2025-06-10T10:52:07.448992Z",
+    "kwh_usage": 1.82,
+    "voltage": 240,
+    "customer_id": "CUST_4984",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_334",
+    "timestamp": "2025-06-10T17:34:07.449016Z",
+    "kwh_usage": 1.22,
+    "voltage": 240,
+    "customer_id": "CUST_2624",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_311",
+    "timestamp": "2025-06-10T08:45:07.449039Z",
+    "kwh_usage": 1.39,
+    "voltage": 240,
+    "customer_id": "CUST_5963",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_928",
+    "timestamp": "2025-06-10T00:43:07.449062Z",
+    "kwh_usage": 1.35,
+    "voltage": 240,
+    "customer_id": "CUST_4500",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_556",
+    "timestamp": "2025-06-10T05:55:07.449086Z",
+    "kwh_usage": 1.13,
+    "voltage": 240,
+    "customer_id": "CUST_6899",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_702",
+    "timestamp": "2025-06-10T08:24:07.449110Z",
+    "kwh_usage": 2.13,
+    "voltage": 240,
+    "customer_id": "CUST_1176",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_642",
+    "timestamp": "2025-06-10T19:16:07.449133Z",
+    "kwh_usage": 2.3,
+    "voltage": 230,
+    "customer_id": "CUST_2083",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_109",
+    "timestamp": "2025-06-10T02:58:07.449165Z",
+    "kwh_usage": 4.67,
+    "voltage": 230,
+    "customer_id": "CUST_8264",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_226",
+    "timestamp": "2025-06-10T08:22:07.449190Z",
+    "kwh_usage": 3.78,
+    "voltage": 230,
+    "customer_id": "CUST_4085",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_221",
+    "timestamp": "2025-06-10T13:31:07.449214Z",
+    "kwh_usage": 0.8,
+    "voltage": 230,
+    "customer_id": "CUST_6328",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_886",
+    "timestamp": "2025-06-10T04:05:07.449238Z",
+    "kwh_usage": 2.44,
+    "voltage": 230,
+    "customer_id": "CUST_4377",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_646",
+    "timestamp": "2025-06-10T08:57:07.449262Z",
+    "kwh_usage": 1.27,
+    "voltage": 240,
+    "customer_id": "CUST_8278",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_343",
+    "timestamp": "2025-06-09T23:44:07.449301Z",
+    "kwh_usage": 4.87,
+    "voltage": 240,
+    "customer_id": "CUST_1752",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_607",
+    "timestamp": "2025-06-10T15:47:07.449364Z",
+    "kwh_usage": 3.19,
+    "voltage": 240,
+    "customer_id": "CUST_7798",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_940",
+    "timestamp": "2025-06-10T18:22:07.449393Z",
+    "kwh_usage": 3.17,
+    "voltage": 230,
+    "customer_id": "CUST_1286",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_644",
+    "timestamp": "2025-06-10T14:28:07.449417Z",
+    "kwh_usage": 2.18,
+    "voltage": 230,
+    "customer_id": "CUST_9473",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_365",
+    "timestamp": "2025-06-10T20:35:07.449440Z",
+    "kwh_usage": 3.54,
+    "voltage": 240,
+    "customer_id": "CUST_1370",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_518",
+    "timestamp": "2025-06-10T02:19:07.449476Z",
+    "kwh_usage": 2.99,
+    "voltage": 240,
+    "customer_id": "CUST_4957",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_697",
+    "timestamp": "2025-06-10T04:03:07.449502Z",
+    "kwh_usage": 3.08,
+    "voltage": 230,
+    "customer_id": "CUST_7908",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_216",
+    "timestamp": "2025-06-10T00:42:07.449525Z",
+    "kwh_usage": 2.98,
+    "voltage": 240,
+    "customer_id": "CUST_2239",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_364",
+    "timestamp": "2025-06-10T18:25:07.449549Z",
+    "kwh_usage": 4.66,
+    "voltage": 240,
+    "customer_id": "CUST_7772",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "HAMILTON_956",
+    "timestamp": "2025-06-10T09:44:07.449584Z",
+    "kwh_usage": 1.53,
+    "voltage": 230,
+    "customer_id": "CUST_6865",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_495",
+    "timestamp": "2025-06-10T02:20:07.449678Z",
+    "kwh_usage": 1.46,
+    "voltage": 230,
+    "customer_id": "CUST_8037",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_349",
+    "timestamp": "2025-06-10T14:14:07.449781Z",
+    "kwh_usage": 3.18,
+    "voltage": 230,
+    "customer_id": "CUST_3628",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_412",
+    "timestamp": "2025-06-10T11:24:07.449857Z",
+    "kwh_usage": 1.56,
+    "voltage": 240,
+    "customer_id": "CUST_1158",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_654",
+    "timestamp": "2025-06-10T15:47:07.449964Z",
+    "kwh_usage": 4.49,
+    "voltage": 240,
+    "customer_id": "CUST_6322",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_621",
+    "timestamp": "2025-06-10T17:20:07.450011Z",
+    "kwh_usage": 3.33,
+    "voltage": 240,
+    "customer_id": "CUST_1556",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_962",
+    "timestamp": "2025-06-10T02:55:07.450037Z",
+    "kwh_usage": 2.75,
+    "voltage": 230,
+    "customer_id": "CUST_4641",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_743",
+    "timestamp": "2025-06-10T17:33:07.450078Z",
+    "kwh_usage": 0.8,
+    "voltage": 240,
+    "customer_id": "CUST_2808",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_649",
+    "timestamp": "2025-06-10T15:39:07.450106Z",
+    "kwh_usage": 2.18,
+    "voltage": 230,
+    "customer_id": "CUST_7825",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_409",
+    "timestamp": "2025-06-09T23:17:07.450131Z",
+    "kwh_usage": 2.19,
+    "voltage": 240,
+    "customer_id": "CUST_6132",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_837",
+    "timestamp": "2025-06-10T12:48:07.450154Z",
+    "kwh_usage": 3.15,
+    "voltage": 230,
+    "customer_id": "CUST_2912",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_336",
+    "timestamp": "2025-06-09T22:04:07.450178Z",
+    "kwh_usage": 3.06,
+    "voltage": 230,
+    "customer_id": "CUST_6591",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "WELLINGTON_486",
+    "timestamp": "2025-06-10T16:34:07.450201Z",
+    "kwh_usage": 3.51,
+    "voltage": 240,
+    "customer_id": "CUST_6302",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_395",
+    "timestamp": "2025-06-10T18:31:07.450224Z",
+    "kwh_usage": 0.91,
+    "voltage": 240,
+    "customer_id": "CUST_5912",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_913",
+    "timestamp": "2025-06-10T08:11:07.450250Z",
+    "kwh_usage": 4.44,
+    "voltage": 240,
+    "customer_id": "CUST_5893",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_470",
+    "timestamp": "2025-06-10T01:33:07.450333Z",
+    "kwh_usage": 3.42,
+    "voltage": 240,
+    "customer_id": "CUST_3259",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_529",
+    "timestamp": "2025-06-10T04:23:07.450365Z",
+    "kwh_usage": 3.95,
+    "voltage": 240,
+    "customer_id": "CUST_8306",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_583",
+    "timestamp": "2025-06-10T14:23:07.450390Z",
+    "kwh_usage": 4.51,
+    "voltage": 240,
+    "customer_id": "CUST_6512",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_482",
+    "timestamp": "2025-06-10T16:25:07.450414Z",
+    "kwh_usage": 2.37,
+    "voltage": 230,
+    "customer_id": "CUST_2204",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_918",
+    "timestamp": "2025-06-10T16:34:07.450438Z",
+    "kwh_usage": 4.49,
+    "voltage": 230,
+    "customer_id": "CUST_8276",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_105",
+    "timestamp": "2025-06-10T19:27:07.450461Z",
+    "kwh_usage": 1.9,
+    "voltage": 230,
+    "customer_id": "CUST_9984",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_814",
+    "timestamp": "2025-06-10T03:22:07.450484Z",
+    "kwh_usage": 2.55,
+    "voltage": 230,
+    "customer_id": "CUST_1548",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_375",
+    "timestamp": "2025-06-10T01:17:07.450508Z",
+    "kwh_usage": 1.86,
+    "voltage": 240,
+    "customer_id": "CUST_1353",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_309",
+    "timestamp": "2025-06-10T16:05:07.450531Z",
+    "kwh_usage": 1.4,
+    "voltage": 240,
+    "customer_id": "CUST_1226",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_413",
+    "timestamp": "2025-06-10T16:27:07.450566Z",
+    "kwh_usage": 4.72,
+    "voltage": 240,
+    "customer_id": "CUST_4574",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_603",
+    "timestamp": "2025-06-10T16:24:07.450593Z",
+    "kwh_usage": 2.89,
+    "voltage": 240,
+    "customer_id": "CUST_4154",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "WELLINGTON_264",
+    "timestamp": "2025-06-09T23:17:07.450660Z",
+    "kwh_usage": 2.67,
+    "voltage": 240,
+    "customer_id": "CUST_6757",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_960",
+    "timestamp": "2025-06-10T17:57:07.450722Z",
+    "kwh_usage": 4.0,
+    "voltage": 230,
+    "customer_id": "CUST_3521",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_616",
+    "timestamp": "2025-06-10T19:33:07.450787Z",
+    "kwh_usage": 3.77,
+    "voltage": 240,
+    "customer_id": "CUST_3097",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_260",
+    "timestamp": "2025-06-10T15:02:07.450829Z",
+    "kwh_usage": 0.62,
+    "voltage": 230,
+    "customer_id": "CUST_5228",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_520",
+    "timestamp": "2025-06-10T11:24:07.450854Z",
+    "kwh_usage": 2.68,
+    "voltage": 240,
+    "customer_id": "CUST_7268",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_608",
+    "timestamp": "2025-06-10T09:36:07.450901Z",
+    "kwh_usage": 1.97,
+    "voltage": 230,
+    "customer_id": "CUST_7090",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_212",
+    "timestamp": "2025-06-10T16:01:07.450960Z",
+    "kwh_usage": 4.36,
+    "voltage": 240,
+    "customer_id": "CUST_3014",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_539",
+    "timestamp": "2025-06-10T20:05:07.451026Z",
+    "kwh_usage": 2.94,
+    "voltage": 240,
+    "customer_id": "CUST_7316",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_504",
+    "timestamp": "2025-06-09T22:00:07.451093Z",
+    "kwh_usage": 1.42,
+    "voltage": 230,
+    "customer_id": "CUST_5508",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_645",
+    "timestamp": "2025-06-10T16:57:07.451137Z",
+    "kwh_usage": 3.8,
+    "voltage": 240,
+    "customer_id": "CUST_9138",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_637",
+    "timestamp": "2025-06-10T07:13:07.451163Z",
+    "kwh_usage": 0.76,
+    "voltage": 230,
+    "customer_id": "CUST_5342",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_486",
+    "timestamp": "2025-06-10T04:01:07.451188Z",
+    "kwh_usage": 3.26,
+    "voltage": 240,
+    "customer_id": "CUST_2852",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_180",
+    "timestamp": "2025-06-09T21:33:07.451212Z",
+    "kwh_usage": 1.06,
+    "voltage": 230,
+    "customer_id": "CUST_6512",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_510",
+    "timestamp": "2025-06-09T22:55:07.451235Z",
+    "kwh_usage": 1.54,
+    "voltage": 230,
+    "customer_id": "CUST_6007",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_476",
+    "timestamp": "2025-06-10T21:13:07.451258Z",
+    "kwh_usage": 1.4,
+    "voltage": 240,
+    "customer_id": "CUST_4226",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "HAMILTON_770",
+    "timestamp": "2025-06-10T16:44:07.451311Z",
+    "kwh_usage": 3.72,
+    "voltage": 240,
+    "customer_id": "CUST_5012",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_236",
+    "timestamp": "2025-06-10T16:58:07.451398Z",
+    "kwh_usage": 4.06,
+    "voltage": 240,
+    "customer_id": "CUST_2210",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_555",
+    "timestamp": "2025-06-10T10:08:07.451486Z",
+    "kwh_usage": 3.83,
+    "voltage": 230,
+    "customer_id": "CUST_6795",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_625",
+    "timestamp": "2025-06-10T01:21:07.451562Z",
+    "kwh_usage": 0.72,
+    "voltage": 240,
+    "customer_id": "CUST_3731",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_512",
+    "timestamp": "2025-06-10T21:18:07.451593Z",
+    "kwh_usage": 2.25,
+    "voltage": 230,
+    "customer_id": "CUST_6238",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_923",
+    "timestamp": "2025-06-10T02:54:07.451618Z",
+    "kwh_usage": 2.46,
+    "voltage": 240,
+    "customer_id": "CUST_9586",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_926",
+    "timestamp": "2025-06-10T00:10:07.451643Z",
+    "kwh_usage": 1.81,
+    "voltage": 240,
+    "customer_id": "CUST_2684",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_867",
+    "timestamp": "2025-06-10T11:33:07.451667Z",
+    "kwh_usage": 2.8,
+    "voltage": 240,
+    "customer_id": "CUST_3709",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_689",
+    "timestamp": "2025-06-10T13:43:07.451691Z",
+    "kwh_usage": 0.74,
+    "voltage": 230,
+    "customer_id": "CUST_8982",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_994",
+    "timestamp": "2025-06-10T00:53:07.451731Z",
+    "kwh_usage": 4.54,
+    "voltage": 240,
+    "customer_id": "CUST_1815",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_826",
+    "timestamp": "2025-06-10T12:44:07.451826Z",
+    "kwh_usage": 4.74,
+    "voltage": 230,
+    "customer_id": "CUST_7938",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_465",
+    "timestamp": "2025-06-10T11:13:07.451866Z",
+    "kwh_usage": 3.72,
+    "voltage": 230,
+    "customer_id": "CUST_8106",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_749",
+    "timestamp": "2025-06-10T13:05:07.451891Z",
+    "kwh_usage": 2.25,
+    "voltage": 240,
+    "customer_id": "CUST_4031",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_450",
+    "timestamp": "2025-06-10T01:01:07.451978Z",
+    "kwh_usage": 3.6,
+    "voltage": 240,
+    "customer_id": "CUST_5480",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "AUCKLAND_826",
+    "timestamp": "2025-06-09T23:01:07.452009Z",
+    "kwh_usage": 1.0,
+    "voltage": 240,
+    "customer_id": "CUST_1483",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_327",
+    "timestamp": "2025-06-10T15:34:07.452034Z",
+    "kwh_usage": 2.16,
+    "voltage": 230,
+    "customer_id": "CUST_1517",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "WELLINGTON_686",
+    "timestamp": "2025-06-10T07:16:07.452059Z",
+    "kwh_usage": 0.73,
+    "voltage": 230,
+    "customer_id": "CUST_8962",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_543",
+    "timestamp": "2025-06-10T06:19:07.452083Z",
+    "kwh_usage": 2.06,
+    "voltage": 240,
+    "customer_id": "CUST_1588",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_911",
+    "timestamp": "2025-06-10T13:03:07.452108Z",
+    "kwh_usage": 1.36,
+    "voltage": 240,
+    "customer_id": "CUST_5463",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_629",
+    "timestamp": "2025-06-09T21:41:07.452131Z",
+    "kwh_usage": 2.76,
+    "voltage": 240,
+    "customer_id": "CUST_5047",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_743",
+    "timestamp": "2025-06-10T06:35:07.452154Z",
+    "kwh_usage": 1.44,
+    "voltage": 230,
+    "customer_id": "CUST_5453",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_106",
+    "timestamp": "2025-06-10T14:31:07.452178Z",
+    "kwh_usage": 2.72,
+    "voltage": 230,
+    "customer_id": "CUST_8520",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_210",
+    "timestamp": "2025-06-10T17:41:07.452202Z",
+    "kwh_usage": 3.1,
+    "voltage": 240,
+    "customer_id": "CUST_5477",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_674",
+    "timestamp": "2025-06-10T02:15:07.452228Z",
+    "kwh_usage": 1.02,
+    "voltage": 240,
+    "customer_id": "CUST_4659",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_957",
+    "timestamp": "2025-06-10T17:49:07.452253Z",
+    "kwh_usage": 2.87,
+    "voltage": 240,
+    "customer_id": "CUST_8451",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_696",
+    "timestamp": "2025-06-10T17:08:07.452278Z",
+    "kwh_usage": 1.48,
+    "voltage": 240,
+    "customer_id": "CUST_9402",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_193",
+    "timestamp": "2025-06-09T21:58:07.452301Z",
+    "kwh_usage": 4.17,
+    "voltage": 230,
+    "customer_id": "CUST_4876",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "DUNEDIN_592",
+    "timestamp": "2025-06-10T11:18:07.452325Z",
+    "kwh_usage": 1.81,
+    "voltage": 230,
+    "customer_id": "CUST_7555",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_779",
+    "timestamp": "2025-06-10T09:49:07.452358Z",
+    "kwh_usage": 1.32,
+    "voltage": 240,
+    "customer_id": "CUST_6452",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "DUNEDIN_690",
+    "timestamp": "2025-06-10T11:53:07.452383Z",
+    "kwh_usage": 3.85,
+    "voltage": 230,
+    "customer_id": "CUST_7047",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "AUCKLAND_164",
+    "timestamp": "2025-06-10T03:40:07.452415Z",
+    "kwh_usage": 2.56,
+    "voltage": 240,
+    "customer_id": "CUST_4030",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_917",
+    "timestamp": "2025-06-09T21:36:07.452440Z",
+    "kwh_usage": 2.89,
+    "voltage": 240,
+    "customer_id": "CUST_5908",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "HAMILTON_923",
+    "timestamp": "2025-06-10T17:37:07.452464Z",
+    "kwh_usage": 0.86,
+    "voltage": 240,
+    "customer_id": "CUST_3927",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "DUNEDIN_407",
+    "timestamp": "2025-06-10T09:48:07.452496Z",
+    "kwh_usage": 2.04,
+    "voltage": 230,
+    "customer_id": "CUST_5312",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_291",
+    "timestamp": "2025-06-10T15:46:07.452530Z",
+    "kwh_usage": 4.24,
+    "voltage": 240,
+    "customer_id": "CUST_2420",
+    "region": "Wellington"
+  },
+  {
+    "meter_id": "CHRISTCHURCH_400",
+    "timestamp": "2025-06-10T19:17:07.452555Z",
+    "kwh_usage": 0.94,
+    "voltage": 230,
+    "customer_id": "CUST_2441",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_430",
+    "timestamp": "2025-06-10T10:07:07.452580Z",
+    "kwh_usage": 4.61,
+    "voltage": 230,
+    "customer_id": "CUST_8178",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "WELLINGTON_765",
+    "timestamp": "2025-06-10T07:34:07.452656Z",
+    "kwh_usage": 2.22,
+    "voltage": 240,
+    "customer_id": "CUST_8398",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_918",
+    "timestamp": "2025-06-09T21:59:07.452736Z",
+    "kwh_usage": 3.93,
+    "voltage": 240,
+    "customer_id": "CUST_1347",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_253",
+    "timestamp": "2025-06-09T22:20:07.452802Z",
+    "kwh_usage": 0.85,
+    "voltage": 230,
+    "customer_id": "CUST_1552",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "WELLINGTON_440",
+    "timestamp": "2025-06-10T13:51:07.452828Z",
+    "kwh_usage": 1.09,
+    "voltage": 240,
+    "customer_id": "CUST_7899",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_210",
+    "timestamp": "2025-06-10T08:31:07.452852Z",
+    "kwh_usage": 4.45,
+    "voltage": 240,
+    "customer_id": "CUST_8182",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "DUNEDIN_207",
+    "timestamp": "2025-06-10T20:04:07.452876Z",
+    "kwh_usage": 3.92,
+    "voltage": 230,
+    "customer_id": "CUST_9813",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_825",
+    "timestamp": "2025-06-10T18:56:07.452900Z",
+    "kwh_usage": 2.96,
+    "voltage": 230,
+    "customer_id": "CUST_3110",
+    "region": "Auckland"
+  },
+  {
+    "meter_id": "AUCKLAND_958",
+    "timestamp": "2025-06-10T11:51:07.452924Z",
+    "kwh_usage": 1.53,
+    "voltage": 240,
+    "customer_id": "CUST_9065",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "AUCKLAND_489",
+    "timestamp": "2025-06-10T02:51:07.452946Z",
+    "kwh_usage": 3.83,
+    "voltage": 240,
+    "customer_id": "CUST_2645",
+    "region": "Dunedin"
+  },
+  {
+    "meter_id": "AUCKLAND_808",
+    "timestamp": "2025-06-10T16:40:07.452969Z",
+    "kwh_usage": 2.75,
+    "voltage": 240,
+    "customer_id": "CUST_2578",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "DUNEDIN_372",
+    "timestamp": "2025-06-10T08:59:07.452992Z",
+    "kwh_usage": 2.98,
+    "voltage": 240,
+    "customer_id": "CUST_4396",
+    "region": "Hamilton"
+  },
+  {
+    "meter_id": "HAMILTON_757",
+    "timestamp": "2025-06-10T12:22:07.453016Z",
+    "kwh_usage": 4.26,
+    "voltage": 240,
+    "customer_id": "CUST_5373",
+    "region": "Christchurch"
+  },
+  {
+    "meter_id": "HAMILTON_142",
+    "timestamp": "2025-06-10T21:13:07.453039Z",
+    "kwh_usage": 1.66,
+    "voltage": 230,
+    "customer_id": "CUST_9322",
+    "region": "Christchurch"
+  }
+]
