@@ -221,6 +221,28 @@ services:
           cpus: '0.5'
           memory: 1GiB
 
+  redis:
+    image: redis:7.2-alpine
+    container_name: redis
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - kafka-net
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512MiB
+
   airflow-webserver:
     build:
       context: ../apps/airflow-app
@@ -234,7 +256,9 @@ services:
       - minio
       - mssql
     environment:
-      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
+      - AIRFLOW__CELERY__BROKER_URL=redis://redis:6379/0
+      - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://postgres:postgres@postgres:5432/postgres
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
       - AIRFLOW__WEBSERVER__EXPOSE_CONFIG=True
       - AIRFLOW__CORE__FERNET_KEY=PakKUDc_578hbrABpAhOs0PMn7RnDBfkgRO03e_tugA=
@@ -270,7 +294,9 @@ services:
       - airflow-webserver
       - mssql
     environment:
-      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
+      - AIRFLOW__CELERY__BROKER_URL=redis://redis:6379/0
+      - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://postgres:postgres@postgres:5432/postgres
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
       - HADOOP_CONF_DIR=/opt/hadoop/etc/hadoop
       - AIRFLOW__CORE__FERNET_KEY=PakKUDc_578hbrABpAhOs0PMn7RnDBfkgRO03e_tugA=
@@ -294,6 +320,74 @@ services:
           cpus: '1.0'
           memory: 2GiB
 
+  airflow-worker-1:
+    image: alexflames77/custom-airflow:latest
+    container_name: airflow-worker-1
+    command: celery worker
+    depends_on:
+      - airflow-webserver
+      - redis
+      - postgres
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
+      - AIRFLOW__CELERY__BROKER_URL=redis://redis:6379/0
+      - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://postgres:postgres@postgres:5432/postgres
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
+      - AIRFLOW__CORE__FERNET_KEY=PakKUDc_578hbrABpAhOs0PMn7RnDBfkgRO03e_tugA=
+      - AIRFLOW_CONN_HDFS_DEFAULT=hdfs://namenode:8020
+      - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092,kafka-2:19095
+      - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
+      - AIRFLOW_CONN_MINIO_DEFAULT=s3://minioadmin:minioadmin@minio:9002
+      - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/airflow
+      - AIRFLOW_CONN_MSSQL_DEFAULT=mssql+pyodbc://sa:Admin123!@mssql:1433/telecom_db?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
+      - ./airflow/plugins:/opt/airflow/plugins
+      - ./hadoop-conf:/opt/hadoop/etc/hadoop
+    networks:
+      - kafka-net
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.75'
+          memory: 1GiB
+
+  airflow-worker-2:
+    image: alexflames77/custom-airflow:latest
+    container_name: airflow-worker-2
+    command: celery worker
+    depends_on:
+      - airflow-webserver
+      - redis
+      - postgres
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
+      - AIRFLOW__CELERY__BROKER_URL=redis://redis:6379/0
+      - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://postgres:postgres@postgres:5432/postgres
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
+      - AIRFLOW__CORE__FERNET_KEY=PakKUDc_578hbrABpAhOs0PMn7RnDBfkgRO03e_tugA=
+      - AIRFLOW_CONN_HDFS_DEFAULT=hdfs://namenode:8020
+      - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092,kafka-2:19095
+      - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
+      - AIRFLOW_CONN_MINIO_DEFAULT=s3://minioadmin:minioadmin@minio:9002
+      - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/airflow
+      - AIRFLOW_CONN_MSSQL_DEFAULT=mssql+pyodbc://sa:Admin123!@mssql:1433/telecom_db?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
+      - ./airflow/plugins:/opt/airflow/plugins
+      - ./hadoop-conf:/opt/hadoop/etc/hadoop
+    networks:
+      - kafka-net
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.75'
+          memory: 1GiB
+
   airflow-init:
     image: alexflames77/custom-airflow:latest
     container_name: airflow-init
@@ -310,7 +404,9 @@ services:
       - minio
       - mssql
     environment:
-      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
+      - AIRFLOW__CELERY__BROKER_URL=redis://redis:6379/0
+      - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://postgres:postgres@postgres:5432/postgres
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
       - AIRFLOW_CONN_HDFS_DEFAULT=hdfs://namenode:8020
       - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092,kafka-2:19095
@@ -471,6 +567,8 @@ volumes:
     name: mssql-data
   mssql-backups:
     name: mssql-backups
+  redis-data:
+    name: redis-data
 
 networks:
   kafka-net:
