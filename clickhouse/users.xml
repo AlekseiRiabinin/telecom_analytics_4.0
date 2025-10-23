@@ -2,11 +2,27 @@
 <clickhouse>
     <profiles>
         <default>
-            <max_memory_usage>10000000000</max_memory_usage>
+            <max_memory_usage>2000000000</max_memory_usage> <!-- 2GB -->
+            <max_memory_usage_for_user>1500000000</max_memory_usage_for_user> <!-- 1.5GB -->
+            <max_memory_usage_for_all_queries>3000000000</max_memory_usage_for_all_queries> <!-- 3GB -->
             <use_uncompressed_cache>0</use_uncompressed_cache>
             <load_balancing>in_order</load_balancing>
-            <max_concurrent_queries>100</max_concurrent_queries>
+            <max_concurrent_queries>50</max_concurrent_queries>
+            <max_threads>8</max_threads>
+            <max_execution_time>300</max_execution_time>
+            <max_block_size>65536</max_block_size>
             <max_partitions_per_insert_block>100</max_partitions_per_insert_block>
+            
+            <!-- Timeout settings -->
+            <connect_timeout>10</connect_timeout>
+            <receive_timeout>300</receive_timeout>
+            <send_timeout>300</send_timeout>
+            <queue_max_wait_ms>5000</queue_max_wait_ms>
+            
+            <!-- HTTP specific settings -->
+            <http_connection_timeout>300</http_connection_timeout>
+            <http_receive_timeout>300</http_receive_timeout>
+            <http_send_timeout>300</http_send_timeout>
         </default>
     </profiles>
 

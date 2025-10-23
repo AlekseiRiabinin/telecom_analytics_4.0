@@ -13,9 +13,29 @@
     <http_port>8123</http_port>
     <tcp_port>9000</tcp_port>
 
+    <!-- Better connection settings -->
+    <max_concurrent_queries>100</max_concurrent_queries>
     <max_connections>4096</max_connections>
-    <keep_alive_timeout>3</keep_alive_timeout>
+    <keep_alive_timeout>10</keep_alive_timeout>
     
+    <!-- HTTP-specific settings -->
+    <http_max_connections>4096</http_max_connections>
+    <http_max_field_value_size>1048576</http_max_field_value_size>
+    <http_max_multipart_form_data_size>1048576</http_max_multipart_form_data_size>
+    <http_max_request_size>104857600</http_max_request_size>
+    <http_max_url_size>1048576</http_max_url_size>
+    <http_connection_timeout>300</http_connection_timeout>
+    <http_receive_timeout>300</http_receive_timeout>
+    <http_send_timeout>300</http_send_timeout>
+
+    <!-- Remove the problematic http_handlers section -->
+    <!-- <http_handlers>
+        <rule>
+            <url>/</url>
+            <methods>POST,GET</methods>
+        </rule>
+    </http_handlers> -->
+
     <path>/var/lib/clickhouse/</path>
     <tmp_path>/var/lib/clickhouse/tmp/</tmp_path>
     <user_files_path>/var/lib/clickhouse/user_files/</user_files_path>
@@ -29,7 +49,16 @@
             <path>/var/lib/clickhouse/access/</path>
         </local_directory>
     </user_directories>
+
+    <!-- Safe memory limits based on your 4GB container -->
+    <max_server_memory_usage>3221225472</max_server_memory_usage> <!-- 3GB -->
+    <max_memory_usage>2147483648</max_memory_usage> <!-- 2GB -->
+    <max_memory_usage_for_user>1610612736</max_memory_usage_for_user> <!-- 1.5GB -->
     
+    <!-- Memory settings for better stability -->
+    <max_bytes_before_external_group_by>1073741824</max_bytes_before_external_group_by> <!-- 1GB -->
+    <max_bytes_before_external_sort>536870912</max_bytes_before_external_sort> <!-- 512MB -->
+
     <default_profile>default</default_profile>
     <default_database>airflow</default_database>
     
