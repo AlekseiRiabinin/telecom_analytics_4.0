@@ -90,10 +90,12 @@ services:
       - "8123:8123"  # HTTP API
       - "9000:9000"  # Native interface
     environment:
-      - CLICKHOUSE_DB=airflow
+      - CLICKHOUSE_DB=telecom_analytics
       - CLICKHOUSE_USER=admin
       - CLICKHOUSE_PASSWORD=clickhouse_admin
       - CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1
+      - CLICKHOUSE_MAX_SERVER_MEMORY_USAGE=0
+      - CLICKHOUSE_MAX_MEMORY_USAGE=0
     volumes:
       - clickhouse_data:/var/lib/clickhouse
       - clickhouse_log:/var/log/clickhouse-server
@@ -107,15 +109,14 @@ services:
     healthcheck:
       test:
         - CMD
-        - wget
-        - --no-verbose
-        - --tries=1
-        - --spider
-        - http://localhost:8123/ping || exit 1
+        - clickhouse-client
+        - --user=admin
+        - --password=clickhouse_admin
+        - --query=SELECT 1
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 40s
+      start_period: 60s
     deploy:
       resources:
         limits:

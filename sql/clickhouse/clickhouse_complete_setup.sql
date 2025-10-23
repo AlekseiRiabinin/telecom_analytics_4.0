@@ -1,8 +1,5 @@
--- Switch to telecom_analytics database
-USE telecom_analytics;
-
 -- =============================================
--- RAW DATA TABLES
+-- RAW DATA TABLES (MergeTree)
 -- =============================================
 
 -- Table for CDC data from MSSQL (Debezium)
@@ -49,8 +46,12 @@ SETTINGS index_granularity = 8192;
 -- KAFKA ENGINE TABLES (Real-time ingestion)
 -- =============================================
 
+-- First drop existing Kafka tables (they can't use IF NOT EXISTS)
+DROP TABLE IF EXISTS cdc_smart_meter_data_kafka;
+DROP TABLE IF EXISTS kafka_smart_meter_data_kafka;
+
 -- Kafka engine for CDC data
-CREATE TABLE IF NOT EXISTS cdc_smart_meter_data_kafka
+CREATE TABLE cdc_smart_meter_data_kafka
 (
     `payload` String
 )
@@ -62,7 +63,7 @@ ENGINE = Kafka(
 );
 
 -- Kafka engine for direct producer data
-CREATE TABLE IF NOT EXISTS kafka_smart_meter_data_kafka
+CREATE TABLE kafka_smart_meter_data_kafka
 (
     `payload` String
 )
@@ -120,13 +121,16 @@ FROM kafka_smart_meter_data_kafka;
 -- UNIFIED VIEWS FOR ANALYTICS
 -- =============================================
 
+-- Drop view if exists (in case of previous failures)
+DROP VIEW IF EXISTS unified_smart_meter_data;
+
 -- Unified view combining both data sources
-CREATE VIEW IF NOT EXISTS unified_smart_meter_data AS
+CREATE VIEW unified_smart_meter_data AS
 SELECT 
     meter_id,
     timestamp,
-    region,
-    customer_id,
+    CAST(NULL as Nullable(String)) as region,
+    CAST(NULL as Nullable(String)) as customer_id,
     energy_consumption as consumption_kwh,
     voltage,
     current_reading as current_amps,
@@ -192,3 +196,42 @@ SELECT
     countDistinct(region) as unique_regions
 FROM unified_smart_meter_data
 GROUP BY data_source;
+
+-- =============================================
+-- VERIFICATION QUERIES
+-- =============================================
+
+-- Verify all tables and views were created
+SELECT 
+    name,
+    engine,
+    if(engine = 'View', 'VIEW', 'TABLE') as type
+FROM system.tables 
+WHERE database = 'telecom_analytics'
+ORDER BY type, name;
+
+-- Test data insertion (optional test data)
+INSERT INTO cdc_smart_meter_data_raw 
+(id, meter_id, timestamp, energy_consumption, voltage, current_reading, status)
+VALUES 
+(1, 'test_meter_cdc_001', now(), 15.5, 220.0, 10.2, 'active'),
+(2, 'test_meter_cdc_002', now(), 18.3, 219.5, 11.1, 'active');
+
+INSERT INTO kafka_smart_meter_data_raw 
+(meter_id, timestamp, kwh_usage, voltage, customer_id, region)
+VALUES 
+('test_meter_kafka_001', now(), 12.7, 220, 'cust_001', 'north'),
+('test_meter_kafka_002', now(), 14.2, 221, 'cust_002', 'south');
+
+-- Test unified view
+SELECT 
+    'Unified View Test' as test,
+    count(*) as total_records,
+    countDistinct(data_source) as data_sources
+FROM unified_smart_meter_data;
+
+-- Test analytical views
+SELECT 'Daily Consumption View' as test, count(*) as records FROM daily_energy_consumption;
+SELECT 'System Overview View' as test, count(*) as records FROM system_overview;
+
+SELECT 'Schema creation completed successfully!' as status;
