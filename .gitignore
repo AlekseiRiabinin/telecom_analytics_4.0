@@ -1,13 +1,18 @@
-# Project root .gitignore
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
 
-# Build outputs
-target/
-project/target/
-project/project/
+# Virtual environment
+venv/
+.env/
+.venv/
+env/
+ENV/
 
-# IDE files
-.idea/
+# IDE and editor files
 .vscode/
+.idea/
 *.swp
 *.swo
 *~
@@ -21,71 +26,109 @@ project/project/
 ehthumbs.db
 Thumbs.db
 
+# Spark and Hadoop
+spark-warehouse/
+metastore_db/
+derby.log
+*.parquet
+
 # Log files
 *.log
 logs/
+airflow/logs/
 
-# SBT specific
-dist/
-/*.jar
-lib_managed/
-src_managed/
-build.sbt.cache
-build.sbt.orig
+# Database files
+*.db
+*.sqlite
+*.sqlite3
 
-# Bloop (Metals build server)
-.bloop/
-.metals/
-metals.sbt
-
-# ENSIME (Scala IDE)
-.ensime
-.ensime_cache/
-.ensime_lucene/
-
-# Scala-IDE specific
-.scala_dependencies
-.worksheet
-
-# IntelliJ
-*.iml
-*.ipr
-*.iws
-out/
-
-# Eclipse
-.classpath
-.project
-.settings/
-bin/
-
-# NetBeans
-/nbproject/private/
-/nbproject/
-/build/
-
-# Spark specific
-spark-warehouse/
-derby.log
-metastore_db/
-
-# Data and output directories
-data/
-output/
-sample_data/output/
+# MinIO local data
+minio-data/
 
 # Docker
-docker/.env
-docker/*.tar.gz
+docker-compose.override.yml
 
-# Kubernetes
-k8s/*.kubeconfig
-k8s/temp/
+# Airflow
+airflow/plugins/__pycache__/
+airflow/dags/__pycache__/
 
-# Environment files
+# Jupyter
+.ipynb_checkpoints/
+
+# Package and distribution files
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+__pycache__/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# celery beat schedule file
+celerybeat-schedule
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
 .env
-.env.local
-.env.production
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
 
 # Temporary files
 tmp/
@@ -93,15 +136,16 @@ temp/
 *.tmp
 *.temp
 
-# Certificate files
-*.p12
-*.keystore
-*.truststore
-*.jks
+# Checkpoint directories for Spark streaming
+/tmp/checkpoints/
+
+# Local data directories for testing
+/tmp/telecom_data/
+
+# Credentials and configuration (be careful with this)
+# Uncomment if you want to ignore config files
+# *.conf
+# *.config
 
 # Application specific
-config/local.conf
-config/secrets.conf
-
-# Git
-!.gitkeep
+sample_data/output/
