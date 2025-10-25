@@ -1,3 +1,8 @@
+"""
+Utilities: SparkSessionManager, SchemaManager and DataQualityChecker.   
+"""
+
+
 import configparser
 import logging
 from pyspark.sql import SparkSession
@@ -7,6 +12,7 @@ from pyspark.sql import DataFrame
 
 
 logger = logging.getLogger(__name__)
+
 
 class SparkSessionManager:
     

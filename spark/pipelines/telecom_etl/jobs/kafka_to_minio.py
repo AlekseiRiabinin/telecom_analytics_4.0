@@ -3,6 +3,7 @@ Kafka to MinIO Spark Job
 Reads from Kafka topic and writes to MinIO in Parquet format.
 """
 
+
 import argparse
 import logging
 import sys

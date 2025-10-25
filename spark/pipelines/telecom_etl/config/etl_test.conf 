@@ -1,0 +1,20 @@
+[minio]
+endpoint = http://localhost:9002
+access_key = test_minioadmin
+secret_key = test_minioadmin
+bucket = test-spark-data
+
+[kafka]
+bootstrap_servers = localhost:19092,localhost:19094
+topic = test_smart_meter_data
+
+[mssql]
+url = jdbc:sqlserver://localhost:1433;databaseName=test_telecom_db;trustServerCertificate=true
+user = sa
+password = Admin123!
+driver = com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+[spark]
+master = local[2]
+driver_memory = 1g
+executor_memory = 1g
