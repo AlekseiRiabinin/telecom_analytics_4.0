@@ -8,7 +8,7 @@ from typing import Generator
 from pyspark.sql import SparkSession, DataFrame
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def spark_session(test_config_file_path: str) -> Generator:
     """Create a Spark session for testing."""
     
@@ -20,6 +20,13 @@ def spark_session(test_config_file_path: str) -> Generator:
     app_name = config.get('spark', 'app_name', fallback='pytest-spark-test-session')
     master = config.get('spark', 'master', fallback='local[2]')
     builder = builder.appName(app_name).master(master)
+    
+    # Essential configurations for test stability
+    builder = (builder
+        .config("spark.sql.adaptive.enabled", "false")
+        .config("spark.sql.adaptive.coalescePartitions.enabled", "false")
+        .config("spark.ui.enabled", "false")
+        .config("spark.sql.warehouse.dir", "/tmp/spark-warehouse-test"))
     
     if config.has_section('spark'):
         for key, value in config.items('spark'):
@@ -81,7 +88,7 @@ def sample_meter_data(spark_session: SparkSession) -> DataFrame:
 @pytest.fixture
 def test_config_parser() -> ConfigParser:
     """Return a config parser with test configuration."""
-
+ 
     config = configparser.ConfigParser()
     
     config['minio'] = {
@@ -136,17 +143,23 @@ def temp_config_file(test_config_parser: ConfigParser) -> Generator:
     os.unlink(temp_path)
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def test_config_file_path() -> str:
     """Get the path to the test config file from fixtures."""
-
+    
     tests_dir = Path(__file__).parent.parent
-    config_path = tests_dir / "fixtures" / "test_configs" / "test_etl_config.conf"
-
+    config_path = tests_dir / "test_configs" / "test_etl_config.conf"
+    
+    print(f"DEBUG: Looking for config at: {config_path}")
+    print(f"DEBUG: File exists: {config_path.exists()}")
+    
+    if not config_path.exists():
+        raise FileNotFoundError(f"Config file not found: {config_path}")
+    
     return str(config_path)
 
 
-@pytest.fixture
+@pytest.fixture 
 def test_data_dir() -> Generator:
     """Create temporary directory for test data."""
 

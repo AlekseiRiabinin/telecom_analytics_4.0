@@ -1,9 +1,10 @@
+import os
 import pytest
 import tempfile
-import os
+import textwrap
 import configparser
 from unittest.mock import patch, MagicMock
-from pyspark.sql import SparkSession, DataFrame
+from pyspark.sql import SparkSession
 from spark.pipelines.telecom_etl.jobs.kafka_to_minio import KafkaToMinio
 
 
@@ -37,10 +38,10 @@ class TestKafkaToMinio:
         assert config.has_section('spark')
         
         # Verify MinIO config
-        assert config.get('minio', 'endpoint') == 'http://test-minio:9002'
+        assert config.get('minio', 'endpoint') == 'http://localhost:9002' 
         assert config.get('minio', 'access_key') == 'test_minioadmin'
         assert config.get('minio', 'bucket') == 'test-spark-data'
-        
+
         # Verify Kafka config
         assert 'localhost:19092' in config.get('kafka', 'bootstrap_servers')
         assert config.get('kafka', 'topic') == 'test_smart_meter_data'
@@ -63,7 +64,7 @@ class TestKafkaToMinio:
             "voltage", "current_reading", "power_factor", "frequency"
         ]
         assert all(col in df.columns for col in expected_columns)
-        
+
         rows = df.collect()
         assert any(row["meter_id"] == "METER_001" for row in rows)
         assert any(row["energy_consumption"] == 15.75 for row in rows)
@@ -120,10 +121,10 @@ class TestKafkaToMinio:
     def test_invalid_config_section_spark_fails(self: 'TestKafkaToMinio') -> None:
         """Test that Spark initialization fails gracefully with invalid config."""
         
-        config_content = """
-        [general]
-        some_setting = value
-        """
+        config_content = textwrap.dedent("""
+            [general]
+            some_setting = value
+        """)
         
         with tempfile.NamedTemporaryFile(mode='w', suffix='.conf', delete=False) as f:
             f.write(config_content)

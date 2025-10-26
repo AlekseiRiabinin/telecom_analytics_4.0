@@ -26,19 +26,23 @@ class SparkSessionManager:
         # Define with explicit type hint
         builder: SparkSession.Builder = SparkSession.builder
         builder = builder.appName(app_name)
-        
+
         # Common configurations
-        builder = builder.config("spark.sql.adaptive.enabled", "true")
-        builder = builder.config("spark.sql.adaptive.coalescePartitions.enabled", "true")
+        builder = (builder
+            .config("spark.sql.adaptive.enabled", "true")
+            .config("spark.sql.adaptive.coalescePartitions.enabled", "true")
+        )
 
         # MinIO configurations
         minio_config = config['minio']
-        builder = builder.config("spark.hadoop.fs.s3a.endpoint", minio_config['endpoint'])
-        builder = builder.config("spark.hadoop.fs.s3a.access.key", minio_config['access_key'])
-        builder = builder.config("spark.hadoop.fs.s3a.secret.key", minio_config['secret_key'])
-        builder = builder.config("spark.hadoop.fs.s3a.path.style.access", "true")
-        builder = builder.config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
-        builder = builder.config("spark.hadoop.fs.s3a.connection.ssl.enabled", "false")
+        builder = (builder
+            .config("spark.hadoop.fs.s3a.endpoint", minio_config['endpoint'])
+            .config("spark.hadoop.fs.s3a.access.key", minio_config['access_key'])
+            .config("spark.hadoop.fs.s3a.secret.key", minio_config['secret_key'])
+            .config("spark.hadoop.fs.s3a.path.style.access", "true")
+            .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
+            .config("spark.hadoop.fs.s3a.connection.ssl.enabled", "false")
+        )
         
         spark_session: SparkSession = builder.getOrCreate()
         return spark_session
