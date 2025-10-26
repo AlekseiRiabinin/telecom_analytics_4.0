@@ -2,9 +2,10 @@ import pytest
 import tempfile
 import os
 import configparser
+from configparser import ConfigParser 
 from pathlib import Path
 from typing import Generator
-from pyspark.sql import SparkSession
+from pyspark.sql import SparkSession, DataFrame
 
 
 @pytest.fixture(scope="session")
@@ -70,18 +71,19 @@ def spark_session(test_config_file_path: str) -> Generator:
 
 
 @pytest.fixture
-def sample_meter_data(spark_session):
-    """Create sample meter data for testing"""
+def sample_meter_data(spark_session: SparkSession) -> DataFrame:
+    """Create sample meter data for testing."""
+    
     from tests.fixtures.sample_data import create_sample_meter_data
     return create_sample_meter_data(spark_session)
 
 
 @pytest.fixture
-def test_config_parser():
-    """Return a config parser with test configuration"""
+def test_config_parser() -> ConfigParser:
+    """Return a config parser with test configuration."""
+
     config = configparser.ConfigParser()
     
-    # Add test configuration sections and values
     config['minio'] = {
         'endpoint': 'http://localhost:9002',
         'access_key': 'test_minioadmin',
@@ -95,7 +97,10 @@ def test_config_parser():
     }
     
     config['mssql'] = {
-        'url': 'jdbc:sqlserver://localhost:1433;databaseName=test_telecom_db;trustServerCertificate=true',
+        'url': (
+            f'jdbc:sqlserver://localhost:1433;databaseName='
+            f'test_telecom_db;trustServerCertificate=true'
+        ),
         'user': 'sa',
         'password': 'Admin123!',
         'driver': 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
@@ -119,46 +124,52 @@ def test_config_parser():
 
 
 @pytest.fixture
-def temp_config_file(test_config_parser):
-    """Create a temporary config file for testing using config parser"""
+def temp_config_file(test_config_parser: ConfigParser) -> Generator:
+    """Create a temporary config file for testing using config parser."""
+
     with tempfile.NamedTemporaryFile(mode='w', suffix='.conf', delete=False) as f:
         test_config_parser.write(f)
         temp_path = f.name
     
     yield temp_path
-    
-    # Cleanup
+
     os.unlink(temp_path)
 
 
 @pytest.fixture
-def test_config_file_path():
-    """Get the path to the test config file from fixtures"""
+def test_config_file_path() -> str:
+    """Get the path to the test config file from fixtures."""
+
     tests_dir = Path(__file__).parent.parent
     config_path = tests_dir / "fixtures" / "test_configs" / "test_etl_config.conf"
+
     return str(config_path)
 
 
 @pytest.fixture
-def test_data_dir():
-    """Create temporary directory for test data"""
+def test_data_dir() -> Generator:
+    """Create temporary directory for test data."""
+
     with tempfile.TemporaryDirectory() as tmp_dir:
         yield tmp_dir
 
 
 @pytest.fixture
-def mock_minio_config(test_config_parser):
-    """Get MinIO configuration for testing"""
+def mock_minio_config(test_config_parser: ConfigParser) -> dict:
+    """Get MinIO configuration for testing."""
+
     return dict(test_config_parser['minio'])
 
 
 @pytest.fixture
-def mock_kafka_config(test_config_parser):
-    """Get Kafka configuration for testing"""
+def mock_kafka_config(test_config_parser: ConfigParser) -> dict:
+    """Get Kafka configuration for testing."""
+
     return dict(test_config_parser['kafka'])
 
 
 @pytest.fixture
-def mock_mssql_config(test_config_parser):
-    """Get MSSQL configuration for testing"""
+def mock_mssql_config(test_config_parser: ConfigParser) -> dict:
+    """Get MSSQL configuration for testing."""
+
     return dict(test_config_parser['mssql'])
