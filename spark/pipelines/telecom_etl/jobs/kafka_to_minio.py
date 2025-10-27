@@ -4,16 +4,20 @@ Reads from Kafka topic and writes to MinIO in Parquet format.
 """
 
 
-import argparse
-import logging
 import sys
 import os
+import logging
+import argparse
+import configparser
 from typing import TypedDict, cast
 from datetime import datetime
 from argparse import Namespace
 from pyspark.sql import SparkSession, DataFrame
 from pyspark.sql.functions import *
-from spark.pipelines.shared.utils.spark_utils import SparkSessionManager
+from spark.pipelines.shared.utils.spark_utils import (
+    SparkSessionManager,
+    SchemaManager
+)
 
 
 class Arguments(TypedDict):
@@ -77,7 +81,6 @@ class KafkaToMinio:
         """Write data to MinIO in Parquet format."""
 
         try:
-            # In production, this will be MinIO
             output_path = (
                 f"/tmp/telecom_data/smart_meter_data/date={self.processing_date}"
             )
@@ -126,6 +129,97 @@ class KafkaToMinio:
             if self.spark:
                 self.spark.stop()
                 self.logger.info("Spark session stopped")
+
+
+############################################################################
+################################### PROD ###################################
+############################################################################
+
+    def read_from_kafka_prod(self: 'KafkaToMinio') -> DataFrame:
+        """Read from Kafka in production."""
+
+        try:
+            config = configparser.ConfigParser()
+            config.read(self.config_path)
+
+            kafka_config = config['kafka']
+
+            df = (self.spark.readStream
+                .format("kafka")
+                .option("kafka.bootstrap.servers", kafka_config['bootstrap_servers'])
+                .option("subscribe", kafka_config['topic'])
+                .option("startingOffsets", "latest")
+                .load()
+            )
+            
+            schema = SchemaManager.get_smart_meter_schema()
+            json_df = (df
+                .select(col("value").cast("string").alias("json_data"))
+                .select(from_json(col("json_data"), schema).alias("data"))
+                .select("data.*")
+            )
+            
+            return json_df
+            
+        except Exception as e:
+            self.logger.error(f"Failed to read from Kafka: {str(e)}")
+            return None
+
+    def write_to_minio_prod(self: 'KafkaToMinio', df: DataFrame) -> bool:
+        """Write data to MinIO in production."""
+
+        try:
+            config = configparser.ConfigParser()
+            config.read(self.config_path)
+            minio_config = config['minio']
+
+            output_path = (
+                f"s3a://{minio_config['raw_bucket']}"
+                f"/smart_meter_data/date={self.processing_date}"
+            )
+
+            self.logger.info(f"Writing data to MinIO: {output_path}")
+            
+            (df.write
+                .mode("append")
+                .parquet(output_path))
+            
+            self.logger.info(f"Successfully wrote data to MinIO: {output_path}")
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Failed to write to MinIO: {str(e)}")
+            return False
+
+    def run_prod(self: 'KafkaToMinio') -> bool:
+        """Execute the production pipeline."""
+
+        try:
+            self.initialize_spark()
+            
+            df = self.read_from_kafka_prod()
+            if df is None:
+                self.logger.error("Failed to read from Kafka")
+                return False
+            
+            self.logger.info("Data from Kafka:")
+            df.show()
+            
+            success = self.write_to_minio_prod(df)
+            
+            if success:
+                self.logger.info("Kafka to MinIO pipeline completed successfully")
+            else:
+                self.logger.error("Pipeline failed")
+            
+            return success
+            
+        except Exception as e:
+            self.logger.error(f"Production pipeline execution failed: {str(e)}")
+            return False
+
+############################################################################
+############################################################################
 
 
 def main() -> None:

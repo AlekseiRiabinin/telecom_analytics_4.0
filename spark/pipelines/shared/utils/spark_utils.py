@@ -69,7 +69,7 @@ class DataQualityChecker:
             col("energy_consumption").isNotNull() &
             col("voltage").between(200, 250) &
             col("current_reading").between(0, 100) &
-            col("energy_consumption") > 0
+            (col("energy_consumption") > 0)
         )
         cleaned_count = cleaned_df.count()
         logging.info(

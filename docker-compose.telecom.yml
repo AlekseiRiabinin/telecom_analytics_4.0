@@ -268,7 +268,7 @@ services:
       - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092,kafka-2:19095
       - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
       - AIRFLOW_CONN_MINIO_DEFAULT=s3://minioadmin:minioadmin@minio:9002
-      - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/airflow
+      - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/telecom_analytics
       - AIRFLOW_CONN_MSSQL_DEFAULT=mssql+pyodbc://sa:Admin123!@mssql:1433/telecom_db?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes
     volumes:
       - ./airflow/dags:/opt/airflow/dags
@@ -306,7 +306,7 @@ services:
       - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092,kafka-2:19095
       - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
       - AIRFLOW_CONN_MINIO_DEFAULT=s3://minioadmin:minioadmin@minio:9002
-      - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/airflow
+      - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/telecom_analytics
       - AIRFLOW_CONN_MSSQL_DEFAULT=mssql+pyodbc://sa:Admin123!@mssql:1433/telecom_db?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes
     volumes:
       - ./airflow/dags:/opt/airflow/dags
@@ -342,7 +342,7 @@ services:
       - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092,kafka-2:19095
       - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
       - AIRFLOW_CONN_MINIO_DEFAULT=s3://minioadmin:minioadmin@minio:9002
-      - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/airflow
+      - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/telecom_analytics
       - AIRFLOW_CONN_MSSQL_DEFAULT=mssql+pyodbc://sa:Admin123!@mssql:1433/telecom_db?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes
     volumes:
       - ./airflow/dags:/opt/airflow/dags
@@ -378,7 +378,7 @@ services:
       - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092,kafka-2:19095
       - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
       - AIRFLOW_CONN_MINIO_DEFAULT=s3://minioadmin:minioadmin@minio:9002
-      - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/airflow
+      - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/telecom_analytics
       - AIRFLOW_CONN_MSSQL_DEFAULT=mssql+pyodbc://sa:Admin123!@mssql:1433/telecom_db?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes
     volumes:
       - ./airflow/dags:/opt/airflow/dags
@@ -420,7 +420,7 @@ services:
       - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092,kafka-2:19095
       - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
       - AIRFLOW_CONN_MINIO_DEFAULT=s3://minioadmin:minioadmin@minio:9002
-      - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/airflow
+      - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/telecom_analytics
       - AIRFLOW_CONN_MSSQL_DEFAULT=mssql+pyodbc://sa:Admin123!@mssql:1433/telecom_db?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes
     volumes:
       - ./airflow/dags:/opt/airflow/dags

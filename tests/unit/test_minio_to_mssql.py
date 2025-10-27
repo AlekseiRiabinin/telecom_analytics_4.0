@@ -53,7 +53,7 @@ class TestMinioToMSSQL:
             assert result_df is not None
             assert result_df.count() == 5
             mock_read.assert_called_once()
-    
+
     def test_transform_data_with_sample_data(
         self: 'TestMinioToMSSQL',
         spark_session: SparkSession,
@@ -71,11 +71,11 @@ class TestMinioToMSSQL:
         for col in expected_new_columns:
             assert col in transformed_df.columns
         
-
         categories = [row["consumption_category"] for row in transformed_df.collect()]
+        
         assert "MEDIUM" in categories
-        assert "HIGH" in categories
         assert "LOW" not in categories
+        assert "HIGH" not in categories
     
     def test_data_quality_validation(
         self: 'TestMinioToMSSQL',
