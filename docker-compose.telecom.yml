@@ -256,12 +256,7 @@ services:
       - minio
       - mssql
     environment:
-      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
-      - AIRFLOW__CELERY__BROKER_URL=redis://redis:6379/0
-      - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://postgres:postgres@postgres:5432/postgres
-      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
       - AIRFLOW__WEBSERVER__EXPOSE_CONFIG=True
-      - AIRFLOW__CORE__FERNET_KEY=PakKUDc_578hbrABpAhOs0PMn7RnDBfkgRO03e_tugA=
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
       - HADOOP_CONF_DIR=/opt/hadoop/etc/hadoop
       - AIRFLOW_CONN_HDFS_DEFAULT=hdfs://namenode:8020
@@ -274,11 +269,12 @@ services:
       - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs
       - ./airflow/plugins:/opt/airflow/plugins
+      - ./airflow/config/airflow.cfg:/opt/airflow/airflow.cfg 
       - ./hadoop-conf:/opt/hadoop/etc/hadoop
       - ./spark/pipelines:/opt/airflow/dags/spark/pipelines
       - ./spark/jars:/opt/airflow/jars
     ports:
-      - "8083:8080" 
+      - "8083:8080"
     networks:
       - kafka-net
     restart: always
@@ -296,12 +292,7 @@ services:
       - airflow-webserver
       - mssql
     environment:
-      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
-      - AIRFLOW__CELERY__BROKER_URL=redis://redis:6379/0
-      - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://postgres:postgres@postgres:5432/postgres
-      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
       - HADOOP_CONF_DIR=/opt/hadoop/etc/hadoop
-      - AIRFLOW__CORE__FERNET_KEY=PakKUDc_578hbrABpAhOs0PMn7RnDBfkgRO03e_tugA=
       - AIRFLOW_CONN_HDFS_DEFAULT=hdfs://namenode:8020
       - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092,kafka-2:19095
       - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
@@ -312,6 +303,7 @@ services:
       - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs
       - ./airflow/plugins:/opt/airflow/plugins
+      - ./airflow/config/airflow.cfg:/opt/airflow/airflow.cfg 
       - ./hadoop-conf:/opt/hadoop/etc/hadoop
       - ./spark/pipelines:/opt/airflow/dags/spark/pipelines
       - ./spark/jars:/opt/airflow/jars
@@ -333,11 +325,6 @@ services:
       - redis
       - postgres
     environment:
-      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
-      - AIRFLOW__CELERY__BROKER_URL=redis://redis:6379/0
-      - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://postgres:postgres@postgres:5432/postgres
-      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
-      - AIRFLOW__CORE__FERNET_KEY=PakKUDc_578hbrABpAhOs0PMn7RnDBfkgRO03e_tugA=
       - AIRFLOW_CONN_HDFS_DEFAULT=hdfs://namenode:8020
       - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092,kafka-2:19095
       - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
@@ -348,6 +335,7 @@ services:
       - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs
       - ./airflow/plugins:/opt/airflow/plugins
+      - ./airflow/config/airflow.cfg:/opt/airflow/airflow.cfg 
       - ./hadoop-conf:/opt/hadoop/etc/hadoop
       - ./spark/pipelines:/opt/airflow/dags/spark/pipelines
       - ./spark/jars:/opt/airflow/jars
@@ -369,11 +357,6 @@ services:
       - redis
       - postgres
     environment:
-      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
-      - AIRFLOW__CELERY__BROKER_URL=redis://redis:6379/0
-      - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://postgres:postgres@postgres:5432/postgres
-      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
-      - AIRFLOW__CORE__FERNET_KEY=PakKUDc_578hbrABpAhOs0PMn7RnDBfkgRO03e_tugA=
       - AIRFLOW_CONN_HDFS_DEFAULT=hdfs://namenode:8020
       - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092,kafka-2:19095
       - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
@@ -384,6 +367,7 @@ services:
       - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs
       - ./airflow/plugins:/opt/airflow/plugins
+      - ./airflow/config/airflow.cfg:/opt/airflow/airflow.cfg 
       - ./hadoop-conf:/opt/hadoop/etc/hadoop
       - ./spark/pipelines:/opt/airflow/dags/spark/pipelines
       - ./spark/jars:/opt/airflow/jars
@@ -416,6 +400,8 @@ services:
       - AIRFLOW__CELERY__BROKER_URL=redis://redis:6379/0
       - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://postgres:postgres@postgres:5432/postgres
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
+      - AIRFLOW__CORE__FERNET_KEY=PakKUDc_578hbrABpAhOs0PMn7RnDBfkgRO03e_tugA=
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
       - AIRFLOW_CONN_HDFS_DEFAULT=hdfs://namenode:8020
       - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092,kafka-2:19095
       - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
@@ -426,6 +412,7 @@ services:
       - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs
       - ./airflow/plugins:/opt/airflow/plugins
+      - ./airflow/config/airflow.cfg:/opt/airflow/airflow.cfg 
     networks:
       - kafka-net
 

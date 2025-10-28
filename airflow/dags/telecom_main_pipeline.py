@@ -1,106 +1,95 @@
-import sys
-import os
+"""
+Telecom Analytics ETL Pipeline using SparkSubmitOperator
+with enhanced configuration and error handling.
+"""
+
+
 from airflow import DAG
-from airflow.operators.python_operator import PythonOperator
-from airflow.operators.bash_operator import BashOperator
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
+from airflow.operators.empty import EmptyOperator
 from datetime import datetime, timedelta
 
-
-sys.path.append('/opt/airflow/dags/spark/pipelines')
 
 default_args = {
     'owner': 'telecom',
     'depends_on_past': False,
     'start_date': datetime(2024, 1, 1),
-    'email_on_failure': False,
+    'email_on_failure': True,
     'email_on_retry': False,
-    'retries': 1,
-    'retry_delay': timedelta(minutes=5)
+    'retries': 2,
+    'retry_delay': timedelta(minutes=10),
+    'execution_timeout': timedelta(hours=2)
 }
 
 dag = DAG(
     'telecom_analytics_pipeline',
     default_args=default_args,
-    description='Telecom Analytics ETL Pipeline',
+    description='Telecom Analytics ETL Pipeline - Spark Jobs Only',
     schedule_interval=timedelta(hours=1),
-    catchup=False
+    catchup=False,
+    tags=['telecom', 'spark', 'etl', 'batch-processing'],
+    max_active_runs=1
 )
 
-def run_kafka_to_minio(**kwargs):
-    """Run Kafka to MinIO job."""
-    from telecom_etl.jobs.kafka_to_minio import KafkaToMinio
-    
-    execution_date = kwargs['execution_date']
-    processing_date = execution_date.strftime('%Y-%m-%d')
-    
-    job = KafkaToMinio(
-        config_path="/opt/airflow/dags/spark/pipelines/telecom_etl/config/etl_prod.conf",
-        processing_date=processing_date
-    )
-    success = job.run_production()
-    
-    if not success:
-        raise Exception("Kafka to MinIO job failed")
-
-def run_minio_to_mssql(**kwargs):
-    """Run MinIO to MSSQL job."""
-    from telecom_etl.jobs.minio_to_mssql import MinioToMSSQL
-    
-    execution_date = kwargs['execution_date']
-    processing_date = execution_date.strftime('%Y-%m-%d')
-    
-    job = MinioToMSSQL(
-        config_path="/opt/airflow/dags/spark/pipelines/telecom_etl/config/etl_prod.conf",
-        processing_date=processing_date
-    )
-    success = job.run_production()
-    
-    if not success:
-        raise Exception("MinIO to MSSQL job failed")
-
-# Define tasks
-kafka_to_minio_task = PythonOperator(
-    task_id='kafka_to_minio',
-    python_callable=run_kafka_to_minio,
-    provide_context=True,
+start_pipeline = EmptyOperator(
+    task_id='start_pipeline',
     dag=dag,
 )
 
-minio_to_mssql_task = PythonOperator(
-    task_id='minio_to_mssql',
-    python_callable=run_minio_to_mssql,
-    provide_context=True,
+end_pipeline = EmptyOperator(
+    task_id='end_pipeline',
     dag=dag,
 )
 
-# Alternative: Using SparkSubmitOperator
-kafka_to_minio_spark_task = SparkSubmitOperator(
-    task_id='kafka_to_minio_spark_submit',
+kafka_to_minio_task = SparkSubmitOperator(
+    task_id='kafka_to_minio_job',
     application='/opt/airflow/dags/spark/pipelines/telecom_etl/jobs/kafka_to_minio.py',
-    name='kafka_to_minio',
+    name='telecom-kafka-to-minio',
     conn_id='spark_default',
     application_args=[
         '--config', 'etl_prod.conf',
         '--date', '{{ ds }}'
     ],
-    jars='/opt/airflow/jars/spark-sql-kafka-0-10_2.12-3.5.4.jar,/opt/airflow/jars/hadoop-aws-3.3.4.jar',
+    jars=(
+        '/opt/airflow/jars/spark-sql-kafka-0-10_2.12-3.5.4.jar,'
+        '/opt/airflow/jars/hadoop-aws-3.3.4.jar,'
+        '/opt/airflow/jars/aws-java-sdk-bundle-1.12.262.jar,'
+        '/opt/airflow/jars/mssql-jdbc-12.4.2.jre11.jar'
+    ),
+    env_vars={
+        'PYTHONPATH': '/opt/airflow/dags:/opt/airflow/dags/spark/pipelines',
+        'SPARK_HOME': '/opt/spark'
+    },
+    conf={
+        'spark.master': 'spark://spark-master:7077'
+    },
+    driver_memory='2g',
+    executor_memory='4g',
+    executor_cores=2,
+    num_executors=2,
+    verbose=True,
     dag=dag,
 )
 
-minio_to_mssql_spark_task = SparkSubmitOperator(
-    task_id='minio_to_mssql_spark_submit',
+minio_to_mssql_task = SparkSubmitOperator(
+    task_id='minio_to_mssql_job',
     application='/opt/airflow/dags/spark/pipelines/telecom_etl/jobs/minio_to_mssql.py',
-    name='minio_to_mssql',
+    name='telecom-minio-to-mssql',
     conn_id='spark_default',
     application_args=[
         '--config', 'etl_prod.conf',
         '--date', '{{ ds }}'
     ],
-    jars='/opt/airflow/jars/mssql-jdbc-12.4.2.jre11.jar,/opt/airflow/jars/hadoop-aws-3.3.4.jar',
+    jars=(
+        '/opt/airflow/jars/mssql-jdbc-12.4.2.jre11.jar,'
+        '/opt/airflow/jars/hadoop-aws-3.3.4.jar'
+    ),
+    driver_memory='2g',
+    executor_memory='4g',
+    executor_cores=2,
+    num_executors=2,
+    verbose=True,
     dag=dag,
 )
 
-# Set dependencies
-kafka_to_minio_task >> minio_to_mssql_task
-# kafka_to_minio_spark_task >> minio_to_mssql_spark_task
+start_pipeline >> kafka_to_minio_task >> minio_to_mssql_task >> end_pipeline

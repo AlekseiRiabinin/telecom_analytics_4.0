@@ -6,6 +6,7 @@ services:
       - ../../airflow/dags:/opt/airflow/dags:cached
       - ../../airflow/plugins:/opt/airflow/plugins:cached
       - ../../airflow/logs:/opt/airflow/logs:cached
+      - ../../airflow/config/airflow.cfg:/opt/airflow/airflow.cfg:cached
       
     working_dir: /opt/airflow
     
