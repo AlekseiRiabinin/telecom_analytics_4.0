@@ -495,8 +495,8 @@ services:
     environment:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
-      - SPARK_WORKER_MEMORY=1G
-      - SPARK_WORKER_CORES=1
+      - SPARK_WORKER_MEMORY=4G
+      - SPARK_WORKER_CORES=2
       - SPARK_WORKER_WEBUI_PORT=8081
       - SPARK_WORKER_PORT=8881
       - SPARK_LOCAL_IP=spark-worker
@@ -507,7 +507,10 @@ services:
       - PYSPARK_DRIVER_PYTHON=python3.10
     command: >
       /bin/bash -c "
-      /opt/spark/sbin/start-worker.sh spark://spark-master:7077 --webui-port 8081 &&
+      /opt/spark/sbin/start-worker.sh spark://spark-master:7077 
+      --webui-port 8081 
+      --memory 4G 
+      --cores 2 &&
       tail -f /opt/spark/logs/spark--org.apache.spark.deploy.worker.Worker-*.out"
     volumes:
       - ./spark/jars:/opt/spark/custom-jars
@@ -520,11 +523,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1.5'
-          memory: 3GiB
+          cpus: '2.0'
+          memory: 4GiB
         reservations:
-          cpus: '0.75'
-          memory: 1.5GiB
+          cpus: '1.0'
+          memory: 2GiB
 
   debezium-connect:
     build: 

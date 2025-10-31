@@ -31,7 +31,7 @@ def check_spark_connection():
         raise
 
 with DAG(
-    'telecom_analytics_pipeline',
+    'telecom_analytics_pipeline1',
     default_args=default_args,
     description='Telecom Analytics ETL Pipeline',
     schedule_interval=None,
@@ -64,24 +64,23 @@ with DAG(
             '/opt/airflow/jars/aws-java-sdk-bundle-1.12.262.jar,'
             '/opt/airflow/jars/mssql-jdbc-12.4.1.jre11.jar'
         ),
-        # **ADD PYTHON CONFIGURATIONS HERE**
         conf={
-            "spark.pyspark.python": "/usr/bin/python3",
-            "spark.pyspark.driver.python": "/usr/bin/python3",
-            "spark.executorEnv.PYSPARK_PYTHON": "/usr/bin/python3",
+            "spark.pyspark.python": "/usr/local/bin/python3.10",
+            "spark.pyspark.driver.python": "/usr/local/bin/python3.10",
+            "spark.executorEnv.PYSPARK_PYTHON": "/usr/local/bin/python3.10",
             "spark.sql.execution.arrow.pyspark.enabled": "false",
             "spark.network.timeout": "600s",
             "spark.executor.heartbeatInterval": "60s"
         },
-        driver_memory='2g',  # Increased memory
-        executor_memory='2g',  # Increased memory
+        driver_memory='2g',
+        executor_memory='2g',
         executor_cores=1,
         num_executors=1,
         verbose=True,
         env_vars={
             'PYTHONPATH': '/opt/airflow/dags:/opt/airflow/dags/spark/pipelines',
-            'PYSPARK_PYTHON': '/usr/bin/python3',  # Add environment variable
-            'PYSPARK_DRIVER_PYTHON': '/usr/bin/python3'  # Add environment variable
+            'PYSPARK_PYTHON': '/usr/local/bin/python3.10',
+            'PYSPARK_DRIVER_PYTHON': '/usr/local/bin/python3.10'
         }
     )
 
@@ -92,18 +91,24 @@ with DAG(
         conn_id='spark_default',
         application_args=['--config', 'etl_prod.conf', '--date', '{{ ds }}'],
         jars='/opt/airflow/jars/mssql-jdbc-12.4.2.jre11.jar,/opt/airflow/jars/hadoop-aws-3.3.4.jar',
-        # **ADD SAME CONFIGURATIONS HERE**
         conf={
-            "spark.pyspark.python": "/usr/bin/python3",
-            "spark.pyspark.driver.python": "/usr/bin/python3",
-            "spark.executorEnv.PYSPARK_PYTHON": "/usr/bin/python3",
-            "spark.sql.execution.arrow.pyspark.enabled": "false"
+            "spark.pyspark.python": "/usr/local/bin/python3.10",
+            "spark.pyspark.driver.python": "/usr/local/bin/python3.10",
+            "spark.executorEnv.PYSPARK_PYTHON": "/usr/local/bin/python3.10",
+            "spark.sql.execution.arrow.pyspark.enabled": "false",
+            "spark.network.timeout": "600s",
+            "spark.executor.heartbeatInterval": "60s"
         },
         driver_memory='2g',
         executor_memory='2g',
         executor_cores=1,
         num_executors=1,
         verbose=False,
+        env_vars={
+            'PYTHONPATH': '/opt/airflow/dags:/opt/airflow/dags/spark/pipelines',
+            'PYSPARK_PYTHON': '/usr/local/bin/python3.10',
+            'PYSPARK_DRIVER_PYTHON': '/usr/local/bin/python3.10'
+        }
     )
     
     end = EmptyOperator(task_id='end_pipeline')
