@@ -20,13 +20,8 @@ from spark.pipelines.shared.utils.spark_utils import (
 )
 
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-spark_pipelines_path = os.path.join(current_dir, '..', '..', '..')
-if spark_pipelines_path not in sys.path:
-    sys.path.insert(0, spark_pipelines_path)
-
 try:
-    from shared.utils.spark_utils import SparkSessionManager, SchemaManager
+    from spark.pipelines.shared.utils.spark_utils import SparkSessionManager, SchemaManager
     print("Successfully imported SparkSessionManager and SchemaManager")
 except ImportError as e:
     print(f"Import error: {e}")

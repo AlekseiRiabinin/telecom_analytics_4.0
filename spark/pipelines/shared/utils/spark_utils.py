@@ -27,10 +27,20 @@ class SparkSessionManager:
         builder: SparkSession.Builder = SparkSession.builder
         builder = builder.appName(app_name)
 
+        spark_config = config['spark']
+        master_url = spark_config.get('master', 'local[*]')
+        builder = builder.master(master_url)
+
         # Common configurations
         builder = (builder
+            .config("spark.pyspark.python", "/usr/bin/python3")
+            .config("spark.pyspark.driver.python", "/usr/bin/python3")
+            .config("spark.executorEnv.PYSPARK_PYTHON", "/usr/bin/python3")
+            .config("spark.sql.execution.arrow.pyspark.enabled", "false")
             .config("spark.sql.adaptive.enabled", "true")
             .config("spark.sql.adaptive.coalescePartitions.enabled", "true")
+            .config("spark.network.timeout", "600s")
+            .config("spark.executor.heartbeatInterval", "60s")
         )
 
         # MinIO configurations

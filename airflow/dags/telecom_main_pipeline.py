@@ -1,95 +1,112 @@
-"""
-Telecom Analytics ETL Pipeline using SparkSubmitOperator
-with enhanced configuration and error handling.
-"""
-
-
 from airflow import DAG
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
 from airflow.operators.empty import EmptyOperator
+from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
+import logging
 
+logger = logging.getLogger("airflow.task")
 
 default_args = {
-    'owner': 'telecom',
-    'depends_on_past': False,
-    'start_date': datetime(2024, 1, 1),
-    'email_on_failure': True,
-    'email_on_retry': False,
-    'retries': 2,
-    'retry_delay': timedelta(minutes=10),
-    'execution_timeout': timedelta(hours=2)
+    'owner': 'airflow',
+    'start_date': datetime(2025, 10, 28),
+    'retries': 1,
+    'retry_delay': timedelta(minutes=1),
 }
 
-dag = DAG(
+def debug_task():
+    logger.info("🔍 DEBUG: This task is executing!")
+    print("✅ Debug task is working!")
+    return "Debug completed"    
+
+def check_spark_connection():
+    import socket
+    logger.info("🔌 Checking Spark connection...")
+    try:
+        socket.create_connection(('spark-master', 7077), timeout=10)
+        logger.info("✅ Spark connection successful!")
+        return "Success"
+    except Exception as e:
+        logger.error(f"❌ Spark connection failed: {e}")
+        raise
+
+with DAG(
     'telecom_analytics_pipeline',
     default_args=default_args,
-    description='Telecom Analytics ETL Pipeline - Spark Jobs Only',
-    schedule_interval=timedelta(hours=1),
+    description='Telecom Analytics ETL Pipeline',
+    schedule_interval=None,
     catchup=False,
-    tags=['telecom', 'spark', 'etl', 'batch-processing'],
-    max_active_runs=1
-)
+    tags=['telecom', 'spark', 'etl'],
+    max_active_runs=1,
+) as dag:
 
-start_pipeline = EmptyOperator(
-    task_id='start_pipeline',
-    dag=dag,
-)
+    start = EmptyOperator(task_id='start_pipeline')
+    
+    debug = PythonOperator(
+        task_id='debug_task',
+        python_callable=debug_task
+    )
+    
+    check_conn = PythonOperator(
+        task_id='check_spark_connection',
+        python_callable=check_spark_connection
+    )
+    
+    kafka_to_minio = SparkSubmitOperator(
+        task_id='kafka_to_minio_job',
+        application='/opt/airflow/dags/spark/pipelines/telecom_etl/jobs/kafka_to_minio.py',
+        name='telecom-kafka-to-minio',
+        conn_id='spark_default',
+        application_args=['--config', 'etl_prod.conf', '--date', '{{ ds }}'],
+        jars=(
+            '/opt/airflow/jars/spark-sql-kafka-0-10_2.12-3.5.4.jar,'
+            '/opt/airflow/jars/hadoop-aws-3.3.4.jar,'
+            '/opt/airflow/jars/aws-java-sdk-bundle-1.12.262.jar,'
+            '/opt/airflow/jars/mssql-jdbc-12.4.1.jre11.jar'
+        ),
+        # **ADD PYTHON CONFIGURATIONS HERE**
+        conf={
+            "spark.pyspark.python": "/usr/bin/python3",
+            "spark.pyspark.driver.python": "/usr/bin/python3",
+            "spark.executorEnv.PYSPARK_PYTHON": "/usr/bin/python3",
+            "spark.sql.execution.arrow.pyspark.enabled": "false",
+            "spark.network.timeout": "600s",
+            "spark.executor.heartbeatInterval": "60s"
+        },
+        driver_memory='2g',  # Increased memory
+        executor_memory='2g',  # Increased memory
+        executor_cores=1,
+        num_executors=1,
+        verbose=True,
+        env_vars={
+            'PYTHONPATH': '/opt/airflow/dags:/opt/airflow/dags/spark/pipelines',
+            'PYSPARK_PYTHON': '/usr/bin/python3',  # Add environment variable
+            'PYSPARK_DRIVER_PYTHON': '/usr/bin/python3'  # Add environment variable
+        }
+    )
 
-end_pipeline = EmptyOperator(
-    task_id='end_pipeline',
-    dag=dag,
-)
+    minio_to_mssql = SparkSubmitOperator(
+        task_id='minio_to_mssql_job',
+        application='/opt/airflow/dags/spark/pipelines/telecom_etl/jobs/minio_to_mssql.py',
+        name='telecom-minio-to-mssql',
+        conn_id='spark_default',
+        application_args=['--config', 'etl_prod.conf', '--date', '{{ ds }}'],
+        jars='/opt/airflow/jars/mssql-jdbc-12.4.2.jre11.jar,/opt/airflow/jars/hadoop-aws-3.3.4.jar',
+        # **ADD SAME CONFIGURATIONS HERE**
+        conf={
+            "spark.pyspark.python": "/usr/bin/python3",
+            "spark.pyspark.driver.python": "/usr/bin/python3",
+            "spark.executorEnv.PYSPARK_PYTHON": "/usr/bin/python3",
+            "spark.sql.execution.arrow.pyspark.enabled": "false"
+        },
+        driver_memory='2g',
+        executor_memory='2g',
+        executor_cores=1,
+        num_executors=1,
+        verbose=False,
+    )
+    
+    end = EmptyOperator(task_id='end_pipeline')
 
-kafka_to_minio_task = SparkSubmitOperator(
-    task_id='kafka_to_minio_job',
-    application='/opt/airflow/dags/spark/pipelines/telecom_etl/jobs/kafka_to_minio.py',
-    name='telecom-kafka-to-minio',
-    conn_id='spark_default',
-    application_args=[
-        '--config', 'etl_prod.conf',
-        '--date', '{{ ds }}'
-    ],
-    jars=(
-        '/opt/airflow/jars/spark-sql-kafka-0-10_2.12-3.5.4.jar,'
-        '/opt/airflow/jars/hadoop-aws-3.3.4.jar,'
-        '/opt/airflow/jars/aws-java-sdk-bundle-1.12.262.jar,'
-        '/opt/airflow/jars/mssql-jdbc-12.4.2.jre11.jar'
-    ),
-    env_vars={
-        'PYTHONPATH': '/opt/airflow/dags:/opt/airflow/dags/spark/pipelines',
-        'SPARK_HOME': '/opt/spark'
-    },
-    conf={
-        'spark.master': 'spark://spark-master:7077'
-    },
-    driver_memory='2g',
-    executor_memory='4g',
-    executor_cores=2,
-    num_executors=2,
-    verbose=True,
-    dag=dag,
-)
-
-minio_to_mssql_task = SparkSubmitOperator(
-    task_id='minio_to_mssql_job',
-    application='/opt/airflow/dags/spark/pipelines/telecom_etl/jobs/minio_to_mssql.py',
-    name='telecom-minio-to-mssql',
-    conn_id='spark_default',
-    application_args=[
-        '--config', 'etl_prod.conf',
-        '--date', '{{ ds }}'
-    ],
-    jars=(
-        '/opt/airflow/jars/mssql-jdbc-12.4.2.jre11.jar,'
-        '/opt/airflow/jars/hadoop-aws-3.3.4.jar'
-    ),
-    driver_memory='2g',
-    executor_memory='4g',
-    executor_cores=2,
-    num_executors=2,
-    verbose=True,
-    dag=dag,
-)
-
-start_pipeline >> kafka_to_minio_task >> minio_to_mssql_task >> end_pipeline
+    # Define dependencies
+    start >> debug >> check_conn >> kafka_to_minio >> minio_to_mssql >> end

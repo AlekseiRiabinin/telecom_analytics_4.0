@@ -2,7 +2,6 @@ version: '3.8'
 services:
   airflow-webserver:
     volumes:
-      # Mount specific directories instead of entire workspace
       - ../../airflow/dags:/opt/airflow/dags:cached
       - ../../airflow/plugins:/opt/airflow/plugins:cached
       - ../../airflow/logs:/opt/airflow/logs:cached
