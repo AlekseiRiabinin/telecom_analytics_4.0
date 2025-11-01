@@ -8,6 +8,7 @@
         <count>10</count>
     </logger>
 
+    <listen_host>::</listen_host>
     <listen_host>0.0.0.0</listen_host>
     
     <http_port>8123</http_port>
@@ -27,14 +28,6 @@
     <http_connection_timeout>300</http_connection_timeout>
     <http_receive_timeout>300</http_receive_timeout>
     <http_send_timeout>300</http_send_timeout>
-
-    <!-- Remove the problematic http_handlers section -->
-    <!-- <http_handlers>
-        <rule>
-            <url>/</url>
-            <methods>POST,GET</methods>
-        </rule>
-    </http_handlers> -->
 
     <path>/var/lib/clickhouse/</path>
     <tmp_path>/var/lib/clickhouse/tmp/</tmp_path>

@@ -32,6 +32,7 @@ except ImportError as e:
 class Arguments(TypedDict):
     config: str
     date: str | None
+    prod: bool
 
 
 class KafkaToMinio:
@@ -235,7 +236,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description='Kafka to MinIO Spark Job')
     parser.add_argument('--config', required=True, help='Path to config file')
     parser.add_argument('--date', help='Processing date (YYYY-MM-DD)')
-    
+    parser.add_argument('--prod', action='store_true', help='Run in production mode')
+
     args: Namespace = parser.parse_args()  
     typed_args = cast(Arguments, vars(args))
 
@@ -250,7 +252,14 @@ def main() -> None:
         sys.exit(1)
     
     job = KafkaToMinio(config_full_path, typed_args['date'])
-    success = job.run()
+
+    # Use production mode if --prod flag is provided
+    if typed_args['prod']:
+        success = job.run_prod()
+        print("Running in PRODUCTION mode (writing to MinIO)")
+    else:
+        success = job.run()
+        print("Running in DEVELOPMENT mode (writing to local filesystem)")
     
     sys.exit(0 if success else 1)
 

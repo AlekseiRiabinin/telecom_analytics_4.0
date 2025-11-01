@@ -5,7 +5,9 @@ from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
 import logging
 
+
 logger = logging.getLogger("airflow.task")
+
 
 default_args = {
     'owner': 'airflow',
@@ -14,21 +16,24 @@ default_args = {
     'retry_delay': timedelta(minutes=1),
 }
 
+
 def debug_task():
-    logger.info("🔍 DEBUG: This task is executing!")
-    print("✅ Debug task is working!")
+    logger.info("DEBUG: This task is executing!")
+    print("Debug task is working!")
     return "Debug completed"    
+
 
 def check_spark_connection():
     import socket
-    logger.info("🔌 Checking Spark connection...")
+    logger.info("Checking Spark connection...")
     try:
         socket.create_connection(('spark-master', 7077), timeout=10)
-        logger.info("✅ Spark connection successful!")
+        logger.info("Spark connection successful!")
         return "Success"
     except Exception as e:
-        logger.error(f"❌ Spark connection failed: {e}")
+        logger.error(f"Spark connection failed: {e}")
         raise
+
 
 with DAG(
     'telecom_analytics_etl',
@@ -57,9 +62,15 @@ with DAG(
         application='/opt/airflow/dags/spark/pipelines/telecom_etl/jobs/kafka_to_minio.py',
         name='telecom-kafka-to-minio',
         conn_id='spark_default',
-        application_args=['--config', 'etl_prod.conf', '--date', '{{ ds }}'],
+        application_args=[
+            '--config', 'etl_prod.conf', 
+            '--date', '{{ ds }}',
+            '--prod'
+        ],
         jars=(
             '/opt/airflow/jars/spark-sql-kafka-0-10_2.12-3.5.4.jar,'
+            '/opt/airflow/jars/kafka-clients-3.8.0.jar,'
+            '/opt/airflow/jars/spark-streaming-kafka-0-10_2.12-3.5.4.jar,'
             '/opt/airflow/jars/hadoop-aws-3.3.4.jar,'
             '/opt/airflow/jars/aws-java-sdk-bundle-1.12.262.jar,'
             '/opt/airflow/jars/mssql-jdbc-12.4.1.jre11.jar'
@@ -70,7 +81,13 @@ with DAG(
             "spark.executorEnv.PYSPARK_PYTHON": "/usr/local/bin/python3.10",
             "spark.sql.execution.arrow.pyspark.enabled": "false",
             "spark.network.timeout": "600s",
-            "spark.executor.heartbeatInterval": "60s"
+            "spark.executor.heartbeatInterval": "60s",
+            "spark.hadoop.fs.s3a.endpoint": "http://minio:9002",
+            "spark.hadoop.fs.s3a.access.key": "minioadmin", 
+            "spark.hadoop.fs.s3a.secret.key": "minioadmin",
+            "spark.hadoop.fs.s3a.path.style.access": "true",
+            "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem",
+            "spark.hadoop.fs.s3a.connection.ssl.enabled": "false"
         },
         driver_memory='2g',
         executor_memory='2g',
