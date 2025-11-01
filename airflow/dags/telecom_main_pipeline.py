@@ -31,7 +31,7 @@ def check_spark_connection():
         raise
 
 with DAG(
-    'telecom_analytics_pipeline1',
+    'telecom_analytics_etl',
     default_args=default_args,
     description='Telecom Analytics ETL Pipeline',
     schedule_interval=None,
