@@ -158,3 +158,6 @@ temp/
 
 # Application specific
 sample_data/output/
+
+# Jar cached files
+shared/ivy-cache/

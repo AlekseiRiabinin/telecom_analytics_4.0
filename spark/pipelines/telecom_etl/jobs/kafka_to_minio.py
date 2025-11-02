@@ -154,14 +154,15 @@ class KafkaToMinio:
 
             kafka_config = config['kafka']
 
-            df = (self.spark.readStream
+            df = (self.spark.read
                 .format("kafka")
                 .option("kafka.bootstrap.servers", kafka_config['bootstrap_servers'])
                 .option("subscribe", kafka_config['topic'])
-                .option("startingOffsets", "latest")
+                .option("startingOffsets", "earliest")
+                .option("endingOffsets", "latest")
                 .load()
             )
-            
+
             schema = SchemaManager.get_smart_meter_schema()
             json_df = (df
                 .select(col("value").cast("string").alias("json_data"))
@@ -192,6 +193,7 @@ class KafkaToMinio:
             
             (df.write
                 .mode("append")
+                .option("compression", "snappy")
                 .parquet(output_path))
             
             self.logger.info(f"Successfully wrote data to MinIO: {output_path}")
@@ -212,11 +214,13 @@ class KafkaToMinio:
                 self.logger.error("Failed to read from Kafka")
                 return False
             
-            self.logger.info("Data from Kafka:")
-            df.show()
+            count = df.count()
+            self.logger.info(f"Read {count} records from Kafka")
             
             success = self.write_to_minio_prod(df)
-            
+            # ✅ Simulate success without actual operations
+            # success = True
+
             if success:
                 self.logger.info("Kafka to MinIO pipeline completed successfully")
             else:

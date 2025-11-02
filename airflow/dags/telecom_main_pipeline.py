@@ -56,7 +56,7 @@ with DAG(
         task_id='check_spark_connection',
         python_callable=check_spark_connection
     )
-    
+
     kafka_to_minio = SparkSubmitOperator(
         task_id='kafka_to_minio_job',
         application='/opt/airflow/dags/spark/pipelines/telecom_etl/jobs/kafka_to_minio.py',
@@ -67,14 +67,12 @@ with DAG(
             '--date', '{{ ds }}',
             '--prod'
         ],
-        jars=(
-            '/opt/airflow/jars/spark-sql-kafka-0-10_2.12-3.5.4.jar,'
-            '/opt/airflow/jars/kafka-clients-3.8.0.jar,'
-            '/opt/airflow/jars/spark-streaming-kafka-0-10_2.12-3.5.4.jar,'
-            '/opt/airflow/jars/hadoop-aws-3.3.4.jar,'
-            '/opt/airflow/jars/aws-java-sdk-bundle-1.12.262.jar,'
-            '/opt/airflow/jars/mssql-jdbc-12.4.1.jre11.jar'
-        ),
+        packages="org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.4,"
+                "org.apache.kafka:kafka-clients:3.6.1,"
+                "org.apache.hadoop:hadoop-aws:3.3.4,"
+                "com.amazonaws:aws-java-sdk-bundle:1.12.262,"
+                "com.microsoft.sqlserver:mssql-jdbc:12.4.1.jre11",           
+        # jars='/opt/airflow/jars/mssql-jdbc-12.4.1.jre11.jar',
         conf={
             "spark.pyspark.python": "/usr/local/bin/python3.10",
             "spark.pyspark.driver.python": "/usr/local/bin/python3.10",
@@ -87,7 +85,8 @@ with DAG(
             "spark.hadoop.fs.s3a.secret.key": "minioadmin",
             "spark.hadoop.fs.s3a.path.style.access": "true",
             "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem",
-            "spark.hadoop.fs.s3a.connection.ssl.enabled": "false"
+            "spark.hadoop.fs.s3a.connection.ssl.enabled": "false",
+            "spark.jars.ivy": "/shared/ivy2",
         },
         driver_memory='2g',
         executor_memory='2g',
