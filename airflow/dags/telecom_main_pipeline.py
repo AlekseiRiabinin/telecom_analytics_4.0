@@ -72,7 +72,6 @@ with DAG(
                 "org.apache.hadoop:hadoop-aws:3.3.4,"
                 "com.amazonaws:aws-java-sdk-bundle:1.12.262,"
                 "com.microsoft.sqlserver:mssql-jdbc:12.4.1.jre11",           
-        # jars='/opt/airflow/jars/mssql-jdbc-12.4.1.jre11.jar',
         conf={
             "spark.pyspark.python": "/usr/local/bin/python3.10",
             "spark.pyspark.driver.python": "/usr/local/bin/python3.10",
@@ -86,7 +85,6 @@ with DAG(
             "spark.hadoop.fs.s3a.path.style.access": "true",
             "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem",
             "spark.hadoop.fs.s3a.connection.ssl.enabled": "false",
-            "spark.jars.ivy": "/shared/ivy2",
         },
         driver_memory='2g',
         executor_memory='2g',
@@ -105,15 +103,27 @@ with DAG(
         application='/opt/airflow/dags/spark/pipelines/telecom_etl/jobs/minio_to_mssql.py',
         name='telecom-minio-to-mssql',
         conn_id='spark_default',
-        application_args=['--config', 'etl_prod.conf', '--date', '{{ ds }}'],
-        jars='/opt/airflow/jars/mssql-jdbc-12.4.2.jre11.jar,/opt/airflow/jars/hadoop-aws-3.3.4.jar',
+        application_args=[
+            '--config', 'etl_prod.conf', 
+            '--date', '{{ ds }}',
+            '--prod'
+        ],
+        packages="org.apache.hadoop:hadoop-aws:3.3.4,"
+                "com.amazonaws:aws-java-sdk-bundle:1.12.262,"
+                "com.microsoft.sqlserver:mssql-jdbc:12.4.1.jre11",
         conf={
             "spark.pyspark.python": "/usr/local/bin/python3.10",
             "spark.pyspark.driver.python": "/usr/local/bin/python3.10",
             "spark.executorEnv.PYSPARK_PYTHON": "/usr/local/bin/python3.10",
             "spark.sql.execution.arrow.pyspark.enabled": "false",
             "spark.network.timeout": "600s",
-            "spark.executor.heartbeatInterval": "60s"
+            "spark.executor.heartbeatInterval": "60s",
+            "spark.hadoop.fs.s3a.endpoint": "http://minio:9002",
+            "spark.hadoop.fs.s3a.access.key": "minioadmin", 
+            "spark.hadoop.fs.s3a.secret.key": "minioadmin",
+            "spark.hadoop.fs.s3a.path.style.access": "true",
+            "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem",
+            "spark.hadoop.fs.s3a.connection.ssl.enabled": "false",
         },
         driver_memory='2g',
         executor_memory='2g',
@@ -129,5 +139,4 @@ with DAG(
     
     end = EmptyOperator(task_id='end_pipeline')
 
-    # Define dependencies
     start >> debug >> check_conn >> kafka_to_minio >> minio_to_mssql >> end

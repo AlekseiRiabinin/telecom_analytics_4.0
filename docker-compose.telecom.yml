@@ -270,7 +270,7 @@ services:
       - ./airflow/logs:/opt/airflow/logs
       - ./airflow/plugins:/opt/airflow/plugins
       - ./airflow/config/airflow.cfg:/opt/airflow/airflow.cfg 
-      - ./shared/ivy-cache:/shares/ivy2
+      - ./shared/ivy-cache:/home/airflow/.ivy2
       - ./hadoop-conf:/opt/hadoop/etc/hadoop
       - ./spark/pipelines:/opt/airflow/dags/spark/pipelines
       - ./spark/jars:/opt/airflow/jars
@@ -305,7 +305,7 @@ services:
       - ./airflow/logs:/opt/airflow/logs
       - ./airflow/plugins:/opt/airflow/plugins
       - ./airflow/config/airflow.cfg:/opt/airflow/airflow.cfg 
-      - ./shared/ivy-cache:/shares/ivy2
+      - ./shared/ivy-cache:/home/airflow/.ivy2
       - ./hadoop-conf:/opt/hadoop/etc/hadoop
       - ./spark/pipelines:/opt/airflow/dags/spark/pipelines
       - ./spark/jars:/opt/airflow/jars
@@ -338,7 +338,7 @@ services:
       - ./airflow/logs:/opt/airflow/logs
       - ./airflow/plugins:/opt/airflow/plugins
       - ./airflow/config/airflow.cfg:/opt/airflow/airflow.cfg 
-      - ./shared/ivy-cache:/shares/ivy2
+      - ./shared/ivy-cache:/home/airflow/.ivy2
       - ./hadoop-conf:/opt/hadoop/etc/hadoop
       - ./spark/pipelines:/opt/airflow/dags/spark/pipelines
       - ./spark/jars:/opt/airflow/jars
@@ -371,7 +371,7 @@ services:
       - ./airflow/logs:/opt/airflow/logs
       - ./airflow/plugins:/opt/airflow/plugins
       - ./airflow/config/airflow.cfg:/opt/airflow/airflow.cfg 
-      - ./shared/ivy-cache:/shares/ivy2
+      - ./shared/ivy-cache:/home/airflow/.ivy2
       - ./hadoop-conf:/opt/hadoop/etc/hadoop
       - ./spark/pipelines:/opt/airflow/dags/spark/pipelines
       - ./spark/jars:/opt/airflow/jars
@@ -417,7 +417,7 @@ services:
       - ./airflow/logs:/opt/airflow/logs
       - ./airflow/plugins:/opt/airflow/plugins
       - ./airflow/config/airflow.cfg:/opt/airflow/airflow.cfg 
-      - ./shared/ivy-cache:/shares/ivy2
+      - ./shared/ivy-cache:/home/airflow/.ivy2
     networks:
       - kafka-net
 
@@ -483,7 +483,7 @@ services:
       - ./spark/jars:/opt/spark/custom-jars
       - ./spark/pipelines:/opt/spark/work-dir/pipelines
       - ./spark/jars:/opt/airflow/jars:ro
-      - ./shared/ivy-cache:/shares/ivy2 
+      - ./shared/ivy-cache:/home/spark/.ivy2
     networks:
       - kafka-net
     restart: always
@@ -523,7 +523,7 @@ services:
       - ./spark/jars:/opt/spark/custom-jars
       - ./spark/pipelines:/opt/spark/work-dir/pipelines
       - ./spark/jars:/opt/airflow/jars:ro
-      - ./shared/ivy-cache:/shares/ivy2 
+      - ./shared/ivy-cache:/home/spark/.ivy2
     depends_on:
       - spark-master
     networks:

@@ -218,8 +218,6 @@ class KafkaToMinio:
             self.logger.info(f"Read {count} records from Kafka")
             
             success = self.write_to_minio_prod(df)
-            # ✅ Simulate success without actual operations
-            # success = True
 
             if success:
                 self.logger.info("Kafka to MinIO pipeline completed successfully")

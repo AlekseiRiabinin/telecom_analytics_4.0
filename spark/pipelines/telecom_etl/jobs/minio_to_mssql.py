@@ -229,6 +229,7 @@ class MinioToMSSQL:
                 "driver": "com.microsoft.sqlserver.jdbc.SQLServerDriver"
             }
             
+            self.logger.info("Writing cleaned data to smart_meter_data table")
             (dataframes['cleaned_data'].write
                 .jdbc(
                     url=jdbc_url,
@@ -238,6 +239,7 @@ class MinioToMSSQL:
                 )
             )
             
+            self.logger.info("Writing daily aggregates to daily_energy_consumption table")
             (dataframes['daily_aggregates'].write
                 .jdbc(
                     url=jdbc_url,
@@ -290,6 +292,11 @@ class MinioToMSSQL:
             self.logger.error(f"Pipeline execution failed: {str(e)}")
             return False
 
+        finally:
+            if self.spark:
+                self.spark.stop()
+                self.logger.info("Spark session stopped")
+
 ############################################################################
 ############################################################################
 
@@ -298,6 +305,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description='MinIO to MSSQL Spark Job')
     parser.add_argument('--config', required=True, help='Path to configuration file')
     parser.add_argument('--date', required=True, help='Processing date (YYYY-MM-DD)')
+    parser.add_argument('--prod', action='store_true', help='Run in production mode')
 
     args: Namespace = parser.parse_args()  
     typed_args = cast(Arguments, vars(args))
@@ -313,7 +321,16 @@ def main() -> None:
         sys.exit(1)
 
     job = MinioToMSSQL(config_full_path, typed_args['date'])
-    success = job.run()
+
+    if typed_args['prod']:
+        print("Running in PRODUCTION mode (reading from MinIO, writing to MSSQL)")
+        success = job.run_prod()
+    else:
+        print(
+            f"Running in DEVELOPMENT mode "
+            f"(reading from local filesystem, demonstrating MSSQL write)"
+        )
+        success = job.run()
     
     sys.exit(0 if success else 1)
 
