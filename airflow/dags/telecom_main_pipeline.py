@@ -1,9 +1,9 @@
+import logging
 from airflow import DAG
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
-import logging
 
 
 logger = logging.getLogger("airflow.task")
@@ -26,10 +26,12 @@ def debug_task():
 def check_spark_connection():
     import socket
     logger.info("Checking Spark connection...")
+
     try:
         socket.create_connection(('spark-master', 7077), timeout=10)
         logger.info("Spark connection successful!")
         return "Success"
+
     except Exception as e:
         logger.error(f"Spark connection failed: {e}")
         raise

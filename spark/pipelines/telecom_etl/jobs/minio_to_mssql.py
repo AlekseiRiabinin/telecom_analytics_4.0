@@ -100,12 +100,12 @@ class MinioToMSSQL:
 
         self.logger.info("Handling NULL values in source data")
         cleaned_df = df.fillna({
-            'energy_consumption': 0.0,
-            'current_reading': 0.0,
-            'power_factor': 0.9,
+            'energy_consumption': 15.0,
+            'current_reading': 10.0,
+            'power_factor': 0.95,
             'frequency': 50.0
         })
-        
+
         self.logger.info("Data after NULL handling:")
         self.debug_data_quality(cleaned_df)
         
