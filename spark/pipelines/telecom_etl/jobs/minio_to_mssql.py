@@ -23,6 +23,7 @@ from pyspark.sql.functions import *
 class Arguments(TypedDict):
     config: str
     date: str | None
+    prod: bool
 
 
 class MinioToMSSQL:
@@ -70,13 +71,46 @@ class MinioToMSSQL:
         except Exception as e:
             self.logger.error(f"Failed to read from MinIO: {str(e)}")
             return None
-    
+
+    def debug_data_quality(self: 'MinioToMSSQL', df: DataFrame) -> None:
+        """Debug data quality issues."""
+
+        self.logger.info("=== DATA QUALITY DEBUG ===")
+        
+        for column in df.columns:
+            null_count = df.filter(col(column).isNull()).count()
+            total_count = df.count()
+            self.logger.info(
+                f"Column {column}: {null_count}/{total_count} "
+                f"NULL values ({null_count / total_count * 100:.1f}%)"
+            )
+        
+        self.logger.info("Sample of records with NULL energy_consumption:")
+
+        (df.filter(col("energy_consumption").isNull())
+            .select("meter_id", "timestamp", "energy_consumption", "voltage")
+            .show(5))
+
+        self.logger.info("=== END DATA QUALITY DEBUG ===")
+
     def transform_data(self: 'MinioToMSSQL', df: DataFrame) -> DataFrame:
         """Apply simple transformations."""
 
         self.logger.info("Applying data transformations")
-       
-        cleaned_df = DataQualityChecker.validate_meter_data(df)
+
+        self.logger.info("Handling NULL values in source data")
+        cleaned_df = df.fillna({
+            'energy_consumption': 0.0,
+            'current_reading': 0.0,
+            'power_factor': 0.9,
+            'frequency': 50.0
+        })
+        
+        self.logger.info("Data after NULL handling:")
+        self.debug_data_quality(cleaned_df)
+        
+        self.logger.info("Applying data quality validation")
+        cleaned_df = DataQualityChecker.validate_meter_data(cleaned_df)
 
         transformed_df = (cleaned_df
             .withColumn("timestamp", to_timestamp(col("timestamp")))
@@ -228,9 +262,17 @@ class MinioToMSSQL:
                 "password": mssql_config['password'],
                 "driver": "com.microsoft.sqlserver.jdbc.SQLServerDriver"
             }
-            
-            self.logger.info("Writing cleaned data to smart_meter_data table")
-            (dataframes['cleaned_data'].write
+
+            cleaned_data_for_db = dataframes['cleaned_data'].select(
+                "meter_id", "timestamp", "energy_consumption", "voltage",
+                "current_reading", "power_factor", "frequency"
+            )
+
+            self.logger.info(
+                f"Writing {cleaned_data_for_db.count()} "
+                f"records to smart_meter_data table"
+            )
+            (cleaned_data_for_db.write
                 .jdbc(
                     url=jdbc_url,
                     table="smart_meter_data",
@@ -238,9 +280,17 @@ class MinioToMSSQL:
                     properties=properties
                 )
             )
-            
-            self.logger.info("Writing daily aggregates to daily_energy_consumption table")
-            (dataframes['daily_aggregates'].write
+
+            daily_aggregates_for_db = dataframes['daily_aggregates'].select(
+                "meter_id", "date", "total_energy", "avg_voltage", 
+                "avg_current", "max_consumption", "record_count", "created_at"
+            )
+
+            self.logger.info(
+                f"Writing {daily_aggregates_for_db.count()} "
+                f"records to daily_energy_consumption table"
+            )
+            (daily_aggregates_for_db.write
                 .jdbc(
                     url=jdbc_url,
                     table="daily_energy_consumption",
@@ -248,7 +298,7 @@ class MinioToMSSQL:
                     properties=properties
                 )
             )
-            
+
             self.logger.info("Successfully wrote data to MSSQL")
             return True
             
@@ -267,11 +317,32 @@ class MinioToMSSQL:
             if raw_df is None or raw_df.count() == 0:
                 self.logger.warning("No data found to process")
                 return True
+
+            self.debug_data_quality(raw_df)
             
-            self.logger.info("Raw data from MinIO:")
-            raw_df.show()
+            self.logger.info("Sample of raw data:")
+            (raw_df
+                .select(
+                    "meter_id", "timestamp", "energy_consumption", 
+                    "voltage", "current_reading"
+                )
+                .show(10))
             
             transformed_df = self.transform_data(raw_df)
+
+            if transformed_df.count() == 0:
+                self.logger.warning("No data passed transformations and quality checks")
+                return True
+                
+            self.logger.info(f"Transformed data - Count: {transformed_df.count()}")
+            self.logger.info("Sample of transformed data:")
+            (transformed_df
+                .select(
+                    "meter_id", "timestamp", "energy_consumption", 
+                    "consumption_category", "processed_at"
+                )
+                .show(10))
+            
             daily_aggregates = self.create_aggregations(transformed_df)
             
             dataframes = {
