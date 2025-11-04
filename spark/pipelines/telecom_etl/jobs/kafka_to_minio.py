@@ -83,7 +83,7 @@ class KafkaToMinio:
             "voltage", "current_reading", "power_factor", "frequency"
         ]
         df = self.spark.createDataFrame(sample_data, columns)
-        
+
         self.logger.info(f"Created sample data with {df.count()} records")
         return df
 

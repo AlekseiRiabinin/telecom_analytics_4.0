@@ -53,9 +53,6 @@ services:
   
   # Kafka Producer (smart meter data)
   kafka-producer:
-    build:
-      context: .
-      dockerfile: producer/Dockerfile
     image: alexflames77/kafka_producer:latest
     container_name: kafka-producer
     depends_on:
@@ -66,8 +63,6 @@ services:
       - KAFKA_TOPIC=smart_meter_data
     networks:
       - kafka-net
-    volumes:
-      - ./data/smart_meter_data.json:/app/data/smart_meter_data.json
     restart: unless-stopped
     deploy:
       resources:
