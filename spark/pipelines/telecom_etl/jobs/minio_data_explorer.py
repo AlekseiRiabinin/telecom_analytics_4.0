@@ -296,19 +296,19 @@ class MinioDataExplorer:
                 f"({percentage:.2f}%)"
             )
         
-        combined_condition = None
-        for check_name, condition in validation_checks:
-            if combined_condition is None:
-                combined_condition = condition
-            else:
-                combined_condition = combined_condition & condition
+        combined_condition = (
+            (col("voltage") >= 200) & (col("voltage") <= 250) &
+            (col("current_reading") >= 0) & (col("current_reading") <= 100) &
+            (col("energy_consumption") > 0) &
+            col("meter_id").isNotNull() &
+            col("timestamp").isNotNull()
+        )
         
-        if combined_condition:
-            valid_count = df.filter(combined_condition).count()
-            self.logger.info(
-                f"\nRecords passing ALL validation rules: "
-                f"{valid_count}/{total_count} ({(valid_count/total_count)*100:.2f}%)"
-            )
+        valid_count = df.filter(combined_condition).count()
+        self.logger.info(
+            f"\nRecords passing ALL validation rules: "
+            f"{valid_count}/{total_count} ({(valid_count/total_count)*100:.2f}%)"
+        )
         
         self.analyze_validation_failures(df)
 
@@ -330,40 +330,39 @@ class MinioDataExplorer:
             ("timestamp IS NULL", df.filter(col("timestamp").isNull()).count())
         ]
         
+        total_failures = sum(count for _, count in failure_reasons)
+        
+        if total_failures == 0:
+            self.logger.info("No validation failures found - all data passed quality checks!")
+            self.logger.info("Data quality: EXCELLENT (100% validation success rate)")
+            return
+        
         self.logger.info("Breakdown of validation failures:")
         for reason, count in failure_reasons:
             if count > 0:
                 percentage = (count / total_count) * 100
                 self.logger.info(f"  {reason}: {count} records ({percentage:.2f}%)")
         
-        invalid_conditions = [
-            (col("voltage") < 200) | (col("voltage") > 250),
-            (col("current_reading") < 0) | (col("current_reading") > 100),
-            (col("energy_consumption") <= 0) | col("energy_consumption").isNull(),
-            col("meter_id").isNull(),
+        invalid_condition = (
+            (col("voltage") < 200) | (col("voltage") > 250) |
+            (col("current_reading") < 0) | (col("current_reading") > 100) |
+            (col("energy_consumption") <= 0) | col("energy_consumption").isNull() |
+            col("meter_id").isNull() |
             col("timestamp").isNull()
-        ]
+        )
         
-        invalid_condition = None
-        for condition in invalid_conditions:
-            if invalid_condition is None:
-                invalid_condition = condition
-            else:
-                invalid_condition = invalid_condition | condition
+        invalid_data = df.filter(invalid_condition)
+        invalid_count = invalid_data.count()
         
-        if invalid_condition:
-            invalid_data = df.filter(invalid_condition)
-            invalid_count = invalid_data.count()
+        if invalid_count > 0:
+            self.logger.info(f"\nSample of {invalid_count} invalid records:")
             
-            if invalid_count > 0:
-                self.logger.info(f"\nSample of {invalid_count} invalid records:")
-                
-                (invalid_data
-                    .select(
-                        "meter_id", "timestamp", "energy_consumption",
-                        "voltage", "current_reading"
-                    )
-                    .show(10, truncate=False))
+            (invalid_data
+                .select(
+                    "meter_id", "timestamp", "energy_consumption",
+                    "voltage", "current_reading"
+                )
+                .show(10, truncate=False))
 
     def generate_summary_report(self: 'MinioDataExplorer', df: DataFrame) -> None:
         """Generate comprehensive summary report."""
