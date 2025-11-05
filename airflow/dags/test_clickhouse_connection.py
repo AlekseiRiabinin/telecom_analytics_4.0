@@ -44,7 +44,7 @@ def test_clickhouse_hook_explicit():
         return f"ClickHouse HTTP explicit params OK - Version: {version}"
         
     except Exception as e:
-        logger.error(f"❌ ClickHouse HTTP explicit params failed: {e}")
+        logger.error(f"ClickHouse HTTP explicit params failed: {e}")
 
         return test_clickhouse_direct_fallback()
 
@@ -104,7 +104,7 @@ def test_clickhouse_direct():
         return f"Direct HTTP connection OK - Version: {version}"
         
     except Exception as e:
-        logger.error(f"❌ Direct HTTP connection failed: {e}")
+        logger.error(f"Direct HTTP connection failed: {e}")
         raise
 
 
