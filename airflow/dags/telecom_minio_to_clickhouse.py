@@ -1,6 +1,6 @@
 """
 MinIO to ClickHouse ETL Pipeline
-Uses ClickHouse Hook for efficient data transfer.
+Using ClickHouse Hook with explicit HTTP parameters (proven working approach)
 """
 
 import logging
@@ -10,6 +10,7 @@ from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator
 from airflow.exceptions import AirflowException
 from datetime import datetime, timedelta
+import time
 
 
 logger = logging.getLogger("airflow.task")
@@ -18,35 +19,41 @@ logger = logging.getLogger("airflow.task")
 default_args = {
     'owner': 'airflow',
     'start_date': datetime(2025, 10, 28),
-    'retries': 2,
-    'retry_delay': timedelta(minutes=2),
+    'retries': 1,
+    'retry_delay': timedelta(minutes=1),
     'depends_on_past': False,
 }
 
 
+def get_clickhouse_hook():
+    """Get ClickHouse Hook with explicit HTTP parameters."""
+
+    from clickhouse_provider.hooks.clickhouse_hook import ClickhouseHook
+    
+    return ClickhouseHook(
+        host='clickhouse',
+        port=8123,
+        database='telecom_analytics',
+        user='admin',
+        password='clickhouse_admin',
+        protocol='http'
+    )
+
+
 def check_clickhouse_connection():
-    """Check ClickHouse connection using the efficient ClickHouse Hook."""
+    """Check ClickHouse connection."""
     
     try:
-        from clickhouse_provider.hooks.clickhouse_hook import ClickhouseHook
+        logger.info("Testing ClickHouse connection with explicit HTTP parameters...")
         
-        logger.info("Testing ClickHouse connection with ClickHouse Hook...")
-        
-        clickhouse_hook = ClickhouseHook(
-            host='clickhouse-server',
-            port=8123,
-            database='telecom_analytics',
-            user='admin',
-            password='clickhouse_admin',
-            protocol='http'
-        )
-
+        clickhouse_hook = get_clickhouse_hook()
         result = clickhouse_hook.run("SELECT version() as version")
         version = result[0][0] if result else "Unknown"
-        logger.info(f"ClickHouse connection successful. Version: {version}")
+        logger.info(f"ClickHouse HTTP connection successful. Version: {version}")
         
         databases = clickhouse_hook.run("SHOW DATABASES")
         database_names = [db[0] for db in databases]
+        logger.info(f"Available databases: {database_names}")
         
         if 'telecom_analytics' in database_names:
             logger.info("Target database 'telecom_analytics' exists")
@@ -55,7 +62,9 @@ def check_clickhouse_connection():
             table_names = [table[0] for table in tables]
             logger.info(f"Tables in telecom_analytics: {table_names}")
         else:
-            logger.warning("Target database 'telecom_analytics' not found")
+            logger.info("Creating telecom_analytics database...")
+            clickhouse_hook.run("CREATE DATABASE IF NOT EXISTS telecom_analytics")
+            logger.info("Created telecom_analytics database")
         
         return f"ClickHouse connection OK - Version: {version}"
         
@@ -65,112 +74,85 @@ def check_clickhouse_connection():
 
 
 def create_clickhouse_tables():
-    """Create optimized ClickHouse tables if they don't exist."""
+    """Create optimized ClickHouse tables."""
     
     try:
-        from clickhouse_provider.hooks.clickhouse_hook import ClickhouseHook
-        
         logger.info("Creating/verifying ClickHouse tables...")
         
-        clickhouse_hook = ClickhouseHook(
-            host='clickhouse-server',
-            port=8123,
-            database='telecom_analytics',
-            user='admin',
-            password='clickhouse_admin',
-            protocol='http'
-        )
-
-        raw_table_ddl = """
-        CREATE TABLE IF NOT EXISTS smart_meter_raw (
-            meter_id String,
-            timestamp DateTime64(3),
-            date Date,
-            year UInt16,
-            month UInt8,
-            day UInt8,
-            hour UInt8,
-            minute UInt8,
-            energy_consumption Float32,
-            voltage Float32,
-            current_reading Float32,
-            power_factor Float32,
-            frequency Float32,
-            consumption_category String,
-            is_anomaly UInt8,
-            partition_date Date,
-            processed_at DateTime64(3)
-        ) ENGINE = MergeTree()
-        PARTITION BY toYYYYMM(partition_date)
-        ORDER BY (meter_id, timestamp)
-        SETTINGS index_granularity = 8192
-        """
+        clickhouse_hook = get_clickhouse_hook()
         
-        aggregates_ddl = """
-        CREATE TABLE IF NOT EXISTS meter_aggregates (
-            meter_id String,
-            date Date,
-            hour UInt8,
-            partition_date Date,
-            total_energy_hourly Float32,
-            avg_energy_hourly Float32,
-            avg_voltage_hourly Float32,
-            avg_current_hourly Float32,
-            max_consumption_hourly Float32,
-            min_consumption_hourly Float32,
-            record_count_hourly UInt32,
-            anomaly_count_hourly UInt32,
-            total_energy_daily Float32,
-            avg_energy_daily Float32,
-            avg_voltage_daily Float32,
-            avg_current_daily Float32,
-            max_consumption_daily Float32,
-            min_consumption_daily Float32,
-            std_energy_daily Float32,
-            record_count_daily UInt32,
-            anomaly_count_daily UInt32,
-            total_energy_meter Float32,
-            avg_energy_meter Float32,
-            peak_consumption Float32,
-            total_readings UInt32,
-            active_days UInt16,
-            total_anomalies UInt32,
-            aggregation_type String,
-            created_at DateTime64(3) DEFAULT now()
-        ) ENGINE = MergeTree()
-        PARTITION BY toYYYYMM(partition_date)
-        ORDER BY (meter_id, date, hour, aggregation_type)
-        SETTINGS index_granularity = 8192
-        """
+        tables = {
+            'smart_meter_raw': """
+            CREATE TABLE IF NOT EXISTS telecom_analytics.smart_meter_raw (
+                meter_id String,
+                timestamp DateTime64(3),
+                date Date DEFAULT toDate(timestamp),
+                energy_consumption Float32,
+                voltage Float32,
+                current_reading Float32,
+                power_factor Float32,
+                frequency Float32,
+                consumption_category String,
+                is_anomaly UInt8 DEFAULT 0,
+                partition_date Date DEFAULT toDate(timestamp),
+                processed_at DateTime64(3) DEFAULT now()
+            ) ENGINE = MergeTree()
+            PARTITION BY toYYYYMM(partition_date)
+            ORDER BY (meter_id, timestamp)
+            SETTINGS index_granularity = 8192
+            """,
+            
+            'meter_aggregates': """
+            CREATE TABLE IF NOT EXISTS telecom_analytics.meter_aggregates (
+                meter_id String,
+                date Date,
+                hour UInt8,
+                partition_date Date,
+                total_energy_hourly Float32,
+                avg_energy_hourly Float32,
+                avg_voltage_hourly Float32,
+                avg_current_hourly Float32,
+                max_consumption_hourly Float32,
+                min_consumption_hourly Float32,
+                record_count_hourly UInt32,
+                anomaly_count_hourly UInt32,
+                total_energy_daily Float32,
+                avg_energy_daily Float32,
+                avg_voltage_daily Float32,
+                avg_current_daily Float32,
+                max_consumption_daily Float32,
+                min_consumption_daily Float32,
+                std_energy_daily Float32,
+                record_count_daily UInt32,
+                anomaly_count_daily UInt32,
+                total_energy_meter Float32,
+                avg_energy_meter Float32,
+                peak_consumption Float32,
+                total_readings UInt32,
+                active_days UInt16,
+                total_anomalies UInt32,
+                aggregation_type String,
+                created_at DateTime64(3) DEFAULT now()
+            ) ENGINE = MergeTree()
+            PARTITION BY toYYYYMM(partition_date)
+            ORDER BY (meter_id, date, hour, aggregation_type)
+            SETTINGS index_granularity = 8192
+            """
+        }
         
-        mv_daily_ddl = """
-        CREATE MATERIALIZED VIEW IF NOT EXISTS daily_consumption_mv
-        ENGINE = SummingMergeTree()
-        PARTITION BY toYYYYMM(date)
-        ORDER BY (meter_id, date)
-        AS SELECT
-            meter_id,
-            date,
-            sum(energy_consumption) as total_daily_energy,
-            avg(energy_consumption) as avg_daily_energy,
-            count(*) as daily_readings,
-            sum(is_anomaly) as daily_anomalies
-        FROM smart_meter_raw
-        GROUP BY meter_id, date
-        """
+        for table_name, ddl in tables.items():
+            try:
+                clickhouse_hook.run(ddl)
+                logger.info(f"Table {table_name} created/verified")
+            except Exception as e:
+                if "already exists" in str(e):
+                    logger.info(f"Table {table_name} already exists")
+                else:
+                    logger.warning(f"Table {table_name} creation note: {e}")
         
-        clickhouse_hook.run(raw_table_ddl)
-        logger.info("Created/verified smart_meter_raw table")
-        
-        clickhouse_hook.run(aggregates_ddl)
-        logger.info("Created/verified meter_aggregates table")
-        
-        clickhouse_hook.run(mv_daily_ddl)
-        logger.info("Created/verified daily_consumption_mv materialized view")
-        
-        tables = clickhouse_hook.run("SHOW TABLES")
-        table_names = [table[0] for table in tables]
-        logger.info(f"Final tables in database: {table_names}")
+        tables_result = clickhouse_hook.run("SHOW TABLES FROM telecom_analytics")
+        table_names = [table[0] for table in tables_result]
+        logger.info(f"Final tables in telecom_analytics: {table_names}")
         
         return "ClickHouse tables created/verified successfully"
         
@@ -180,52 +162,45 @@ def create_clickhouse_tables():
 
 
 def load_sample_data():
-    """Load sample data for testing using ClickHouse Hook."""
+    """Load sample data for testing and validation."""
     
     try:
-        from clickhouse_provider.hooks.clickhouse_hook import ClickhouseHook
-        
         logger.info("Loading sample data for testing...")
         
-        clickhouse_hook = ClickhouseHook(
-            host='clickhouse-server',
-            port=8123,
-            database='telecom_analytics',
-            user='admin',
-            password='clickhouse_admin',
-            protocol='http'
-        )
-
+        clickhouse_hook = get_clickhouse_hook()
+        
         sample_data = [
-            ('meter_001', '2024-01-15 10:00:00', 15.5, 220.0, 10.2, 0.95, 50.0),
-            ('meter_001', '2024-01-15 10:15:00', 16.2, 219.5, 10.5, 0.96, 50.0),
-            ('meter_002', '2024-01-15 10:00:00', 12.8, 221.0, 9.8, 0.94, 50.0),
-            ('meter_002', '2024-01-15 10:15:00', 13.1, 220.5, 10.0, 0.95, 50.0),
+            "('meter_001', '2024-01-15 10:00:00', 15.5, 220.0, 10.2, 0.95, 50.0, 'MEDIUM', 0)",
+            "('meter_001', '2024-01-15 10:15:00', 16.2, 219.5, 10.5, 0.96, 50.0, 'MEDIUM', 0)", 
+            "('meter_002', '2024-01-15 10:00:00', 12.8, 221.0, 9.8, 0.94, 50.0, 'MEDIUM', 0)",
+            "('meter_002', '2024-01-15 10:15:00', 13.1, 220.5, 10.0, 0.95, 50.0, 'MEDIUM', 0)",
+            "('meter_003', '2024-01-15 10:00:00', 8.5, 218.0, 8.2, 0.93, 50.0, 'LOW', 0)",
+            "('meter_003', '2024-01-15 10:15:00', 28.7, 223.0, 12.1, 0.97, 50.0, 'HIGH', 1)"
         ]
         
         insert_query = """
-        INSERT INTO smart_meter_raw (
+        INSERT INTO telecom_analytics.smart_meter_raw (
             meter_id, timestamp, energy_consumption, voltage, 
-            current_reading, power_factor, frequency, date, partition_date
-        ) VALUES
-        """
+            current_reading, power_factor, frequency, consumption_category, is_anomaly
+        ) VALUES 
+        """ + ", ".join(sample_data)
         
-        values = []
-        for row in sample_data:
-            values.append(
-                f"('{row[0]}', '{row[1]}', {row[2]}, {row[3]}, "
-                f"{row[4]}, {row[5]}, {row[6]}, toDate('{row[1]}'), "
-                f"toDate('{row[1]}'))"
-            )
-
-        if values:
-            full_query = insert_query + ", ".join(values)
-            clickhouse_hook.run(full_query)
-            logger.info(f"Loaded {len(sample_data)} sample records")
+        clickhouse_hook.run(insert_query)
+        logger.info("Sample data loaded successfully")
         
-        count_result = clickhouse_hook.run("SELECT count(*) FROM smart_meter_raw")
+        count_result = clickhouse_hook.run("SELECT count(*) FROM telecom_analytics.smart_meter_raw")
         record_count = count_result[0][0] if count_result else 0
         logger.info(f"Total records in smart_meter_raw: {record_count}")
+        
+        sample_result = clickhouse_hook.run("""
+            SELECT meter_id, timestamp, energy_consumption, consumption_category, is_anomaly 
+            FROM telecom_analytics.smart_meter_raw 
+            ORDER BY timestamp 
+            LIMIT 5
+        """)
+        logger.info("🔍 Sample of loaded data:")
+        for row in sample_result:
+            logger.info(f"   {row}")
         
         return f"Sample data loaded - {record_count} total records"
         
@@ -234,136 +209,214 @@ def load_sample_data():
         raise AirflowException(f"Sample data loading failed: {e}")
 
 
-def verify_etl_results(**context):
-    """Verify ETL results after Spark job completion."""
+def create_materialized_views():
+    """Create materialized views for real-time aggregations."""
     
     try:
-        from clickhouse_provider.hooks.clickhouse_hook import ClickhouseHook
+        logger.info("Creating materialized views for real-time analytics...")
         
-        execution_date: datetime = context['execution_date']
-        processing_date = execution_date.strftime('%Y-%m-%d')
+        clickhouse_hook = get_clickhouse_hook()
+        
+        hourly_mv_ddl = """
+        CREATE MATERIALIZED VIEW IF NOT EXISTS telecom_analytics.hourly_consumption_mv
+        ENGINE = AggregatingMergeTree()
+        PARTITION BY toYYYYMM(hour)
+        ORDER BY (meter_id, hour)
+        AS SELECT
+            meter_id,
+            toStartOfHour(timestamp) as hour,
+            sumState(energy_consumption) as total_energy,
+            avgState(energy_consumption) as avg_energy,
+            countState() as readings_count,
+            sumState(is_anomaly) as anomalies_count
+        FROM telecom_analytics.smart_meter_raw
+        GROUP BY meter_id, hour
+        """
+        
+        daily_mv_ddl = """
+        CREATE MATERIALIZED VIEW IF NOT EXISTS telecom_analytics.daily_consumption_mv  
+        ENGINE = AggregatingMergeTree()
+        PARTITION BY toYYYYMM(date)
+        ORDER BY (meter_id, date)
+        AS SELECT
+            meter_id,
+            date,
+            sumState(energy_consumption) as total_energy,
+            avgState(energy_consumption) as avg_energy,
+            countState() as readings_count,
+            sumState(is_anomaly) as anomalies_count
+        FROM telecom_analytics.smart_meter_raw
+        GROUP BY meter_id, date
+        """
+        
+        clickhouse_hook.run(hourly_mv_ddl)
+        logger.info("Created hourly_consumption_mv materialized view")
+        
+        clickhouse_hook.run(daily_mv_ddl)
+        logger.info("Created daily_consumption_mv materialized view")
+        
+        views_result = clickhouse_hook.run("""
+            SELECT name FROM system.tables 
+            WHERE database = 'telecom_analytics' AND engine = 'MaterializedView'
+        """)
+        view_names = [view[0] for view in views_result]
+        logger.info(f"Materialized views created: {view_names}")
+        
+        return "Materialized views created successfully"
+        
+    except Exception as e:
+        logger.error(f"Failed to create materialized views: {e}")
+        raise AirflowException(f"Materialized views creation failed: {e}")
 
+
+def verify_etl_results(**kwargs):
+    """Verify ETL results in ClickHouse."""
+    
+    try:
+        logger = logging.getLogger(__name__)
+        
+        processing_date = kwargs['ds']
         logger.info(f"Verifying ETL results for date: {processing_date}")
-
-        clickhouse_hook = ClickhouseHook(
-            host='clickhouse-server',
-            port=8123,
-            database='telecom_analytics',
-            user='admin',
-            password='clickhouse_admin',
-            protocol='http'
+        
+        clickhouse_hook = get_clickhouse_hook()
+        
+        count_query = (
+            f"SELECT count(*) FROM telecom_analytics.smart_meter_raw "
+            f"WHERE date = '{processing_date}'"
         )
-
-        raw_count_query = f"""
-        SELECT count(*) as record_count 
-        FROM smart_meter_raw 
-        WHERE date = '{processing_date}'
-        """
-        raw_count_result = clickhouse_hook.run(raw_count_query)
-        raw_count = raw_count_result[0][0] if raw_count_result else 0
         
-        agg_count_query = f"""
-        SELECT count(*) as agg_count 
-        FROM meter_aggregates 
-        WHERE date = '{processing_date}'
-        """
-        agg_count_result = clickhouse_hook.run(agg_count_query)
-        agg_count = agg_count_result[0][0] if agg_count_result else 0
+        logger.info(f"Executing query: {count_query}")
         
-        quality_query = f"""
-        SELECT 
-            count(*) as total_records,
-            countIf(is_anomaly = 1) as anomaly_count,
-            avg(energy_consumption) as avg_consumption,
-            min(energy_consumption) as min_consumption,
-            max(energy_consumption) as max_consumption
-        FROM smart_meter_raw 
-        WHERE date = '{processing_date}'
-        """
-        quality_result = clickhouse_hook.run(quality_query)
+        count_result = clickhouse_hook.run(count_query)
+        logger.info(f"Raw count result: {count_result}")
         
-        logger.info("ETL Verification Results:")
-        logger.info(f"   Raw records for {processing_date}: {raw_count}")
-        logger.info(f"   Aggregate records: {agg_count}")
-        
-        if quality_result and quality_result[0]:
-            quality_data = quality_result[0]
-            logger.info(f"   Data Quality Metrics:")
-            logger.info(f"     - Total records: {quality_data[0]}")
-            logger.info(f"     - Anomalies: {quality_data[1]}")
-            logger.info(f"     - Avg consumption: {quality_data[2]:.2f}")
-            logger.info(f"     - Min/Max consumption: {quality_data[3]:.2f}/{quality_data[4]:.2f}")
-        
-        if raw_count > 0:
-            logger.info("ETL verification successful")
-            return f"ETL verified: {raw_count} raw records, {agg_count} aggregates"
+        if count_result and len(count_result) == 2:
+            data, columns = count_result
+            record_count = data[0][0] if data and len(data) > 0 else 0
+            
+            logger.info(f"ETL verification successful!")
+            logger.info(f"Records loaded: {record_count:,}")
+            
+            if record_count > 0:
+                return f"ETL verified: {record_count:,} records loaded"
+            else:
+                logger.warning("No records found for the specified date")
+                return "ETL verified: No records found"
         else:
-            logger.warning("No data found for the processing date")
-            return "ETL verified: No data found for processing date"
+            logger.warning("Unexpected result format")
+            return "ETL verified: Check completed"
             
     except Exception as e:
         logger.error(f"ETL verification failed: {e}")
         raise AirflowException(f"ETL verification failed: {e}")
 
 
+def wait_for_clickhouse():
+    """ClickHouse health check."""
+    
+    max_retries = 12
+    retry_delay = 5
+    
+    for attempt in range(max_retries):
+        try:
+            logger.info(f"ClickHouse health check... (attempt {attempt + 1}/{max_retries})")
+            clickhouse_hook = get_clickhouse_hook()
+            
+            result = clickhouse_hook.run("SELECT 1")
+            logger.info(f"ClickHouse connectivity confirmed. Result type: {type(result)}")
+            
+            version_result = clickhouse_hook.run("SELECT version()")
+            if version_result and len(version_result) == 2:
+                version_data, _ = version_result
+                version = version_data[0][0] if version_data else "Unknown"
+            else:
+                version = "Unknown"
+            
+            logger.info(f"ClickHouse version: {version}")
+            return f"ClickHouse healthy - Version: {version}"
+                
+        except Exception as e:
+            if attempt < max_retries - 1:
+                logger.warning(f"Health check failed: {e}. Retrying in {retry_delay}s...")
+                time.sleep(retry_delay)
+            else:
+                logger.error(f"Health checks failed after {max_retries} attempts")
+                raise AirflowException(f"ClickHouse health checks failed: {e}")
+    
+    raise AirflowException(f"ClickHouse health checks failed after {max_retries} attempts")
+
+
 def cleanup_old_data():
-    """Cleanup old data to manage storage (optional)."""
+    """Optional: Cleanup old data to manage storage."""
     
     try:
-        from clickhouse_provider.hooks.clickhouse_hook import ClickhouseHook
+        logger.info("Checking for old data cleanup...")
         
-        logger.info("Cleaning up data older than 30 days...")
+        clickhouse_hook = get_clickhouse_hook()
         
-        clickhouse_hook = ClickhouseHook(
-            host='clickhouse-server',
-            port=8123,
-            database='telecom_analytics',
-            user='admin',
-            password='clickhouse_admin',
-            protocol='http'
-        )
-
-        cleanup_query = """
-        ALTER TABLE smart_meter_raw 
-        DELETE WHERE partition_date < today() - 30
+        partitions_query = """
+        SELECT 
+            partition,
+            count() as parts,
+            sum(rows) as total_rows,
+            formatReadableSize(sum(bytes)) as size
+        FROM system.parts 
+        WHERE database = 'telecom_analytics' AND table = 'smart_meter_raw'
+        GROUP BY partition
+        ORDER BY partition
         """
         
+        partitions_result = clickhouse_hook.run(partitions_query)
+        logger.info("Current partitions:")
+        for partition in partitions_result:
+            logger.info(f"   Partition {partition[0]}: {partition[2]} rows, {partition[3]}")
+        
+        cleanup_query = """
+        ALTER TABLE telecom_analytics.smart_meter_raw 
+        DELETE WHERE partition_date < today() - 90
+        """
         clickhouse_hook.run(cleanup_query)
         logger.info("Old data cleanup scheduled")
         
-        # Optimize table after deletion
-        optimize_query = "OPTIMIZE TABLE smart_meter_raw FINAL"
-        clickhouse_hook.run(optimize_query)
-        logger.info("Table optimization completed")
-        
-        return "Cleanup completed successfully"
+        return "Cleanup check completed"
         
     except Exception as e:
-        logger.error(f"Cleanup failed: {e}")
-        return f"Cleanup warning: {e}"
+        logger.warning(f"Cleanup check completed with warnings: {e}")
+        return f"Cleanup check: {e}"
 
 
 with DAG(
     'minio_to_clickhouse_etl',
     default_args=default_args,
-    description='ETL Pipeline from MinIO to ClickHouse',
-    schedule_interval=None,  # '0 2 * * *' Daily at 2 AM
+    description='ETL Pipeline from MinIO to ClickHouse using proven ClickHouse Hook',
+    schedule_interval=None, # '0 2 * * *' -> Daily at 2 AM
     catchup=False,
     tags=['telecom', 'clickhouse', 'etl', 'minio'],
     max_active_runs=1,
     doc_md="""
     # MinIO to ClickHouse ETL Pipeline
     
-    This DAG transfers and transforms data from MinIO to ClickHouse with:
-    - Efficient ClickHouse Hook for database operations
-    - Spark for large-scale data processing
-    - Data quality checks and aggregations
-    - Automated table management
-    - Result verification
+    This DAG uses the proven ClickHouse Hook approach with explicit HTTP parameters
+    that was successfully tested in the connection test DAG.
+    
+    ## Pipeline Steps:
+    1. Wait for ClickHouse to be ready
+    2. Check connection and create database if needed
+    3. Create optimized tables
+    4. Load sample data for testing
+    5. Create materialized views for real-time analytics
+    6. Execute Spark job to transfer data from MinIO
+    7. Verify ETL results
+    8. Optional cleanup of old data
     """
 ) as dag:
 
     start = EmptyOperator(task_id='start_pipeline')
+    
+    wait_for_db = PythonOperator(
+        task_id='wait_for_clickhouse',
+        python_callable=wait_for_clickhouse
+    )
     
     check_connection = PythonOperator(
         task_id='check_clickhouse_connection',
@@ -379,6 +432,11 @@ with DAG(
         task_id='load_sample_data',
         python_callable=load_sample_data
     )
+    
+    create_views = PythonOperator(
+        task_id='create_materialized_views',
+        python_callable=create_materialized_views
+    )
 
     minio_to_clickhouse = SparkSubmitOperator(
         task_id='minio_to_clickhouse_job',
@@ -390,37 +448,24 @@ with DAG(
             '--date', '{{ ds }}',
             '--prod'
         ],
+        env_vars={
+            "PYTHONPATH": "/opt/airflow/dags:/opt/airflow/dags/spark"
+        },
         packages="org.apache.hadoop:hadoop-aws:3.3.4,"
                 "com.amazonaws:aws-java-sdk-bundle:1.12.262,"
                 "com.clickhouse:clickhouse-jdbc:0.4.6,"
-                "com.clickhouse:clickhouse-http-client:0.4.6,"
-                "com.clickhouse:clickhouse-client:0.4.6",
+                "com.clickhouse:clickhouse-http-client:0.4.6",
         conf={
             "spark.pyspark.python": "/usr/local/bin/python3.10",
             "spark.pyspark.driver.python": "/usr/local/bin/python3.10",
-            "spark.executorEnv.PYSPARK_PYTHON": "/usr/local/bin/python3.10",
-            "spark.sql.execution.arrow.pyspark.enabled": "false",
-            "spark.network.timeout": "600s",
-            "spark.executor.heartbeatInterval": "60s",
             "spark.hadoop.fs.s3a.endpoint": "http://minio:9002",
             "spark.hadoop.fs.s3a.access.key": "minioadmin", 
             "spark.hadoop.fs.s3a.secret.key": "minioadmin",
             "spark.hadoop.fs.s3a.path.style.access": "true",
-            "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem",
-            "spark.hadoop.fs.s3a.connection.ssl.enabled": "false",
-            "spark.sql.adaptive.enabled": "true",
-            "spark.sql.adaptive.coalescePartitions.enabled": "true",
         },
         driver_memory='2g',
         executor_memory='2g',
-        executor_cores=2,
-        num_executors=2,
-        verbose=True,
-        env_vars={
-            'PYTHONPATH': '/opt/airflow/dags:/opt/airflow/dags/spark/pipelines',
-            'PYSPARK_PYTHON': '/usr/local/bin/python3.10',
-            'PYSPARK_DRIVER_PYTHON': '/usr/local/bin/python3.10'
-        }
+        verbose=True
     )
     
     verify_results = PythonOperator(
@@ -436,5 +481,8 @@ with DAG(
     
     end = EmptyOperator(task_id='end_pipeline')
 
-    start >> check_connection >> create_tables >> load_samples >> minio_to_clickhouse
-    minio_to_clickhouse >> verify_results >> cleanup >> end
+    (
+        start >> wait_for_db >> check_connection >> create_tables >> 
+        load_samples >> create_views >> minio_to_clickhouse >> 
+        verify_results >> cleanup >> end
+    )

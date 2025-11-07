@@ -4,13 +4,17 @@ MinIO to ClickHouse Spark Job - Optimized for ClickHouse Hook.
 
 import sys
 import os
+import json
 import logging
 import argparse
 import configparser
+import requests
+import concurrent.futures
+from threading import Lock
 from typing import TypedDict, cast
 from argparse import Namespace
 from datetime import datetime
-from pyspark.sql import SparkSession, DataFrame
+from pyspark.sql import SparkSession, DataFrame, Row
 from spark.pipelines.shared.utils.spark_utils import (
     SparkSessionManager,
     DataQualityChecker
@@ -195,100 +199,166 @@ class MinioToClickHouse:
         self: 'MinioToClickHouse',
         dataframes: dict[str, DataFrame]
     ) -> bool:
-        """Write data to ClickHouse using JDBC with optimized settings."""
+        """
+        Optimized ClickHouse writer using parallel HTTP inserts.
+        Fixed Spark Row object handling.
+        """
         
         try:
             config = configparser.ConfigParser()
             config.read(self.config_path)
             ch_config = config['clickhouse']
             
-            jdbc_url = (
-                f"jdbc:clickhouse://{ch_config['host']}:{ch_config['port']}/"
-                f"{ch_config['database']}"
-            )
-
-            properties = {
-                "user": ch_config['user'],
-                "password": ch_config['password'],
-                "driver": "com.clickhouse.jdbc.ClickHouseDriver",
-                "batchsize": "100000",
-                "numPartitions": "4",
-                "socket_timeout": "300000",
-                "connect_timeout": "10000",
-                "rewriteBatchedStatements": "true",
-                "use_server_time_zone": "false",
-                "use_time_zone": "UTC"
-            }
-
-            raw_data_for_ch = dataframes['raw_data'].select(
-                "meter_id", "timestamp", "date", "year", "month", "day", "hour", "minute",
-                "energy_consumption", "voltage", "current_reading", 
-                "power_factor", "frequency", "consumption_category",
-                "is_anomaly", "partition_date", "processed_at"
-            )
+            base_url = f"http://{ch_config['host']}:{ch_config['http_port']}"
+            auth = (ch_config['user'], ch_config['password'])
             
-            self.logger.info(
-                f"Writing {raw_data_for_ch.count()} records to smart_meter_raw table"
+            test_response = requests.post(
+                base_url,
+                params={'query': 'SELECT 1'},
+                auth=auth,
+                timeout=10
             )
-            (raw_data_for_ch.write
-                .mode("append")
-                .option("createTableOptions", """
-                    ENGINE = MergeTree()
-                    PARTITION BY toYYYYMM(partition_date)
-                    ORDER BY (meter_id, timestamp)
-                    SETTINGS index_granularity = 8192
-                """)
-                .jdbc(
-                    url=jdbc_url,
-                    table="smart_meter_raw",
-                    properties=properties
+            if test_response.status_code != 200:
+                self.logger.error(
+                    f"ClickHouse connection test failed: {test_response.text}"
                 )
-            )
+                return False
 
-            for agg_name, agg_df in dataframes.items():
-                if agg_name != 'raw_data':
+            total_inserted = 0
+            lock = Lock()
+            
+            def convert_row_to_dict(row):
+                """Convert Spark Row to Python dictionary."""
+
+                try:
+                    typed_row: Row = row 
+                    return typed_row.asDict()
+
+                except Exception as e:
+                    return {'error': str(e), 'data': str(typed_row)}
+           
+            def insert_batch(
+                table_name: str, batch_data: list, batch_id: int
+            ) -> tuple[int, bool]:
+                """Insert a batch of records using JSONEachRow format."""
+
+                try:
+                    if not batch_data:
+                        return 0, True
+                    
+                    rows = []
+                    for row in batch_data:
+                        row_dict = convert_row_to_dict(row)
+                        rows.append(json.dumps(row_dict, default=str))
+                    
+                    insert_data = "\n".join(rows)
+                    
+                    response = requests.post(
+                        base_url,
+                        params={
+                            'query': (
+                                f'INSERT INTO telecom_analytics.{table_name} '
+                                f'FORMAT JSONEachRow'
+                            ),
+                            'input_format_skip_unknown_fields': 1
+                        },
+                        data=insert_data,
+                        auth=auth,
+                        headers={'Content-Type': 'text/plain'},
+                        timeout=120,
+                        verify=False
+                    )
+                    
+                    if response.status_code == 200:
+                        with lock:
+                            nonlocal total_inserted
+                            total_inserted += len(batch_data)
+                        self.logger.debug(
+                            f"Batch {batch_id}: {len(batch_data)} records → {table_name}"
+                        )
+                        return len(batch_data), True
+
+                    else:
+                        self.logger.error(f"Batch {batch_id} failed: {response.text}")
+                        return 0, False
+                        
+                except Exception as e:
+                    self.logger.error(f"Batch {batch_id} exception: {e}")
+                    return 0, False
+            
+            for df_name, df in dataframes.items():
+                record_count = df.count()
+                if record_count == 0:
+                    self.logger.info(f"No data to insert for {df_name}")
+                    continue
+                    
+                table_name = self._get_table_name(df_name)
+                self.logger.info(f"Inserting {record_count:,} records to {table_name}")
+                
+                # ~50K records per partition
+                optimal_partitions = min(32, max(8, record_count // 50000))
+                partitioned_df = df.repartition(optimal_partitions)
+                
+                batches = partitioned_df.rdd.glom().collect()
+                self.logger.info(f"Processing {len(batches)} batches in parallel")
+                
+                with concurrent.futures.ThreadPoolExecutor(
+                    max_workers=min(16, len(batches)),
+                    thread_name_prefix=f"ch_{df_name}"
+                ) as executor:
+                    
+                    future_to_batch = {
+                        executor.submit(insert_batch, table_name, batch, i): i
+                        for i, batch in enumerate(batches) if batch
+                    }
+                    
+                    batch_results = []
+                    for future in concurrent.futures.as_completed(future_to_batch):
+                        batch_id = future_to_batch[future]
+                        try:
+                            count, success = future.result(timeout=180)
+                            batch_results.append((batch_id, count, success))
+
+                        except concurrent.futures.TimeoutError:
+                            self.logger.error(f"Batch {batch_id} timed out")
+                            batch_results.append((batch_id, 0, False))
+
+                        except Exception as e:
+                            self.logger.error(f"Batch {batch_id} failed: {e}")
+                            batch_results.append((batch_id, 0, False))
+                    
+                    successful_batches = sum(1 for _, _, success in batch_results if success)
+                    total_batches = len(batch_results)
+                    inserted_in_df = sum(count for _, count, _ in batch_results)
+                    
                     self.logger.info(
-                        f"Writing {agg_df.count()} "
-                        f"records to meter_aggregates ({agg_name})"
+                        f"{df_name}: {successful_batches}/{total_batches} batches, "
+                        f"{inserted_in_df:,}/{record_count:,} records"
                     )
                     
-                    if agg_name == 'hourly_aggregates':
-                        agg_for_write = agg_df.select(
-                            "meter_id", "date", "hour", "partition_date",
-                            "total_energy_hourly", "avg_energy_hourly", "avg_voltage_hourly",
-                            "avg_current_hourly", "max_consumption_hourly", "min_consumption_hourly",
-                            "record_count_hourly", "anomaly_count_hourly", "aggregation_type"
-                        )
-                    elif agg_name == 'daily_aggregates':
-                        agg_for_write = agg_df.select(
-                            "meter_id", "date", "partition_date",
-                            "total_energy_daily", "avg_energy_daily", "avg_voltage_daily",
-                            "avg_current_daily", "max_consumption_daily", "min_consumption_daily",
-                            "std_energy_daily", "record_count_daily", "anomaly_count_daily",
-                            "aggregation_type"
-                        )
-                    else:  # meter_aggregates
-                        agg_for_write = agg_df.select(
-                            "meter_id", "partition_date",
-                            "total_energy_meter", "avg_energy_meter", "peak_consumption",
-                            "total_readings", "active_days", "total_anomalies", "aggregation_type"
-                        )
-                    
-                    (agg_for_write.write
-                        .mode("append")
-                        .jdbc(
-                            url=jdbc_url,
-                            table="meter_aggregates",
-                            properties=properties
-                        )
-                    )
-
-            self.logger.info("Successfully wrote all data to ClickHouse")
-            return True
+                    if successful_batches == 0:
+                        self.logger.error(f"All batches failed for {df_name}")
+                        return False
+            
+            self.logger.info(f"Total inserted across all tables: {total_inserted:,} records")
+            return total_inserted > 0
             
         except Exception as e:
-            self.logger.error(f"Failed to write to ClickHouse: {str(e)}")
+            self.logger.error(f"Write to ClickHouse failed: {e}")
+            import traceback
+            self.logger.error(traceback.format_exc())
             return False
+
+    def _get_table_name(self, df_name: str) -> str:
+        """Map DataFrame name to ClickHouse table name."""
+
+        table_mapping = {
+            'raw_data': 'smart_meter_raw',
+            'hourly_aggregates': 'meter_aggregates',
+            'daily_aggregates': 'meter_aggregates', 
+            'meter_aggregates': 'meter_aggregates'
+        }
+        return table_mapping.get(df_name, df_name)
 
     def run(self: 'MinioToClickHouse') -> bool:
         """Execute the complete ClickHouse ETL pipeline."""

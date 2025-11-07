@@ -77,20 +77,16 @@ services:
     image: clickhouse/clickhouse-server:25.9
     container_name: clickhouse-server
     depends_on:
-      kafka-1:
-        condition: service_healthy
-      kafka-2:
-        condition: service_healthy
+      - kafka-1
+      - kafka-2
     ports:
       - "8123:8123"  # HTTP API
       - "9000:9000"  # Native interface
     environment:
-      - CLICKHOUSE_DB=telecom_analytics
       - CLICKHOUSE_USER=admin
       - CLICKHOUSE_PASSWORD=clickhouse_admin
+      - CLICKHOUSE_DB=telecom_analytics
       - CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1
-      - CLICKHOUSE_MAX_SERVER_MEMORY_USAGE=0
-      - CLICKHOUSE_MAX_MEMORY_USAGE=0
     volumes:
       - clickhouse_data:/var/lib/clickhouse
       - clickhouse_log:/var/log/clickhouse-server
@@ -107,6 +103,7 @@ services:
         - clickhouse-client
         - --user=admin
         - --password=clickhouse_admin
+        - --host=localhost
         - --query=SELECT 1
       interval: 30s
       timeout: 10s
