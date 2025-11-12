@@ -54,7 +54,7 @@ class MinioToClickHouse:
             "MinioToClickHouse_ETL", 
             self.config_path
         )
-        
+
         self.spark.conf.set("spark.sql.adaptive.enabled", "true")
         self.spark.conf.set("spark.sql.adaptive.coalescePartitions.enabled", "true")
         self.spark.conf.set("spark.sql.adaptive.advisoryPartitionSizeInBytes", "128MB")
@@ -137,7 +137,7 @@ class MinioToClickHouse:
         """Create multiple aggregation levels optimized for ClickHouse analytics."""
         
         self.logger.info("Creating ClickHouse aggregations")
-        
+
         hourly_agg = (df
             .groupBy("meter_id", "date", "hour", "partition_date")
             .agg(
@@ -188,7 +188,7 @@ class MinioToClickHouse:
             'daily_aggregates': daily_agg,
             'meter_aggregates': meter_agg
         }
-        
+
         for agg_name, agg_df in aggregations.items():
             self.logger.info(f"   {agg_name}: {agg_df.count()} records")
         
@@ -245,7 +245,7 @@ class MinioToClickHouse:
                 try:
                     if not batch_data:
                         return 0, True
-                    
+
                     rows = []
                     for row in batch_data:
                         row_dict = convert_row_to_dict(row)
@@ -268,7 +268,7 @@ class MinioToClickHouse:
                         timeout=120,
                         verify=False
                     )
-                    
+
                     if response.status_code == 200:
                         with lock:
                             nonlocal total_inserted
@@ -281,7 +281,7 @@ class MinioToClickHouse:
                     else:
                         self.logger.error(f"Batch {batch_id} failed: {response.text}")
                         return 0, False
-                        
+
                 except Exception as e:
                     self.logger.error(f"Batch {batch_id} exception: {e}")
                     return 0, False
@@ -298,7 +298,7 @@ class MinioToClickHouse:
                 # ~50K records per partition
                 optimal_partitions = min(32, max(8, record_count // 50000))
                 partitioned_df = df.repartition(optimal_partitions)
-                
+
                 batches = partitioned_df.rdd.glom().collect()
                 self.logger.info(f"Processing {len(batches)} batches in parallel")
                 
@@ -311,7 +311,7 @@ class MinioToClickHouse:
                         executor.submit(insert_batch, table_name, batch, i): i
                         for i, batch in enumerate(batches) if batch
                     }
-                    
+
                     batch_results = []
                     for future in concurrent.futures.as_completed(future_to_batch):
                         batch_id = future_to_batch[future]
@@ -349,7 +349,7 @@ class MinioToClickHouse:
             self.logger.error(traceback.format_exc())
             return False
 
-    def _get_table_name(self, df_name: str) -> str:
+    def _get_table_name(self: 'MinioToClickHouse', df_name: str) -> str:
         """Map DataFrame name to ClickHouse table name."""
 
         table_mapping = {
@@ -378,7 +378,7 @@ class MinioToClickHouse:
                 return True
             
             self.logger.info(f"Raw data count: {raw_df.count()}")
-            
+
             transformed_df = self.transform_for_clickhouse(raw_df)
             
             if transformed_df.count() == 0:
