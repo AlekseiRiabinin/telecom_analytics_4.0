@@ -203,7 +203,7 @@ class MinioToClickHouse:
         Optimized ClickHouse writer using parallel HTTP inserts.
         Fixed Spark Row object handling.
         """
-        
+
         try:
             config = configparser.ConfigParser()
             config.read(self.config_path)

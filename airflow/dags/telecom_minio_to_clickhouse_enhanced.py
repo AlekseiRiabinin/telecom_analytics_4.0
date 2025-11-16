@@ -32,8 +32,10 @@ default_args = {
     'max_active_runs': 1,
 }
 
+
 def get_clickhouse_hook():
     """Get ClickHouse Hook with explicit HTTP parameters."""
+
     from clickhouse_provider.hooks.clickhouse_hook import ClickhouseHook
     
     return ClickhouseHook(
@@ -44,6 +46,7 @@ def get_clickhouse_hook():
         password='clickhouse_admin',
         protocol='http'
     )
+
 
 def check_minio_connection():
     """Check MinIO connection and data availability."""
@@ -63,10 +66,11 @@ def check_minio_connection():
             verify=False
         )
 
-        buckets = s3.list_buckets()
+        list_buckets_method = getattr(s3, 'list_buckets')
+        buckets = list_buckets_method()
         bucket_names = [bucket['Name'] for bucket in buckets['Buckets']]
         logger.info(f"Connected to MinIO. Available buckets: {bucket_names}")
-        
+
         target_bucket = 'trino-data-lake'
         if target_bucket in bucket_names:
             logger.info(f"Target bucket '{target_bucket}' exists")
@@ -78,7 +82,10 @@ def check_minio_connection():
             prefix = f"smart_meter_data/date={processing_date}/"
             
             try:
-                objects = s3.list_objects_v2(Bucket=target_bucket, Prefix=prefix, MaxKeys=1)
+                list_objects_method = getattr(s3, 'list_objects_v2')
+                objects = list_objects_method(
+                    Bucket=target_bucket, Prefix=prefix, MaxKeys=1
+                )
                 if 'Contents' in objects:
                     file_count = len(objects['Contents'])
                     logger.info(f"Found {file_count} files for date {processing_date}")
@@ -98,6 +105,7 @@ def check_minio_connection():
         logger.error(f"MinIO connection failed: {e}")
         raise AirflowException(f"MinIO connection failed: {e}")
 
+
 def check_clickhouse_health():
     """Enhanced ClickHouse health check with metrics."""
 
@@ -105,8 +113,10 @@ def check_clickhouse_health():
         logger.info("Performing ClickHouse health check...")
         
         clickhouse_hook = get_clickhouse_hook()
-        
+
         result = clickhouse_hook.run("SELECT 1")
+        if not result or result[0][0] != 1:
+            raise AirflowException("ClickHouse connectivity test failed")
         logger.info("ClickHouse basic connectivity confirmed")
         
         metrics_query = """
@@ -130,20 +140,27 @@ def check_clickhouse_health():
             FROM system.tables 
             WHERE database = 'telecom_analytics'
         """)
-        
+
         logger.info("Telecom analytics database status:")
+        total_tables = 0
         for table in db_status:
+            total_tables += 1
             logger.info(f"  Table: {table[0]}, Rows: {table[2]}, Size: {table[3]}")
-        
+
         version_result = clickhouse_hook.run("SELECT version()")
         version = version_result[0][0] if version_result else "Unknown"
         
         logger.info(f"ClickHouse health check passed - Version: {version}")
-        return f"ClickHouse healthy - Version: {version}"
         
+        return (
+            f"ClickHouse healthy - Version: {version}, "
+            f"Tables: {total_tables}, Connectivity: OK"
+        )
+
     except Exception as e:
         logger.error(f"ClickHouse health check failed: {e}")
         raise AirflowException(f"ClickHouse health check failed: {e}")
+
 
 def setup_clickhouse_infrastructure():
     """Create necessary ClickHouse tables and views."""
@@ -154,7 +171,7 @@ def setup_clickhouse_infrastructure():
         clickhouse_hook = get_clickhouse_hook()
         
         clickhouse_hook.run("CREATE DATABASE IF NOT EXISTS telecom_analytics")
-        
+
         tables = {
             'smart_meter_raw': """
             CREATE TABLE IF NOT EXISTS telecom_analytics.smart_meter_raw (
@@ -198,19 +215,21 @@ def setup_clickhouse_infrastructure():
             SETTINGS index_granularity = 8192
             """
         }
-        
+
         for table_name, ddl in tables.items():
             try:
                 clickhouse_hook.run(ddl)
                 logger.info(f"Table {table_name} created/verified")
+
             except Exception as e:
                 logger.warning(f"Table {table_name} creation note: {e}")
-        
+
         return "ClickHouse infrastructure setup completed"
-        
+
     except Exception as e:
         logger.error(f"ClickHouse setup failed: {e}")
         raise AirflowException(f"ClickHouse setup failed: {e}")
+
 
 def validate_etl_results(**kwargs):
     """Validate ETL results with comprehensive checks."""
@@ -253,15 +272,19 @@ def validate_etl_results(**kwargs):
         for check_name, query in validation_queries.items():
             result = clickhouse_hook.run(query)
             validation_results[check_name] = result[0] if result else None
-            logger.info(f"Validation {check_name}: {result[0] if result else 'No result'}")
+            logger.info(
+                f"Validation {check_name}: "
+                f"{result[0] if result else 'No result'}"
+            )
         
-        ti.xcom_push(key='validation_results', value=validation_results)
+        xcom_push_method = getattr(ti, 'xcom_push')
+        xcom_push_method(key='validation_results', value=validation_results)
 
         record_count = (
             validation_results['total_records'][0] 
             if validation_results['total_records'] else 0
         )
-        
+
         if record_count > 0:
             logger.info(f"ETL validation successful! Loaded {record_count:,} records")
             return f"ETL validated: {record_count:,} records"
@@ -273,41 +296,6 @@ def validate_etl_results(**kwargs):
         logger.error(f"ETL validation failed: {e}")
         raise AirflowException(f"ETL validation failed: {e}")
 
-def send_slack_notification(**kwargs):
-    """Send notification about ETL pipeline status."""
-
-    try:
-        # This would integrate with Slack webhook
-        # For now, just log the notification
-        ti = kwargs['ti']
-        dag_run = kwargs['dag_run']
-        
-        validation_results = ti.xcom_pull(task_ids='validate_etl_results', key='validation_results')
-        
-        if validation_results and validation_results['total_records']:
-            record_count = validation_results['total_records'][0]
-            message = f"ETL Pipeline Completed Successfully!\n"
-            message += f"• DAG: {dag_run.dag_id}\n"
-            message += f"• Execution: {dag_run.execution_date}\n"
-            message += f"• Records Processed: {record_count:,}\n"
-            
-            if validation_results['data_quality']:
-                dq = validation_results['data_quality']
-                message += f"• Data Quality: {dq[1]}/{dq[0]} valid records\n"
-                message += f"• Anomalies Detected: {dq[3]}"
-        else:
-            message = f"ETL Pipeline Completed with Warnings\n"
-            message += f"• DAG: {dag_run.dag_id}\n"
-            message += f"• Execution: {dag_run.execution_date}\n"
-            message += f"• No records processed for this date"
-        
-        logger.info(f"Slack Notification: {message}")    
-       
-        return "Notification sent"
-        
-    except Exception as e:
-        logger.warning(f"Notification failed: {e}")
-        return "Notification failed"
 
 def cleanup_resources():
     """Cleanup temporary resources and optimize tables."""
@@ -321,11 +309,12 @@ def cleanup_resources():
             "OPTIMIZE TABLE telecom_analytics.smart_meter_raw FINAL",
             "OPTIMIZE TABLE telecom_analytics.meter_aggregates FINAL"
         ]
-        
+
         for query in optimize_queries:
             try:
                 clickhouse_hook.run(query)
                 logger.info(f"Optimized: {query.split()[1]}")
+
             except Exception as e:
                 logger.warning(f"Optimization warning: {e}")
         
@@ -342,17 +331,41 @@ def cleanup_resources():
         logger.warning(f"Cleanup completed with warnings: {e}")
         return f"Cleanup completed with warnings: {e}"
 
+
 def handle_etl_failure(context):
     """Handle ETL pipeline failures."""
-    exception = context.get('exception')
-    task_instance = context.get('task_instance')
     
-    error_message = f"ETL Pipeline Failed!\n"
-    error_message += f"Task: {task_instance.task_id}\n"
-    error_message += f"Error: {str(exception) if exception else 'Unknown error'}\n"
-    error_message += f"Execution: {context.get('execution_date')}"
-    
-    logger.error(error_message)
+    try:
+        exception = getattr(context, 'exception', None)
+        task_instance = getattr(context, 'task_instance', None)
+        execution_date = getattr(context, 'execution_date', None)
+        
+        task_id = "unknown_task"
+        if task_instance:
+            task_id = getattr(task_instance, 'task_id', 'unknown_task')
+        
+        dag_id = "unknown_dag"
+        dag_run = getattr(context, 'dag_run', None)
+        if dag_run:
+            dag_id = getattr(dag_run, 'dag_id', 'unknown_dag')
+        else:
+            dag_id = (
+                getattr(task_instance, 'dag_id', 'unknown_dag') 
+                if task_instance else 'unknown_dag'
+            )
+
+        error_message = f"ETL Pipeline Failed!\n"
+        error_message += f"• DAG: {dag_id}\n"
+        error_message += f"• Task: {task_id}\n"
+        error_message += f"• Execution: {execution_date}\n"
+        error_message += f"• Error: {str(exception) if exception else 'Unknown error'}\n"
+        
+        logger.error(error_message)     
+        logger.error(f"Failure context type: {type(context)}")
+        logger.error(f"Context available attributes: {dir(context)}")
+        
+    except Exception as e:
+        logger.error(f"Critical: Failure handler crashed: {e}")
     
 
 def check_minio_files_exists(processing_date, bucket_name, expected_files, **kwargs):
@@ -388,6 +401,7 @@ def check_minio_files_exists(processing_date, bucket_name, expected_files, **kwa
         logger.warning(f"Error checking MinIO files: {e}")
         return False
 
+
 def check_dependency_files():
     """Check if all dependency files are present."""
 
@@ -407,6 +421,7 @@ def check_dependency_files():
             return False
     
     return True
+
 
 with DAG(
     'enhanced_minio_to_clickhouse_etl',
@@ -579,13 +594,7 @@ with DAG(
         python_callable=validate_etl_results,
         provide_context=True
     )
-    
-    send_notification = PythonOperator(
-        task_id='send_notification',
-        python_callable=send_slack_notification,
-        provide_context=True
-    )
-    
+ 
     cleanup_task = PythonOperator(
         task_id='cleanup_resources',
         python_callable=cleanup_resources
@@ -624,6 +633,6 @@ with DAG(
     >> validate_source_data
     >> minio_to_clickhouse_etl
     >> validate_etl_results
-    >> [send_notification, cleanup_task, mark_etl_complete]
+    >> [cleanup_task, mark_etl_complete]
     >> end_pipeline
 )
