@@ -77,7 +77,7 @@ class MinioToClickHouse:
             self.logger.info(f"Reading from MinIO: {input_path}")
 
             df = self.spark.read.parquet(input_path)
-            
+
             record_count = df.count()
             self.logger.info(f"Successfully read {record_count} records from MinIO")
             

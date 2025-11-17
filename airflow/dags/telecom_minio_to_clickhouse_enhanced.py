@@ -17,6 +17,7 @@ from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.exceptions import AirflowException
 from airflow.models import Variable
 from datetime import datetime, timedelta
+from requests import Response
 
 
 logger = logging.getLogger("airflow.task")
@@ -317,7 +318,7 @@ def cleanup_resources():
 
             except Exception as e:
                 logger.warning(f"Optimization warning: {e}")
-        
+
         cleanup_query = """
         ALTER TABLE telecom_analytics.smart_meter_raw 
         DELETE WHERE partition_date < today() - 60
@@ -368,7 +369,7 @@ def handle_etl_failure(context):
         logger.error(f"Critical: Failure handler crashed: {e}")
     
 
-def check_minio_files_exists(processing_date, bucket_name, expected_files, **kwargs):
+def check_minio_files_exists(processing_date, bucket_name, expected_files):
     """Check if required files exist in MinIO for the processing date."""
 
     try:
@@ -385,17 +386,16 @@ def check_minio_files_exists(processing_date, bucket_name, expected_files, **kwa
         )
         
         prefix = f"smart_meter_data/date={processing_date}/"
-        response = s3.list_objects_v2(Bucket=bucket_name, Prefix=prefix)
         
-        file_count = len(response.get('Contents', []))
+        list_objects_method = getattr(s3, 'list_objects_v2')
+        response = list_objects_method(Bucket=bucket_name, Prefix=prefix, MaxKeys=1)
+        
+        contents = getattr(response, 'Contents', [])
+        file_count = len(contents)
+        
         logger.info(f"Found {file_count} files for date {processing_date}")
         
-        if file_count >= expected_files:
-            logger.info(f"Sufficient files found: {file_count} (expected at least {expected_files})")
-            return True
-        else:
-            logger.info(f"Waiting for files: found {file_count}, need {expected_files}")
-            return False
+        return file_count >= expected_files
             
     except Exception as e:
         logger.warning(f"Error checking MinIO files: {e}")
@@ -410,12 +410,13 @@ def check_dependency_files():
         '/opt/airflow/dags/spark/pipelines/telecom_etl/jobs/minio_to_clickhouse.py',
         '/opt/airflow/scripts/validation_queries.sql'
     ]
-    
+
     for file_path in required_files:
         try:
             with open(file_path, 'r'):
                 pass
             logger.info(f"File exists: {file_path}")
+
         except FileNotFoundError:
             logger.error(f"File not found: {file_path}")
             return False
@@ -423,18 +424,102 @@ def check_dependency_files():
     return True
 
 
+def handle_etl_failure(context):
+    """Handle ETL pipeline failures with comprehensive logging and notifications."""
+    
+    try:
+        exception = getattr(context, 'exception', None)
+        task_instance = getattr(context, 'task_instance', None)
+        execution_date = getattr(context, 'execution_date', None)
+        dag_run = getattr(context, 'dag_run', None)
+
+        task_id = "unknown_task"
+        if task_instance:
+            task_id = getattr(task_instance, 'task_id', 'unknown_task')
+        
+        dag_id = "unknown_dag"
+        if dag_run:
+            dag_id = getattr(dag_run, 'dag_id', 'unknown_dag')
+        elif hasattr(context, 'dag') and context.dag:
+            dag_id = getattr(context.dag, 'dag_id', 'unknown_dag')
+
+        error_details = []
+        error_details.append("ETL PIPELINE FAILURE ALERT")
+        error_details.append("=" * 50)
+        error_details.append(f"• DAG: {dag_id}")
+        error_details.append(f"• Failed Task: {task_id}")
+        error_details.append(f"• Execution Date: {execution_date}")
+        error_details.append(f"• Failure Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        
+        if exception:
+            error_details.append(f"• Error Type: {type(exception).__name__}")
+            error_details.append(f"• Error Message: {str(exception)}")
+            
+            error_message = str(exception).lower()
+            if "minio" in error_message or "s3" in error_message:
+                error_details.append(
+                    "• Suggested Action: Check MinIO connectivity and bucket permissions"
+                )
+            elif "clickhouse" in error_message:
+                error_details.append(
+                    "• Suggested Action: Verify ClickHouse service and database connectivity"
+                )
+            elif "spark" in error_message:
+                error_details.append(
+                    "• Suggested Action: Review Spark configuration and resource allocation"
+                )
+            elif "connection" in error_message:
+                error_details.append(
+                    "• Suggested Action: Check network connectivity between services"
+                )
+            else:
+                error_details.append(
+                    "• Suggested Action: Review task logs for detailed error information"
+                )
+        else:
+            error_details.append("• Error: Unknown failure (no exception details available)")
+        
+        error_details.append("=" * 50)
+
+        error_message = "\n".join(error_details)
+        logger.error(error_message)
+        
+        logger.error("Failure Context Debug Information:")
+        logger.error(f"Context type: {type(context)}")
+        
+        if task_instance and hasattr(task_instance, 'log_url'):
+            log_url = getattr(task_instance, 'log_url', 'N/A')
+            logger.error(f"Task Logs URL: {log_url}")       
+       
+    except Exception as e:
+        logger.error(f"CRITICAL: Failure handler encountered an error: {e}")
+        logger.error(f"Original context type: {type(context)}")
+
+
+def create_health_check(endpoint_name: str):
+    """Factory function to create health check with proper typing."""
+
+    def health_check(response: Response) -> bool:
+        """Health check with proper type hints."""
+
+        logger.debug(f"Checking {endpoint_name} health - Status: {response.status_code}")
+        return response.status_code == 200
+
+    return health_check
+
+
 with DAG(
     'enhanced_minio_to_clickhouse_etl',
     default_args=default_args,
     description='Enhanced ETL Pipeline from MinIO to ClickHouse with monitoring and sensors',
-    schedule_interval='0 2 * * *',  # Daily at 2 AM
+    schedule_interval=None,  # '0 2 * * *',  # Daily at 2 AM
     catchup=False,
     tags=['telecom', 'clickhouse', 'etl', 'minio', 'production'],
     max_active_runs=1,
     on_failure_callback=handle_etl_failure,
     doc_md="""
     # Enhanced MinIO to ClickHouse ETL Pipeline
-    
+
     Production-ready ETL pipeline with comprehensive monitoring, sensors, and validation.
     
     ## Features:
@@ -443,7 +528,7 @@ with DAG(
     - Comprehensive validation
     - Notifications
     - Resource cleanup
-    
+
     ## Pipeline Steps:
     1. Wait for dependencies (MinIO, ClickHouse)
     2. Health checks and infrastructure setup
@@ -490,7 +575,7 @@ with DAG(
         task_id='wait_for_minio',
         http_conn_id='minio_http',
         endpoint='minio:9002/minio/health/live',
-        response_check=lambda response: response.status_code == 200,
+        response_check=create_health_check("MinIO"),
         timeout=300,
         poke_interval=30,
         mode='reschedule'
@@ -529,7 +614,7 @@ with DAG(
         task_id='wait_for_clickhouse',
         http_conn_id='clickhouse_http',
         endpoint='',
-        response_check=lambda response: response.status_code == 200,
+        response_check=create_health_check("ClickHouse"),
         timeout=300,
         poke_interval=30,
         mode='reschedule'
@@ -539,7 +624,7 @@ with DAG(
         task_id='check_minio_health',
         python_callable=check_minio_connection
     )
-    
+
     check_clickhouse_health = PythonOperator(
         task_id='check_clickhouse_health',
         python_callable=check_clickhouse_health
