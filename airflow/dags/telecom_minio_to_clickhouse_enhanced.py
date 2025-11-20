@@ -619,7 +619,7 @@ with DAG(
         poke_interval=30,
         mode='reschedule'
     )
-    
+
     check_minio_health = PythonOperator(
         task_id='check_minio_health',
         python_callable=check_minio_connection
@@ -689,7 +689,8 @@ with DAG(
         task_id='trigger_analytics_dag',
         trigger_dag_id='telecom_analytics_dag',
         wait_for_completion=False,
-        reset_dag_run=True
+        reset_dag_run=True,
+        trigger_rule='all_done'
     )
 
     end_pipeline = BashOperator(
@@ -708,16 +709,16 @@ with DAG(
 (
     start_pipeline 
     >> [wait_for_minio, wait_for_clickhouse, wait_for_data_ingestion]
-    
-    >> [
-        check_minio_health, check_clickhouse_health,
-        check_minio_data_files, check_config_file, check_spark_app
-    ]
-    
+    >> check_minio_health
+    >> check_clickhouse_health
+    >> check_minio_data_files
+    >> check_config_file
+    >> check_spark_app
     >> setup_infrastructure
     >> validate_source_data
     >> minio_to_clickhouse_etl
     >> validate_etl_results
-    >> [cleanup_task, mark_etl_complete]
+    >> cleanup_task
+    >> mark_etl_complete
     >> end_pipeline
 )

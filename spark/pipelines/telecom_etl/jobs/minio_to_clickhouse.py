@@ -168,7 +168,7 @@ class MinioToClickHouse:
             )
             .withColumn("aggregation_type", lit("DAILY"))
         )
-        
+
         meter_agg = (df
             .groupBy("meter_id", "partition_date")
             .agg(
