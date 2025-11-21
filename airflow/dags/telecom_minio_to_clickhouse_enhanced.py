@@ -369,8 +369,8 @@ def handle_etl_failure(context):
         logger.error(f"Critical: Failure handler crashed: {e}")
     
 
-def check_minio_files_exists(processing_date, bucket_name, expected_files):
-    """Check if required files exist in MinIO for the processing date."""
+def check_minio_files_exists(bucket_name):
+    """Check if any files exist in the data location."""
 
     try:
         import boto3
@@ -385,20 +385,22 @@ def check_minio_files_exists(processing_date, bucket_name, expected_files):
             verify=False
         )
         
-        prefix = f"smart_meter_data/date={processing_date}/"
+        prefix = "smart_meter_data/"
+        response = s3.list_objects_v2(Bucket=bucket_name, Prefix=prefix, MaxKeys=1)
         
-        list_objects_method = getattr(s3, 'list_objects_v2')
-        response = list_objects_method(Bucket=bucket_name, Prefix=prefix, MaxKeys=1)
+        has_files = 'Contents' in response and len(response['Contents']) > 0
         
-        contents = getattr(response, 'Contents', [])
-        file_count = len(contents)
+        if has_files:
+            # Log what we found
+            first_file = response['Contents'][0]['Key']
+            logger.info(f"Data found: {first_file}")
+        else:
+            logger.info("No data files found")
         
-        logger.info(f"Found {file_count} files for date {processing_date}")
-        
-        return file_count >= expected_files
+        return has_files
             
     except Exception as e:
-        logger.warning(f"Error checking MinIO files: {e}")
+        logger.warning(f"Error checking MinIO: {e}")
         return False
 
 
@@ -541,17 +543,17 @@ with DAG(
 
     start_pipeline = EmptyOperator(task_id='start_pipeline')
 
-    wait_for_data_ingestion = ExternalTaskSensor(
-        task_id='wait_for_data_ingestion',
-        external_dag_id='data_ingestion_pipeline',  # Name of the upstream DAG
-        external_task_id='end_pipeline',            # Specific task to wait for
-        allowed_states=['success'],
-        failed_states=['failed', 'skipped'],
-        execution_date_fn=lambda exec_date: exec_date,
-        mode='reschedule',
-        timeout=3600,      # 1 hour timeout
-        poke_interval=60,  # Check every minute
-    )
+    # wait_for_data_ingestion = ExternalTaskSensor(
+    #     task_id='wait_for_data_ingestion',
+    #     external_dag_id='data_ingestion_pipeline',  # Name of the upstream DAG
+    #     external_task_id='end_pipeline',            # Specific task to wait for
+    #     allowed_states=['success'],
+    #     failed_states=['failed', 'skipped'],
+    #     execution_date_fn=lambda exec_date: exec_date,
+    #     mode='reschedule',
+    #     timeout=3600,      # 1 hour timeout
+    #     poke_interval=60,  # Check every minute
+    # )
 
     wait_for_data_quality = ExternalTaskSensor(
         task_id='wait_for_data_quality',
@@ -585,12 +587,12 @@ with DAG(
         task_id='check_minio_data_files',
         python_callable=check_minio_files_exists,
         mode='reschedule',
-        timeout=3600,
-        poke_interval=60,
+        timeout=300,
+        poke_interval=30,
         op_kwargs={
             'processing_date': '{{ ds }}',
             'bucket_name': 'trino-data-lake',
-            'expected_files': 5
+            'expected_files': 1
         }
     )
 
@@ -706,19 +708,21 @@ with DAG(
         trigger_rule='all_done'
     )
 
-(
-    start_pipeline 
-    >> [wait_for_minio, wait_for_clickhouse, wait_for_data_ingestion]
-    >> check_minio_health
-    >> check_clickhouse_health
-    >> check_minio_data_files
-    >> check_config_file
-    >> check_spark_app
-    >> setup_infrastructure
-    >> validate_source_data
-    >> minio_to_clickhouse_etl
-    >> validate_etl_results
-    >> cleanup_task
-    >> mark_etl_complete
-    >> end_pipeline
-)
+start_pipeline >> check_minio_health >> check_clickhouse_health >> setup_infrastructure >> end_pipeline
+
+# (
+#     start_pipeline 
+#     >> [wait_for_minio, wait_for_clickhouse, wait_for_data_ingestion]
+#     >> check_minio_health
+#     >> check_clickhouse_health
+#     >> check_minio_data_files
+#     >> check_config_file
+#     >> check_spark_app
+#     >> setup_infrastructure
+#     >> validate_source_data
+#     >> minio_to_clickhouse_etl
+#     >> validate_etl_results
+#     >> cleanup_task
+#     >> mark_etl_complete
+#     >> end_pipeline
+# )

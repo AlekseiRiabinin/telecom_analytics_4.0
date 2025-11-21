@@ -291,7 +291,7 @@ def verify_etl_results(**kwargs):
         logger.info(f"Raw count result: {count_result}")
         
         if count_result and len(count_result) == 2:
-            data, columns = count_result
+            data, _ = count_result
             record_count = data[0][0] if data and len(data) > 0 else 0
             
             logger.info(f"ETL verification successful!")
