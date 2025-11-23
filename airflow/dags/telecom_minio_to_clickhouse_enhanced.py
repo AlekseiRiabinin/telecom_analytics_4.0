@@ -4,16 +4,17 @@ With sensors, monitoring, and production-ready features.
 """
 
 import logging
+import requests
 from airflow import DAG
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
+from airflow.providers.amazon.aws.hooks.s3 import S3Hook
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator
 from airflow.operators.bash import BashOperator
+from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.sensors.external_task import ExternalTaskSensor, ExternalTaskMarker
 from airflow.sensors.filesystem import FileSensor
 from airflow.sensors.python import PythonSensor
-from airflow.providers.http.sensors.http import HttpSensor
-from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.exceptions import AirflowException
 from airflow.models import Variable
 from datetime import datetime, timedelta
@@ -101,7 +102,7 @@ def check_minio_connection():
         else:
             logger.error(f"Target bucket '{target_bucket}' not found")
             raise AirflowException(f"Bucket {target_bucket} not found")
-            
+    
     except Exception as e:
         logger.error(f"MinIO connection failed: {e}")
         raise AirflowException(f"MinIO connection failed: {e}")
@@ -386,12 +387,13 @@ def check_minio_files_exists(bucket_name):
         )
         
         prefix = "smart_meter_data/"
-        response = s3.list_objects_v2(Bucket=bucket_name, Prefix=prefix, MaxKeys=1)
+        
+        list_objects_method = getattr(s3, 'list_objects_v2')
+        response = list_objects_method(Bucket=bucket_name, Prefix=prefix, MaxKeys=1)
         
         has_files = 'Contents' in response and len(response['Contents']) > 0
         
         if has_files:
-            # Log what we found
             first_file = response['Contents'][0]['Key']
             logger.info(f"Data found: {first_file}")
         else:
@@ -498,16 +500,32 @@ def handle_etl_failure(context):
         logger.error(f"Original context type: {type(context)}")
 
 
-def create_health_check(endpoint_name: str):
-    """Factory function to create health check with proper typing."""
+def check_minio_health_via_aws_conn():
+    """Check MinIO health using the existing AWS connection."""
+   
+    try:
+        s3_hook = S3Hook(aws_conn_id='aws_default')
+        client = s3_hook.get_conn()
+        
+        client.list_buckets()
+        logger.info("MinIO health check passed via AWS connection")
+        return True
 
-    def health_check(response: Response) -> bool:
-        """Health check with proper type hints."""
+    except Exception as e:
+        logger.warning(f"MinIO health check failed: {e}")
+        return False
 
-        logger.debug(f"Checking {endpoint_name} health - Status: {response.status_code}")
-        return response.status_code == 200
 
-    return health_check
+def check_clickhouse_health_direct():
+    """Check ClickHouse health directly."""
+
+    try:
+        response = requests.get('http://clickhouse:8123/ping', timeout=10)
+        return response.status_code == 200 and response.text == 'Ok\n'
+
+    except Exception as e:
+        logger.warning(f"ClickHouse health check failed: {e}")
+        return False
 
 
 with DAG(
@@ -543,18 +561,6 @@ with DAG(
 
     start_pipeline = EmptyOperator(task_id='start_pipeline')
 
-    # wait_for_data_ingestion = ExternalTaskSensor(
-    #     task_id='wait_for_data_ingestion',
-    #     external_dag_id='data_ingestion_pipeline',  # Name of the upstream DAG
-    #     external_task_id='end_pipeline',            # Specific task to wait for
-    #     allowed_states=['success'],
-    #     failed_states=['failed', 'skipped'],
-    #     execution_date_fn=lambda exec_date: exec_date,
-    #     mode='reschedule',
-    #     timeout=3600,      # 1 hour timeout
-    #     poke_interval=60,  # Check every minute
-    # )
-
     wait_for_data_quality = ExternalTaskSensor(
         task_id='wait_for_data_quality',
         external_dag_id='data_quality_check',
@@ -573,11 +579,9 @@ with DAG(
         execution_date='{{ execution_date }}'
     )
 
-    wait_for_minio = HttpSensor(
+    wait_for_minio = PythonSensor(
         task_id='wait_for_minio',
-        http_conn_id='minio_http',
-        endpoint='minio:9002/minio/health/live',
-        response_check=create_health_check("MinIO"),
+        python_callable=check_minio_health_via_aws_conn,
         timeout=300,
         poke_interval=30,
         mode='reschedule'
@@ -612,11 +616,9 @@ with DAG(
         poke_interval=30,
     )
 
-    wait_for_clickhouse = HttpSensor(
+    wait_for_clickhouse = PythonSensor(
         task_id='wait_for_clickhouse',
-        http_conn_id='clickhouse_http',
-        endpoint='',
-        response_check=create_health_check("ClickHouse"),
+        python_callable=check_clickhouse_health_direct,
         timeout=300,
         poke_interval=30,
         mode='reschedule'
