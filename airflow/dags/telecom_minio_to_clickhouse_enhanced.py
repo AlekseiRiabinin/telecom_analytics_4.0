@@ -5,9 +5,12 @@ With sensors, monitoring, and production-ready features.
 
 import logging
 import requests
+from typing import Any
 from airflow import DAG
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
 from airflow.providers.amazon.aws.hooks.s3 import S3Hook
+from airflow.providers.amazon.aws.operators.s3 import S3ListOperator
+from airflow.providers.amazon.aws.sensors.s3 import S3KeySensor
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator
 from airflow.operators.bash import BashOperator
@@ -17,8 +20,8 @@ from airflow.sensors.filesystem import FileSensor
 from airflow.sensors.python import PythonSensor
 from airflow.exceptions import AirflowException
 from airflow.models import Variable
+from airflow.models.taskinstance import TaskInstance
 from datetime import datetime, timedelta
-from requests import Response
 
 
 logger = logging.getLogger("airflow.task")
@@ -109,59 +112,28 @@ def check_minio_connection():
 
 
 def check_clickhouse_health():
-    """Enhanced ClickHouse health check with metrics."""
+    """ClickHouse health check."""
 
     try:
-        logger.info("Performing ClickHouse health check...")
-        
+        logger.info("Performing ClickHouse health check (HTTP ping)...")
+
+        resp = requests.get("http://clickhouse:8123/ping", timeout=5)
+
+        if resp.status_code != 200 or resp.text.strip() != "Ok":
+            raise AirflowException("ClickHouse ping failed")
+
+        logger.info("ClickHouse basic connectivity confirmed via HTTP ping")
+
         clickhouse_hook = get_clickhouse_hook()
 
-        result = clickhouse_hook.run("SELECT 1")
-        if not result or result[0][0] != 1:
-            raise AirflowException("ClickHouse connectivity test failed")
-        logger.info("ClickHouse basic connectivity confirmed")
+        version = clickhouse_hook.run("SELECT version()", return_dict=True)
+        logger.info(f"ClickHouse version: {version[0]['version']}")
         
-        metrics_query = """
-        SELECT 
-            metric,
-            value
-        FROM system.metrics
-        WHERE metric IN ('Query', 'Merge', 'ReplicatedFetch', 'ReplicatedSend')
-        """
-        metrics = clickhouse_hook.run(metrics_query)
-        logger.info("ClickHouse system metrics:")
-        for metric, value in metrics:
-            logger.info(f"  {metric}: {value}")
-        
-        db_status = clickhouse_hook.run("""
-            SELECT 
-                name,
-                engine,
-                total_rows as rows,
-                formatReadableSize(total_bytes) as size
-            FROM system.tables 
-            WHERE database = 'telecom_analytics'
-        """)
-
-        logger.info("Telecom analytics database status:")
-        total_tables = 0
-        for table in db_status:
-            total_tables += 1
-            logger.info(f"  Table: {table[0]}, Rows: {table[2]}, Size: {table[3]}")
-
-        version_result = clickhouse_hook.run("SELECT version()")
-        version = version_result[0][0] if version_result else "Unknown"
-        
-        logger.info(f"ClickHouse health check passed - Version: {version}")
-        
-        return (
-            f"ClickHouse healthy - Version: {version}, "
-            f"Tables: {total_tables}, Connectivity: OK"
-        )
+        return "ClickHouse healthy"
 
     except Exception as e:
-        logger.error(f"ClickHouse health check failed: {e}")
         raise AirflowException(f"ClickHouse health check failed: {e}")
+
 
 
 def setup_clickhouse_infrastructure():
@@ -236,67 +208,60 @@ def setup_clickhouse_infrastructure():
 def validate_etl_results(**kwargs):
     """Validate ETL results with comprehensive checks."""
 
-    try:
-        processing_date = kwargs['ds']
-        ti = kwargs['ti']
-        
-        logger.info(f"Validating ETL results for date: {processing_date}")
-        
-        clickhouse_hook = get_clickhouse_hook()
-        
-        validation_queries = {
-            "total_records": f"""
-                SELECT count(*) as record_count 
-                FROM telecom_analytics.smart_meter_raw 
-                WHERE date = '{processing_date}'
-            """,
-            "data_quality": f"""
-                SELECT 
-                    count(*) as total,
-                    countIf(energy_consumption > 0) as valid_consumption,
-                    countIf(voltage BETWEEN 200 AND 250) as valid_voltage,
-                    countIf(is_anomaly = 1) as anomaly_count
-                FROM telecom_analytics.smart_meter_raw 
-                WHERE date = '{processing_date}'
-            """,
-            "meter_stats": f"""
-                SELECT 
-                    count(distinct meter_id) as unique_meters,
-                    avg(energy_consumption) as avg_consumption,
-                    max(energy_consumption) as max_consumption
-                FROM telecom_analytics.smart_meter_raw 
-                WHERE date = '{processing_date}'
-            """
-        }
-        
-        validation_results = {}
-        
-        for check_name, query in validation_queries.items():
-            result = clickhouse_hook.run(query)
-            validation_results[check_name] = result[0] if result else None
-            logger.info(
-                f"Validation {check_name}: "
-                f"{result[0] if result else 'No result'}"
-            )
-        
-        xcom_push_method = getattr(ti, 'xcom_push')
-        xcom_push_method(key='validation_results', value=validation_results)
+    target_date = kwargs['execution_date'].strftime('%Y-%m-%d')
+    logger.info(f"Validating ETL results for date: {target_date}")
 
-        record_count = (
-            validation_results['total_records'][0] 
-            if validation_results['total_records'] else 0
+    clickhouse_hook = get_clickhouse_hook()
+
+    total_records = clickhouse_hook.run(f"""
+        SELECT count(*) as record_count
+        FROM telecom_analytics.smart_meter_raw
+        WHERE date = '{target_date}'
+    """)
+    logger.info(f"Validation total_records: {total_records}")
+
+    record_count = total_records[0][0] if total_records else 0
+
+    data_quality = clickhouse_hook.run(f"""
+        SELECT 
+            count(*) as total,
+            countIf(energy_consumption > 0) as valid_consumption,
+            countIf(voltage BETWEEN 200 AND 250) as valid_voltage,
+            countIf(is_anomaly = 1) as anomaly_count
+        FROM telecom_analytics.smart_meter_raw 
+        WHERE date = '{target_date}'
+    """)
+    logger.info(f"Validation data_quality: {data_quality}")
+
+    _, valid_consumption, _, _ = data_quality[0]
+
+    meter_stats = clickhouse_hook.run(f"""
+        SELECT 
+            count(distinct meter_id) as unique_meters,
+            avg(energy_consumption) as avg_consumption,
+            max(energy_consumption) as max_consumption
+        FROM telecom_analytics.smart_meter_raw 
+        WHERE date = '{target_date}'
+    """)
+    logger.info(f"Validation meter_stats: {meter_stats}")
+
+    unique_meters, _, _ = meter_stats[0]
+
+    if record_count == 0:
+        raise AirflowException(
+            "ETL validation failed: ClickHouse contains **no records** for this date."
         )
 
-        if record_count > 0:
-            logger.info(f"ETL validation successful! Loaded {record_count:,} records")
-            return f"ETL validated: {record_count:,} records"
-        else:
-            logger.warning("No records found for validation")
-            return "ETL validated: No records found"
-            
-    except Exception as e:
-        logger.error(f"ETL validation failed: {e}")
-        raise AirflowException(f"ETL validation failed: {e}")
+    if valid_consumption == 0:
+        raise AirflowException(
+            "ETL validation failed: No records with energy_consumption > 0"
+        )
+
+    if unique_meters == 0:
+        raise AirflowException("ETL validation failed: No distinct meter IDs")
+
+    logger.info("ETL Validation Passed")
+    return "ETL Validation Passed"
 
 
 def cleanup_resources():
@@ -500,16 +465,22 @@ def handle_etl_failure(context):
         logger.error(f"Original context type: {type(context)}")
 
 
+
 def check_minio_health_via_aws_conn():
     """Check MinIO health using the existing AWS connection."""
-   
+
     try:
         s3_hook = S3Hook(aws_conn_id='aws_default')
         client = s3_hook.get_conn()
-        
-        client.list_buckets()
-        logger.info("MinIO health check passed via AWS connection")
-        return True
+
+        list_buckets_method = getattr(client, 'list_buckets', None)
+        if callable(list_buckets_method):
+            list_buckets_method()
+            logger.info("MinIO health check passed via AWS connection")
+            return True
+        else:
+            logger.warning("S3 client does not have list_buckets method")
+            return False
 
     except Exception as e:
         logger.warning(f"MinIO health check failed: {e}")
@@ -517,15 +488,33 @@ def check_minio_health_via_aws_conn():
 
 
 def check_clickhouse_health_direct():
-    """Check ClickHouse health directly."""
+    """ClickHouse health check used by the sensor."""
 
     try:
-        response = requests.get('http://clickhouse:8123/ping', timeout=10)
-        return response.status_code == 200 and response.text == 'Ok\n'
+        resp = requests.get("http://clickhouse:8123/ping", timeout=5)
+        return resp.status_code == 200 and resp.text.strip() == "Ok"
 
-    except Exception as e:
-        logger.warning(f"ClickHouse health check failed: {e}")
+    except Exception:
         return False
+
+
+def select_latest_partition(**context: dict[str, Any]) -> str:
+    """Select the latest partition folder from XCom results."""
+
+    ti: TaskInstance = context['ti']
+    folders: list[str] = ti.xcom_pull(task_ids="list_available_partitions") or []
+
+    partitions: list[str] = [str(f) for f in folders if "date=" in str(f)]
+
+    partitions_sorted: list[str] = sorted(
+        partitions,
+        key=lambda x: str(x).split("date=")[1].rstrip("/"),
+        reverse=True
+    )
+
+    latest: str = partitions_sorted[0]
+    ti.xcom_push(key="latest_partition", value=latest)
+    return latest
 
 
 with DAG(
@@ -600,21 +589,54 @@ with DAG(
         }
     )
 
-    check_config_file = FileSensor(
-        task_id='check_config_file',
-        filepath='/opt/airflow/configs/etl_prod.conf',
-        mode='reschedule',
-        timeout=300,
-        poke_interval=30,
+
+    list_available_partitions = S3ListOperator(
+        task_id="list_available_partitions",
+        bucket="trino-data-lake",
+        prefix="smart_meter_data/",
+        delimiter="/",
+        aws_conn_id="aws_default"
     )
 
-    check_spark_app = FileSensor(
-        task_id='check_spark_app',
-        filepath='/opt/airflow/dags/spark/pipelines/telecom_etl/jobs/minio_to_clickhouse.py',
-        mode='reschedule',
-        timeout=300,
-        poke_interval=30,
+
+    select_latest_partition_task = PythonOperator(
+        task_id="select_latest_partition",
+        python_callable=select_latest_partition,
+        provide_context=True
     )
+
+    wait_for_success = S3KeySensor(
+        task_id="wait_for_success",
+        bucket_name="trino-data-lake",
+        bucket_key=(
+            "{{ ti.xcom_pull(task_ids='select_latest_partition', key='latest_partition') }}"
+            "_SUCCESS"
+        ),
+        aws_conn_id="aws_default",
+        poke_interval=20,
+        timeout=1800
+    )
+
+    wait_for_parquet = S3KeySensor(
+        task_id="wait_for_parquet",
+        bucket_name="trino-data-lake",
+        bucket_key=(
+            "{{ ti.xcom_pull(task_ids='select_latest_partition', key='latest_partition') }}"
+            "*.parquet"
+        ),
+        wildcard_match=True,
+        aws_conn_id="aws_default",
+        poke_interval=20,
+        timeout=1800
+    )
+
+    # check_spark_app = FileSensor(
+    #     task_id='check_spark_app',
+    #     filepath='/opt/airflow/dags/spark/pipelines/telecom_etl/jobs/minio_to_clickhouse.py',
+    #     mode='reschedule',
+    #     timeout=300,
+    #     poke_interval=30,
+    # )
 
     wait_for_clickhouse = PythonSensor(
         task_id='wait_for_clickhouse',
@@ -623,6 +645,7 @@ with DAG(
         poke_interval=30,
         mode='reschedule'
     )
+
 
     check_minio_health = PythonOperator(
         task_id='check_minio_health',
