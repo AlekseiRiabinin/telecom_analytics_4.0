@@ -5,7 +5,6 @@ With sensors, monitoring, and production-ready features.
 
 import logging
 import requests
-from typing import Any
 from airflow import DAG
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
 from airflow.providers.amazon.aws.hooks.s3 import S3Hook
@@ -16,7 +15,6 @@ from airflow.operators.python import PythonOperator
 from airflow.operators.bash import BashOperator
 from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.sensors.external_task import ExternalTaskSensor, ExternalTaskMarker
-from airflow.sensors.filesystem import FileSensor
 from airflow.sensors.python import PythonSensor
 from airflow.exceptions import AirflowException
 from airflow.models import Variable
@@ -141,7 +139,7 @@ def setup_clickhouse_infrastructure():
 
     try:
         logger.info("Setting up ClickHouse infrastructure...")
-        
+
         clickhouse_hook = get_clickhouse_hook()
         
         clickhouse_hook.run("CREATE DATABASE IF NOT EXISTS telecom_analytics")
@@ -166,7 +164,7 @@ def setup_clickhouse_infrastructure():
             ORDER BY (meter_id, timestamp)
             SETTINGS index_granularity = 8192
             """,
-            
+
             'meter_aggregates': """
             CREATE TABLE IF NOT EXISTS telecom_analytics.meter_aggregates (
                 meter_id String,
@@ -208,15 +206,17 @@ def setup_clickhouse_infrastructure():
 def validate_etl_results(**kwargs):
     """Validate ETL results with comprehensive checks."""
 
-    target_date = kwargs['execution_date'].strftime('%Y-%m-%d')
-    logger.info(f"Validating ETL results for date: {target_date}")
+    target_date: datetime = kwargs['execution_date']
+    target_date_str = target_date.strftime('%Y-%m-%d')
+    
+    logger.info(f"Validating ETL results for date: {target_date_str}")
 
     clickhouse_hook = get_clickhouse_hook()
 
     total_records = clickhouse_hook.run(f"""
         SELECT count(*) as record_count
         FROM telecom_analytics.smart_meter_raw
-        WHERE date = '{target_date}'
+        WHERE date = '{target_date_str}'
     """)
     logger.info(f"Validation total_records: {total_records}")
 
@@ -229,7 +229,7 @@ def validate_etl_results(**kwargs):
             countIf(voltage BETWEEN 200 AND 250) as valid_voltage,
             countIf(is_anomaly = 1) as anomaly_count
         FROM telecom_analytics.smart_meter_raw 
-        WHERE date = '{target_date}'
+        WHERE date = '{target_date_str}'
     """)
     logger.info(f"Validation data_quality: {data_quality}")
 
@@ -241,7 +241,7 @@ def validate_etl_results(**kwargs):
             avg(energy_consumption) as avg_consumption,
             max(energy_consumption) as max_consumption
         FROM telecom_analytics.smart_meter_raw 
-        WHERE date = '{target_date}'
+        WHERE date = '{target_date_str}'
     """)
     logger.info(f"Validation meter_stats: {meter_stats}")
 
@@ -271,7 +271,7 @@ def cleanup_resources():
         logger.info("Performing post-ETL cleanup...")
         
         clickhouse_hook = get_clickhouse_hook()
-        
+
         optimize_queries = [
             "OPTIMIZE TABLE telecom_analytics.smart_meter_raw FINAL",
             "OPTIMIZE TABLE telecom_analytics.meter_aggregates FINAL"
@@ -301,7 +301,7 @@ def cleanup_resources():
 
 def handle_etl_failure(context):
     """Handle ETL pipeline failures."""
-    
+
     try:
         exception = getattr(context, 'exception', None)
         task_instance = getattr(context, 'task_instance', None)
@@ -330,7 +330,7 @@ def handle_etl_failure(context):
         logger.error(error_message)     
         logger.error(f"Failure context type: {type(context)}")
         logger.error(f"Context available attributes: {dir(context)}")
-        
+
     except Exception as e:
         logger.error(f"Critical: Failure handler crashed: {e}")
     
@@ -393,79 +393,6 @@ def check_dependency_files():
     return True
 
 
-def handle_etl_failure(context):
-    """Handle ETL pipeline failures with comprehensive logging and notifications."""
-    
-    try:
-        exception = getattr(context, 'exception', None)
-        task_instance = getattr(context, 'task_instance', None)
-        execution_date = getattr(context, 'execution_date', None)
-        dag_run = getattr(context, 'dag_run', None)
-
-        task_id = "unknown_task"
-        if task_instance:
-            task_id = getattr(task_instance, 'task_id', 'unknown_task')
-        
-        dag_id = "unknown_dag"
-        if dag_run:
-            dag_id = getattr(dag_run, 'dag_id', 'unknown_dag')
-        elif hasattr(context, 'dag') and context.dag:
-            dag_id = getattr(context.dag, 'dag_id', 'unknown_dag')
-
-        error_details = []
-        error_details.append("ETL PIPELINE FAILURE ALERT")
-        error_details.append("=" * 50)
-        error_details.append(f"• DAG: {dag_id}")
-        error_details.append(f"• Failed Task: {task_id}")
-        error_details.append(f"• Execution Date: {execution_date}")
-        error_details.append(f"• Failure Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        
-        if exception:
-            error_details.append(f"• Error Type: {type(exception).__name__}")
-            error_details.append(f"• Error Message: {str(exception)}")
-            
-            error_message = str(exception).lower()
-            if "minio" in error_message or "s3" in error_message:
-                error_details.append(
-                    "• Suggested Action: Check MinIO connectivity and bucket permissions"
-                )
-            elif "clickhouse" in error_message:
-                error_details.append(
-                    "• Suggested Action: Verify ClickHouse service and database connectivity"
-                )
-            elif "spark" in error_message:
-                error_details.append(
-                    "• Suggested Action: Review Spark configuration and resource allocation"
-                )
-            elif "connection" in error_message:
-                error_details.append(
-                    "• Suggested Action: Check network connectivity between services"
-                )
-            else:
-                error_details.append(
-                    "• Suggested Action: Review task logs for detailed error information"
-                )
-        else:
-            error_details.append("• Error: Unknown failure (no exception details available)")
-        
-        error_details.append("=" * 50)
-
-        error_message = "\n".join(error_details)
-        logger.error(error_message)
-        
-        logger.error("Failure Context Debug Information:")
-        logger.error(f"Context type: {type(context)}")
-        
-        if task_instance and hasattr(task_instance, 'log_url'):
-            log_url = getattr(task_instance, 'log_url', 'N/A')
-            logger.error(f"Task Logs URL: {log_url}")       
-       
-    except Exception as e:
-        logger.error(f"CRITICAL: Failure handler encountered an error: {e}")
-        logger.error(f"Original context type: {type(context)}")
-
-
-
 def check_minio_health_via_aws_conn():
     """Check MinIO health using the existing AWS connection."""
 
@@ -498,23 +425,85 @@ def check_clickhouse_health_direct():
         return False
 
 
-def select_latest_partition(**context: dict[str, Any]) -> str:
+def select_latest_partition(**context):
     """Select the latest partition folder from XCom results."""
 
     ti: TaskInstance = context['ti']
-    folders: list[str] = ti.xcom_pull(task_ids="list_available_partitions") or []
+    folders = ti.xcom_pull(task_ids="list_available_partitions") or []
+    
+    logger.info("=== SELECT LATEST PARTITION DEBUG ===")
+    logger.info(f"Input folders: {folders}")
+    logger.info(f"Number of folders: {len(folders)}")
+    
+    partitions = [str(f) for f in folders if "date=" in str(f)]
+    logger.info(f"Filtered partitions: {partitions}")
+    logger.info(f"Number of partitions after filtering: {len(partitions)}")
 
-    partitions: list[str] = [str(f) for f in folders if "date=" in str(f)]
+    if not partitions:
+        patterns_found = set()
 
-    partitions_sorted: list[str] = sorted(
-        partitions,
-        key=lambda x: str(x).split("date=")[1].rstrip("/"),
-        reverse=True
+        for folder in folders:
+            folder_str = str(folder)
+            if 'date' in folder_str.lower():
+                patterns_found.add(folder_str)
+
+        error_msg = (
+            f"No partitions found with 'date=' pattern. "
+            f"Available folders: {folders}. "
+            f"Folders with 'date' in name: {list(patterns_found)}"
+        )
+        logger.error(error_msg)
+        raise AirflowException(error_msg)
+    
+    try:
+        partitions_sorted = sorted(
+            partitions,
+            key=lambda x: str(x).split("date=")[1].rstrip("/"),
+            reverse=True
+        )
+
+        logger.info(f"Sorted partitions: {partitions_sorted}")
+        latest = partitions_sorted[0]
+        logger.info(f"Selected latest partition: {latest}")
+
+        ti.xcom_push(key="latest_partition", value=latest)
+        return latest
+        
+    except Exception as e:
+        error_msg = f"Error processing partitions: {str(e)}. Partitions: {partitions}"
+        logger.error(error_msg)
+        raise AirflowException(error_msg)
+
+
+def debug_s3_partitions(**context):
+    """Debug what S3ListOperator actually returns."""
+
+    ti: TaskInstance = context['ti']
+    folders = ti.xcom_pull(task_ids="list_available_partitions")
+    
+    logger.info("=== DEBUG S3 PARTITIONS ===")
+    logger.info(f"Type of folders: {type(folders)}")
+    logger.info(f"Raw folders: {folders}")
+    
+    if folders:
+        logger.info(f"Number of folders: {len(folders)}")
+        for i, folder in enumerate(folders):
+            logger.info(f"Folder {i}: {folder} (type: {type(folder)})")
+            if "date=" in str(folder):
+                logger.info(f"  -> Contains 'date=' pattern")
+            else:
+                logger.info(f"  -> No 'date=' pattern")
+    else:
+        logger.warning("No folders returned from list_available_partitions")
+    
+    s3_hook = S3Hook(aws_conn_id='aws_default')
+    all_keys = s3_hook.list_keys(
+        bucket_name='trino-data-lake',
+        prefix='smart_meter_data/'
     )
+    logger.info(f"All S3 keys with prefix 'smart_meter_data/': {all_keys}")
 
-    latest: str = partitions_sorted[0]
-    ti.xcom_push(key="latest_partition", value=latest)
-    return latest
+    return folders
 
 
 with DAG(
@@ -589,7 +578,6 @@ with DAG(
         }
     )
 
-
     list_available_partitions = S3ListOperator(
         task_id="list_available_partitions",
         bucket="trino-data-lake",
@@ -598,6 +586,11 @@ with DAG(
         aws_conn_id="aws_default"
     )
 
+    debug_partitions_task = PythonOperator(
+        task_id='debug_partitions',
+        python_callable=debug_s3_partitions,
+        provide_context=True
+    )
 
     select_latest_partition_task = PythonOperator(
         task_id="select_latest_partition",
