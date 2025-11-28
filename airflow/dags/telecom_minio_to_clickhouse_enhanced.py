@@ -20,6 +20,7 @@ from airflow.exceptions import AirflowException
 from airflow.models import Variable
 from airflow.models.taskinstance import TaskInstance
 from datetime import datetime, timedelta
+from clickhouse_driver import Client
 
 
 logger = logging.getLogger("airflow.task")
@@ -335,40 +336,27 @@ def handle_etl_failure(context):
         logger.error(f"Critical: Failure handler crashed: {e}")
     
 
-def check_minio_files_exists(bucket_name):
+def check_minio_files_exists(bucket_name, processing_date=None, expected_files=1):
     """Check if any files exist in the data location."""
 
-    try:
-        import boto3
-        from botocore.client import Config
-        
-        s3 = boto3.client(
-            's3',
-            endpoint_url='http://minio:9002',
-            aws_access_key_id='minioadmin',
-            aws_secret_access_key='minioadmin',
-            config=Config(signature_version='s3v4'),
-            verify=False
-        )
-        
-        prefix = "smart_meter_data/"
-        
-        list_objects_method = getattr(s3, 'list_objects_v2')
-        response = list_objects_method(Bucket=bucket_name, Prefix=prefix, MaxKeys=1)
-        
-        has_files = 'Contents' in response and len(response['Contents']) > 0
-        
-        if has_files:
-            first_file = response['Contents'][0]['Key']
-            logger.info(f"Data found: {first_file}")
-        else:
-            logger.info("No data files found")
-        
-        return has_files
-            
-    except Exception as e:
-        logger.warning(f"Error checking MinIO: {e}")
-        return False
+    import boto3
+    from botocore.client import Config
+    
+    s3 = boto3.client(
+        's3',
+        endpoint_url='http://minio:9002',
+        aws_access_key_id='minioadmin',
+        aws_secret_access_key='minioadmin',
+        config=Config(signature_version='s3v4'),
+        verify=False
+    )
+    
+    prefix = f"smart_meter_data/date={processing_date}/"
+    
+    response = s3.list_objects_v2(Bucket=bucket_name, Prefix=prefix)
+    
+    file_count = len(response.get("Contents", []))
+    return file_count >= expected_files
 
 
 def check_dependency_files():
@@ -418,11 +406,17 @@ def check_clickhouse_health_direct():
     """ClickHouse health check used by the sensor."""
 
     try:
-        resp = requests.get("http://clickhouse:8123/ping", timeout=5)
-        return resp.status_code == 200 and resp.text.strip() == "Ok"
+        client = Client(
+            host="clickhouse-server",
+            port=9000,
+            user="admin",
+            password="clickhouse_admin",
+        )
+        client.execute("SELECT 1")
+        return True
 
-    except Exception:
-        return False
+    except Exception as e:
+        raise AirflowException(f"ClickHouse health check failed: {e}")
 
 
 def select_latest_partition(**context):
@@ -539,16 +533,16 @@ with DAG(
 
     start_pipeline = EmptyOperator(task_id='start_pipeline')
 
-    wait_for_data_quality = ExternalTaskSensor(
-        task_id='wait_for_data_quality',
-        external_dag_id='data_quality_check',
-        external_task_id='data_validation_complete',
-        allowed_states=['success'],
-        execution_date_fn=lambda exec_date: exec_date,
-        mode='reschedule',
-        timeout=1800,
-        poke_interval=30,
-    )
+    # wait_for_data_quality = ExternalTaskSensor(
+    #     task_id='wait_for_data_quality',
+    #     external_dag_id='data_quality_check',
+    #     external_task_id='data_validation_complete',
+    #     allowed_states=['success'],
+    #     execution_date_fn=lambda exec_date: exec_date,
+    #     mode='reschedule',
+    #     timeout=1800,
+    #     poke_interval=30,
+    # )
 
     mark_etl_complete = ExternalTaskMarker(
         task_id='mark_etl_complete',
@@ -582,9 +576,9 @@ with DAG(
         task_id="list_available_partitions",
         bucket="trino-data-lake",
         prefix="smart_meter_data/",
-        delimiter="/",
         aws_conn_id="aws_default"
     )
+
 
     debug_partitions_task = PythonOperator(
         task_id='debug_partitions',
@@ -622,14 +616,6 @@ with DAG(
         poke_interval=20,
         timeout=1800
     )
-
-    # check_spark_app = FileSensor(
-    #     task_id='check_spark_app',
-    #     filepath='/opt/airflow/dags/spark/pipelines/telecom_etl/jobs/minio_to_clickhouse.py',
-    #     mode='reschedule',
-    #     timeout=300,
-    #     poke_interval=30,
-    # )
 
     wait_for_clickhouse = PythonSensor(
         task_id='wait_for_clickhouse',
@@ -726,21 +712,52 @@ with DAG(
         trigger_rule='all_done'
     )
 
-start_pipeline >> check_minio_health >> check_clickhouse_health >> setup_infrastructure >> end_pipeline
+# start_pipeline >> check_minio_health >> check_clickhouse_health >> setup_infrastructure >> end_pipeline
 
-# (
-#     start_pipeline 
-#     >> [wait_for_minio, wait_for_clickhouse, wait_for_data_ingestion]
-#     >> check_minio_health
-#     >> check_clickhouse_health
-#     >> check_minio_data_files
-#     >> check_config_file
-#     >> check_spark_app
-#     >> setup_infrastructure
-#     >> validate_source_data
-#     >> minio_to_clickhouse_etl
-#     >> validate_etl_results
-#     >> cleanup_task
-#     >> mark_etl_complete
-#     >> end_pipeline
-# )
+(
+    start_pipeline
+
+    # 1. Platform availability
+    >> wait_for_minio
+    >> wait_for_clickhouse
+
+    # 2. Health checks
+    >> check_minio_health
+    >> check_clickhouse_health
+
+    # 3. Source data availability in MinIO
+    >> check_minio_data_files
+
+    # 4. Partition discovery
+    >> list_available_partitions
+    >> debug_partitions_task
+    >> select_latest_partition_task
+
+    # 5. Ensure Spark output is fully written in MinIO
+    >> wait_for_success
+    >> wait_for_parquet
+
+    # 6. Prepare ClickHouse target tables
+    >> setup_infrastructure
+
+    # 7. Additional source validation (placeholder)
+    >> validate_source_data
+
+    # 8. Run Spark ETL
+    >> minio_to_clickhouse_etl
+
+    # 9. Validate ClickHouse results
+    >> validate_etl_results
+
+    # 10. Optimize + cleanup
+    >> cleanup_task
+
+    # 11. Let downstream DAG know ETL is complete
+    >> mark_etl_complete
+
+    # 12. Start analytics DAG (optional)
+    >> trigger_analytics_dag
+
+    # 13. Final logging
+    >> end_pipeline
+)
