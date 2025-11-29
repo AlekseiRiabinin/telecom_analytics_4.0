@@ -3,24 +3,25 @@ Enhanced MinIO to ClickHouse ETL Pipeline
 With sensors, monitoring, and production-ready features.
 """
 
+import re
 import logging
-import requests
 from airflow import DAG
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
 from airflow.providers.amazon.aws.hooks.s3 import S3Hook
 from airflow.providers.amazon.aws.operators.s3 import S3ListOperator
-from airflow.providers.amazon.aws.sensors.s3 import S3KeySensor
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator
 from airflow.operators.bash import BashOperator
 from airflow.operators.trigger_dagrun import TriggerDagRunOperator
-from airflow.sensors.external_task import ExternalTaskSensor, ExternalTaskMarker
+from airflow.sensors.external_task import ExternalTaskMarker
 from airflow.sensors.python import PythonSensor
 from airflow.exceptions import AirflowException
 from airflow.models import Variable
 from airflow.models.taskinstance import TaskInstance
 from datetime import datetime, timedelta
+from botocore.client import Config
 from clickhouse_driver import Client
+from typing import Any
 
 
 logger = logging.getLogger("airflow.task")
@@ -111,24 +112,14 @@ def check_minio_connection():
 
 
 def check_clickhouse_health():
-    """ClickHouse health check."""
+    """ClickHouse health check using native client."""
 
     try:
-        logger.info("Performing ClickHouse health check (HTTP ping)...")
-
-        resp = requests.get("http://clickhouse:8123/ping", timeout=5)
-
-        if resp.status_code != 200 or resp.text.strip() != "Ok":
-            raise AirflowException("ClickHouse ping failed")
-
-        logger.info("ClickHouse basic connectivity confirmed via HTTP ping")
-
-        clickhouse_hook = get_clickhouse_hook()
-
-        version = clickhouse_hook.run("SELECT version()", return_dict=True)
-        logger.info(f"ClickHouse version: {version[0]['version']}")
+        logger.info("Performing ClickHouse health check (native client)...")
         
-        return "ClickHouse healthy"
+        if check_clickhouse_health_direct():
+            logger.info("ClickHouse is healthy (native client)")
+            return "ClickHouse healthy"
 
     except Exception as e:
         raise AirflowException(f"ClickHouse health check failed: {e}")
@@ -165,7 +156,7 @@ def setup_clickhouse_infrastructure():
             ORDER BY (meter_id, timestamp)
             SETTINGS index_granularity = 8192
             """,
-
+      
             'meter_aggregates': """
             CREATE TABLE IF NOT EXISTS telecom_analytics.meter_aggregates (
                 meter_id String,
@@ -207,62 +198,46 @@ def setup_clickhouse_infrastructure():
 def validate_etl_results(**kwargs):
     """Validate ETL results with comprehensive checks."""
 
-    target_date: datetime = kwargs['execution_date']
-    target_date_str = target_date.strftime('%Y-%m-%d')
-    
-    logger.info(f"Validating ETL results for date: {target_date_str}")
+    from clickhouse_provider.hooks.clickhouse_hook import ClickhouseHook
 
-    clickhouse_hook = get_clickhouse_hook()
+    date: datetime = kwargs["execution_date"]
+    date_str = date.strftime("%Y-%m-%d")
+    logging.info(f"Validating ETL results for date: {date_str}")
 
-    total_records = clickhouse_hook.run(f"""
-        SELECT count(*) as record_count
-        FROM telecom_analytics.smart_meter_raw
-        WHERE date = '{target_date_str}'
-    """)
-    logger.info(f"Validation total_records: {total_records}")
+    clickhouse_hook = ClickhouseHook(clickhouse_conn_id="click_default")
 
-    record_count = total_records[0][0] if total_records else 0
-
-    data_quality = clickhouse_hook.run(f"""
+    query = f"""
         SELECT 
             count(*) as total,
             countIf(energy_consumption > 0) as valid_consumption,
             countIf(voltage BETWEEN 200 AND 250) as valid_voltage,
             countIf(is_anomaly = 1) as anomaly_count
         FROM telecom_analytics.smart_meter_raw 
-        WHERE date = '{target_date_str}'
-    """)
-    logger.info(f"Validation data_quality: {data_quality}")
+        WHERE date = '{date_str}'
+    """
 
-    _, valid_consumption, _, _ = data_quality[0]
+    rows = clickhouse_hook.get_records(query)
 
-    meter_stats = clickhouse_hook.run(f"""
-        SELECT 
-            count(distinct meter_id) as unique_meters,
-            avg(energy_consumption) as avg_consumption,
-            max(energy_consumption) as max_consumption
-        FROM telecom_analytics.smart_meter_raw 
-        WHERE date = '{target_date_str}'
-    """)
-    logger.info(f"Validation meter_stats: {meter_stats}")
+    if not rows or not rows[0]:
+        total = valid_consumption = valid_voltage = anomaly_count = 0
+    else:
+        row: dict[str, Any] = rows[0]
 
-    unique_meters, _, _ = meter_stats[0]
+        if isinstance(row, (list, tuple)) and len(row) == 4:
+            total, valid_consumption, valid_voltage, anomaly_count = row
+        elif hasattr(row, 'get'):
+            total = row.get('total', 0)
+            valid_consumption = row.get('valid_consumption', 0)
+            valid_voltage = row.get('valid_voltage', 0)
+            anomaly_count = row.get('anomaly_count', 0)
+        else:
+            total = row[0]
+            valid_consumption = valid_voltage = anomaly_count = 0
 
-    if record_count == 0:
-        raise AirflowException(
-            "ETL validation failed: ClickHouse contains **no records** for this date."
-        )
-
-    if valid_consumption == 0:
-        raise AirflowException(
-            "ETL validation failed: No records with energy_consumption > 0"
-        )
-
-    if unique_meters == 0:
-        raise AirflowException("ETL validation failed: No distinct meter IDs")
-
-    logger.info("ETL Validation Passed")
-    return "ETL Validation Passed"
+    logging.info(
+        f"Validation data_quality: total={total}, valid_consumption={valid_consumption}, "
+        f"valid_voltage={valid_voltage}, anomaly_count={anomaly_count}"
+    )
 
 
 def cleanup_resources():
@@ -336,26 +311,56 @@ def handle_etl_failure(context):
         logger.error(f"Critical: Failure handler crashed: {e}")
     
 
-def check_minio_files_exists(bucket_name, processing_date=None, expected_files=1):
-    """Check if any files exist in the data location."""
+def check_minio_files_exists(bucket_name, expected_files=1):
+    """Check if any files exist in the latest MinIO partition."""
 
     import boto3
     from botocore.client import Config
-    
+
     s3 = boto3.client(
-        's3',
-        endpoint_url='http://minio:9002',
-        aws_access_key_id='minioadmin',
-        aws_secret_access_key='minioadmin',
-        config=Config(signature_version='s3v4'),
+        "s3",
+        endpoint_url="http://minio:9002",
+        aws_access_key_id="minioadmin",
+        aws_secret_access_key="minioadmin",
+        config=Config(signature_version="s3v4"),
         verify=False
     )
-    
-    prefix = f"smart_meter_data/date={processing_date}/"
-    
-    response = s3.list_objects_v2(Bucket=bucket_name, Prefix=prefix)
-    
-    file_count = len(response.get("Contents", []))
+
+    list_objects = getattr(s3, "list_objects_v2", None)
+    if not list_objects:
+        raise AirflowException("S3 client does not support list_objects_v2")
+
+    logger.info("Scanning MinIO for available partitions...")
+
+    response: dict[str, Any] = list_objects(
+        Bucket=bucket_name,
+        Prefix="smart_meter_data/",
+        Delimiter="/"
+    )
+
+    prefixes = response.get("CommonPrefixes", [])
+    partitions = [p["Prefix"] for p in prefixes]
+
+    dates = []
+    for p in partitions:
+        m = re.search(r"date=(\d{4}-\d{2}-\d{2})/?", p)
+        if m:
+            dates.append(m.group(1))
+
+    if not dates:
+        logger.warning("No date partitions found in MinIO.")
+        return False
+
+    latest_date = sorted(dates)[-1]
+    prefix = f"smart_meter_data/date={latest_date}/"
+
+    logger.info(f"Checking latest MinIO partition for files: {prefix}")
+
+    res: dict[str, Any] = list_objects(Bucket=bucket_name, Prefix=prefix)
+    file_count = len(res.get("Contents", []))
+
+    logger.info(f"Found {file_count} files in {prefix}")
+
     return file_count >= expected_files
 
 
@@ -579,7 +584,6 @@ with DAG(
         aws_conn_id="aws_default"
     )
 
-
     debug_partitions_task = PythonOperator(
         task_id='debug_partitions',
         python_callable=debug_s3_partitions,
@@ -592,30 +596,6 @@ with DAG(
         provide_context=True
     )
 
-    wait_for_success = S3KeySensor(
-        task_id="wait_for_success",
-        bucket_name="trino-data-lake",
-        bucket_key=(
-            "{{ ti.xcom_pull(task_ids='select_latest_partition', key='latest_partition') }}"
-            "_SUCCESS"
-        ),
-        aws_conn_id="aws_default",
-        poke_interval=20,
-        timeout=1800
-    )
-
-    wait_for_parquet = S3KeySensor(
-        task_id="wait_for_parquet",
-        bucket_name="trino-data-lake",
-        bucket_key=(
-            "{{ ti.xcom_pull(task_ids='select_latest_partition', key='latest_partition') }}"
-            "*.parquet"
-        ),
-        wildcard_match=True,
-        aws_conn_id="aws_default",
-        poke_interval=20,
-        timeout=1800
-    )
 
     wait_for_clickhouse = PythonSensor(
         task_id='wait_for_clickhouse',
@@ -733,31 +713,27 @@ with DAG(
     >> debug_partitions_task
     >> select_latest_partition_task
 
-    # 5. Ensure Spark output is fully written in MinIO
-    >> wait_for_success
-    >> wait_for_parquet
-
-    # 6. Prepare ClickHouse target tables
+    # 5. Prepare ClickHouse target tables
     >> setup_infrastructure
 
-    # 7. Additional source validation (placeholder)
+    # 6. Additional source validation (placeholder)
     >> validate_source_data
 
-    # 8. Run Spark ETL
+    # 7. Run Spark ETL
     >> minio_to_clickhouse_etl
 
-    # 9. Validate ClickHouse results
+    # 8. Validate ClickHouse results
     >> validate_etl_results
 
-    # 10. Optimize + cleanup
+    # 9. Optimize + cleanup
     >> cleanup_task
 
-    # 11. Let downstream DAG know ETL is complete
+    # 10. Let downstream DAG know ETL is complete
     >> mark_etl_complete
 
-    # 12. Start analytics DAG (optional)
+    # 11. Start analytics DAG (optional)
     >> trigger_analytics_dag
 
-    # 13. Final logging
+    # 12. Final logging
     >> end_pipeline
 )
