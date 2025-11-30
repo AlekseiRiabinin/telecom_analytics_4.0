@@ -10,6 +10,7 @@ import argparse
 import configparser
 import requests
 import concurrent.futures
+import pyspark.sql.functions as F
 from threading import Lock
 from typing import TypedDict, cast
 from argparse import Namespace
@@ -19,7 +20,6 @@ from spark.pipelines.shared.utils.spark_utils import (
     SparkSessionManager,
     DataQualityChecker
 )    
-from pyspark.sql.functions import *
 from pyspark.sql.types import *
 
 
@@ -109,25 +109,25 @@ class MinioToClickHouse:
         cleaned_df = DataQualityChecker.validate_meter_data(cleaned_df)
 
         transformed_df = (cleaned_df
-            .withColumn("timestamp", to_timestamp(col("timestamp")))
-            .withColumn("date", to_date(col("timestamp")))
-            .withColumn("year", year(col("timestamp")))
-            .withColumn("month", month(col("timestamp")))
-            .withColumn("day", dayofmonth(col("timestamp")))
-            .withColumn("hour", hour(col("timestamp")))
-            .withColumn("minute", minute(col("timestamp")))
+            .withColumn("timestamp", F.to_timestamp(F.col("timestamp")))
+            .withColumn("date", F.to_date(F.col("timestamp")))
+            .withColumn("year", F.year(F.col("timestamp")))
+            .withColumn("month", F.month(F.col("timestamp")))
+            .withColumn("day", F.dayofmonth(F.col("timestamp")))
+            .withColumn("hour", F.hour(F.col("timestamp")))
+            .withColumn("minute", F.minute(F.col("timestamp")))
             .withColumn("consumption_category",
-                when(col("energy_consumption") < 10, "LOW")
-                .when(col("energy_consumption") < 25, "MEDIUM")
+                F.when(F.col("energy_consumption") < 10, "LOW")
+                .when(F.col("energy_consumption") < 25, "MEDIUM")
                 .otherwise("HIGH"))
             .withColumn("is_anomaly", 
-                when(
-                    (col("energy_consumption") > 50) | 
-                    (col("voltage") < 200) | 
-                    (col("voltage") > 250), 1
+                F.when(
+                    (F.col("energy_consumption") > 50) | 
+                    (F.col("voltage") < 200) | 
+                    (F.col("voltage") > 250), 1
                 ).otherwise(0))
-            .withColumn("partition_date", to_date(col("timestamp")))
-            .withColumn("processed_at", current_timestamp())
+            .withColumn("partition_date", F.to_date(F.col("timestamp")))
+            .withColumn("processed_at", F.current_timestamp())
         )
 
         self.logger.info(f"Transformations completed - {transformed_df.count()} records")
@@ -141,45 +141,45 @@ class MinioToClickHouse:
         hourly_agg = (df
             .groupBy("meter_id", "date", "hour", "partition_date")
             .agg(
-                sum("energy_consumption").alias("total_energy_hourly"),
-                avg("energy_consumption").alias("avg_energy_hourly"),
-                avg("voltage").alias("avg_voltage_hourly"),
-                avg("current_reading").alias("avg_current_hourly"),
-                max("energy_consumption").alias("max_consumption_hourly"),
-                min("energy_consumption").alias("min_consumption_hourly"),
-                count("*").alias("record_count_hourly"),
-                sum("is_anomaly").alias("anomaly_count_hourly")
+                F.sum("energy_consumption").alias("total_energy_hourly"),
+                F.avg("energy_consumption").alias("avg_energy_hourly"),
+                F.avg("voltage").alias("avg_voltage_hourly"),
+                F.avg("current_reading").alias("avg_current_hourly"),
+                F.max("energy_consumption").alias("max_consumption_hourly"),
+                F.min("energy_consumption").alias("min_consumption_hourly"),
+                F.count("*").alias("record_count_hourly"),
+                F.sum("is_anomaly").alias("anomaly_count_hourly")
             )
-            .withColumn("aggregation_type", lit("HOURLY"))
+            .withColumn("aggregation_type", F.lit("HOURLY"))
         )
 
         daily_agg = (df
             .groupBy("meter_id", "date", "partition_date")
             .agg(
-                sum("energy_consumption").alias("total_energy_daily"),
-                avg("energy_consumption").alias("avg_energy_daily"),
-                avg("voltage").alias("avg_voltage_daily"),
-                avg("current_reading").alias("avg_current_daily"),
-                max("energy_consumption").alias("max_consumption_daily"),
-                min("energy_consumption").alias("min_consumption_daily"),
-                stddev("energy_consumption").alias("std_energy_daily"),
-                count("*").alias("record_count_daily"),
-                sum("is_anomaly").alias("anomaly_count_daily")
+                F.sum("energy_consumption").alias("total_energy_daily"),
+                F.avg("energy_consumption").alias("avg_energy_daily"),
+                F.avg("voltage").alias("avg_voltage_daily"),
+                F.avg("current_reading").alias("avg_current_daily"),
+                F.max("energy_consumption").alias("max_consumption_daily"),
+                F.min("energy_consumption").alias("min_consumption_daily"),
+                F.stddev("energy_consumption").alias("std_energy_daily"),
+                F.count("*").alias("record_count_daily"),
+                F.sum("is_anomaly").alias("anomaly_count_daily")
             )
-            .withColumn("aggregation_type", lit("DAILY"))
+            .withColumn("aggregation_type", F.lit("DAILY"))
         )
 
         meter_agg = (df
             .groupBy("meter_id", "partition_date")
             .agg(
-                sum("energy_consumption").alias("total_energy_meter"),
-                avg("energy_consumption").alias("avg_energy_meter"),
-                max("energy_consumption").alias("peak_consumption"),
-                count("*").alias("total_readings"),
-                approx_count_distinct("date").alias("active_days"),
-                sum("is_anomaly").alias("total_anomalies")
+                F.sum("energy_consumption").alias("total_energy_meter"),
+                F.avg("energy_consumption").alias("avg_energy_meter"),
+                F.max("energy_consumption").alias("peak_consumption"),
+                F.count("*").alias("total_readings"),
+                F.approx_count_distinct("date").alias("active_days"),
+                F.sum("is_anomaly").alias("total_anomalies")
             )
-            .withColumn("aggregation_type", lit("METER_SUMMARY"))
+            .withColumn("aggregation_type", F.lit("METER_SUMMARY"))
         )
 
         aggregations = {

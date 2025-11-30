@@ -3,7 +3,6 @@ MinIO to MSSQL Spark Job
 Reads from MinIO, transforms data, and demonstrates MSSQL write.
 """
 
-
 import sys
 import os
 import logging

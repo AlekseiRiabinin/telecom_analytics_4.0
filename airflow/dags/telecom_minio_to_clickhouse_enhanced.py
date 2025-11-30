@@ -5,6 +5,9 @@ With sensors, monitoring, and production-ready features.
 
 import re
 import logging
+from typing import Any
+from datetime import datetime, timedelta
+from clickhouse_driver import Client
 from airflow import DAG
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
 from airflow.providers.amazon.aws.hooks.s3 import S3Hook
@@ -12,16 +15,11 @@ from airflow.providers.amazon.aws.operators.s3 import S3ListOperator
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator
 from airflow.operators.bash import BashOperator
-from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.sensors.external_task import ExternalTaskMarker
 from airflow.sensors.python import PythonSensor
 from airflow.exceptions import AirflowException
 from airflow.models import Variable
 from airflow.models.taskinstance import TaskInstance
-from datetime import datetime, timedelta
-from botocore.client import Config
-from clickhouse_driver import Client
-from typing import Any
 
 
 logger = logging.getLogger("airflow.task")
@@ -42,7 +40,7 @@ def get_clickhouse_hook():
     """Get ClickHouse Hook with explicit HTTP parameters."""
 
     from clickhouse_provider.hooks.clickhouse_hook import ClickhouseHook
-    
+
     return ClickhouseHook(
         host='clickhouse',
         port=8123,
@@ -85,7 +83,7 @@ def check_minio_connection():
                 default_var=datetime.now().strftime('%Y-%m-%d')
             )
             prefix = f"smart_meter_data/date={processing_date}/"
-            
+
             try:
                 list_objects_method = getattr(s3, 'list_objects_v2')
                 objects = list_objects_method(
@@ -123,7 +121,6 @@ def check_clickhouse_health():
 
     except Exception as e:
         raise AirflowException(f"ClickHouse health check failed: {e}")
-
 
 
 def setup_clickhouse_infrastructure():
@@ -659,7 +656,7 @@ with DAG(
         executor_memory='2g',
         verbose=True
     )
-    
+
     validate_etl_results = PythonOperator(
         task_id='validate_etl_results',
         python_callable=validate_etl_results,
@@ -671,13 +668,13 @@ with DAG(
         python_callable=cleanup_resources
     )
     
-    trigger_analytics_dag = TriggerDagRunOperator(
-        task_id='trigger_analytics_dag',
-        trigger_dag_id='telecom_analytics_dag',
-        wait_for_completion=False,
-        reset_dag_run=True,
-        trigger_rule='all_done'
-    )
+    # trigger_analytics_dag = TriggerDagRunOperator(
+    #     task_id='trigger_analytics_dag',
+    #     trigger_dag_id='telecom_analytics_dag',
+    #     wait_for_completion=False,
+    #     reset_dag_run=True,
+    #     trigger_rule='all_done'
+    # )
 
     end_pipeline = BashOperator(
         task_id='end_pipeline',
@@ -692,7 +689,6 @@ with DAG(
         trigger_rule='all_done'
     )
 
-# start_pipeline >> check_minio_health >> check_clickhouse_health >> setup_infrastructure >> end_pipeline
 
 (
     start_pipeline
@@ -731,9 +727,6 @@ with DAG(
     # 10. Let downstream DAG know ETL is complete
     >> mark_etl_complete
 
-    # 11. Start analytics DAG (optional)
-    >> trigger_analytics_dag
-
-    # 12. Final logging
+    # 11. Final logging
     >> end_pipeline
 )
