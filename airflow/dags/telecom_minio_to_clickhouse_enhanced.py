@@ -626,7 +626,7 @@ with DAG(
         exit 0
         """
     )
-    
+
     minio_to_clickhouse_etl = SparkSubmitOperator(
         task_id='minio_to_clickhouse_etl',
         application='/opt/airflow/dags/spark/pipelines/telecom_etl/jobs/minio_to_clickhouse.py',
