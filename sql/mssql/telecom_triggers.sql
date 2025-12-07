@@ -155,5 +155,3 @@ BEGIN
     WHERE tr.TOUCodeID = 1; -- sample
 END;
 GO
-
-

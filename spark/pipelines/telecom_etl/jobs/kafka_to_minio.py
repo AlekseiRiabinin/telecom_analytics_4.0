@@ -213,7 +213,7 @@ class KafkaToMinio:
             if df is None:
                 self.logger.error("Failed to read from Kafka")
                 return False
-            
+
             count = df.count()
             self.logger.info(f"Read {count} records from Kafka")
             

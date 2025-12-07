@@ -25,7 +25,7 @@ object CorePipeline {
       
       println(s"Loaded ${telemetryDS.count()} records")
       telemetryDS.show(5)
-      
+
       // 2. Transformation with explicit type conversions
       val summaryDS: Dataset[TelecomSummary] = telemetryDS
         .filter(_.operator != null)
