@@ -1,6 +1,7 @@
 package com.telecomanalytics.pipelines.minio
 
 import com.telecomanalytics.core.SparkSessionManager
+import com.telecomanalytics.core.transformations.SmartMeterTransformations
 import com.telecomanalytics.models.SmartMeterRecord
 import org.apache.spark.sql.{SparkSession, Dataset, Encoder, Encoders, Row}
 import org.apache.spark.sql.functions._
@@ -70,7 +71,7 @@ object MinioToClickHouse {
       logger.info(s"Raw data count: $rawCount")
       if (rawCount == 0) return true
 
-      val transformed = transformForClickHouse(raw, spark)
+      val transformed = transformForClickHouse(raw)
       val transformedCount = transformed.count()
       logger.info(s"Transformed data count: $transformedCount")
       if (transformedCount == 0) return true
@@ -159,15 +160,8 @@ object MinioToClickHouse {
 
     logger.info("Applying ClickHouse-optimized transformations")
 
-    val filled = raw.na.fill(Map[String, Any](
-      "energy_consumption" -> 15.0,
-      "current_reading" -> 10.0,
-      "power_factor" -> 0.95,
-      "frequency" -> 50.0,
-      "voltage" -> 220.0
-    ))
-
-    val validated = DataQualityChecker.validateMeterData(filled) // implement this method in your utils
+    val filled = SmartMeterTransformations.filled(raw)
+    val validated = DataQualityChecker.validateMeterData(filled)
 
     val df = validated.toDF()
       .withColumn("timestamp_ts", to_timestamp(col("timestamp")))
@@ -183,15 +177,15 @@ object MinioToClickHouse {
           .otherwise("HIGH")
       )
       .withColumn("is_anomaly",
-        when(col("energy_consumption") > 50 || col("voltage") < 200 || col("voltage") > 250, lit(1)).otherwise(lit(0))
+        when(col("energy_consumption") > 50 ||
+            col("voltage") < 200 ||
+            col("voltage") > 250, lit(1)).otherwise(lit(0))
       )
       .withColumn("partition_date", to_date(col("timestamp_ts")))
       .withColumn("processed_at", current_timestamp())
-      // rename timestamp column to actual timestamp type expected by ClickHouseRecord
       .withColumnRenamed("timestamp_ts", "timestamp")
 
-    // Select and cast to the ClickHouseRecord case class
-    val chDs = df.select(
+    val chDS = df.select(
       col("meter_id").cast("string"),
       col("timestamp").cast("timestamp"),
       col("energy_consumption").cast("double"),
@@ -211,13 +205,16 @@ object MinioToClickHouse {
       col("processed_at").cast("timestamp")
     ).as[ClickHouseRecord]
 
-    val cnt = chDs.count()
+    val cnt = chDS.count()
     logger.info(s"Transformations completed - $cnt records")
-    chDs
+
+    chDS
   }
 
-  // ----- aggregations similar to Python version -----
-  def createClickHouseAggregations(ds: Dataset[ClickHouseRecord], spark: SparkSession): Map[String, Dataset[_]] = {
+
+  def createClickHouseAggregations(ds: Dataset[ClickHouseRecord], spark: SparkSession)
+    : Map[String, Dataset[_]] = {
+
     import spark.implicits._
 
     logger.info("Creating ClickHouse aggregations")
@@ -277,7 +274,6 @@ object MinioToClickHouse {
     aggregations
   }
 
-  // ----- HTTP insert to ClickHouse using JSONEachRow; parallel per partition -----
   def writeToClickHouse(config: com.typesafe.config.Config, dfs: Map[String, Dataset[_]]): Boolean = {
     import scala.concurrent.ExecutionContext.Implicits.global
 
