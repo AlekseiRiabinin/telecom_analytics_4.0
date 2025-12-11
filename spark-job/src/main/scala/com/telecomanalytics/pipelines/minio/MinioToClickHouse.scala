@@ -274,8 +274,7 @@ object MinioToClickHouse {
     aggregations
   }
 
-  def writeToClickHouse(config: com.typesafe.config.Config, dfs: Map[String, Dataset[_]]): Boolean = {
-    import scala.concurrent.ExecutionContext.Implicits.global
+  def writeToClickHouse(config: Config, dfs: Map[String, Dataset[_]]): Boolean = {
 
     try {
       val ch = config.getConfig("clickhouse")
@@ -285,7 +284,6 @@ object MinioToClickHouse {
       val password = ch.getString("password")
       val baseUrl = s"http://$host:$port/"
 
-      // quick connection test
       val testResp = postToClickHouse(baseUrl, user, password, "SELECT 1", "", 10.seconds)
       if (!testResp._1) {
         logger.error(s"ClickHouse connection test failed: ${testResp._2}")
@@ -294,9 +292,8 @@ object MinioToClickHouse {
 
       var totalInserted = 0L
 
-      // For each dataset, partition, create batches from toJSON and POST
-      dfs.foreach { case (dfName, anyDs) =>
-        val ds = anyDs.asInstanceOf[Dataset[Row]] // for toJSON
+      dfs.foreach { case (dfName, anyDS) =>
+        val ds = anyDS.asInstanceOf[Dataset[Row]]
         val recordCount = ds.count()
         if (recordCount == 0) {
           logger.info(s"No data to insert for $dfName")
@@ -305,15 +302,19 @@ object MinioToClickHouse {
           logger.info(s"Inserting $recordCount records to $table (df: $dfName)")
 
           val optimalPartitions = Math.min(32, Math.max(8, (recordCount / 50000).toInt))
-          val partDs = ds.repartition(optimalPartitions)
-          val jsonRdd = partDs.toJSON.rdd
-          val batches = jsonRdd.glom().collect() // array of partitions -> each partition: Array[String]
+          val partDS = ds.repartition(optimalPartitions)
+          val jsonRdd = partDS.toJSON.rdd
+
+          // array of partitions -> each partition: Array[String]
+          val batches = jsonRdd.glom().collect()
 
           logger.info(s"Processing ${batches.length} batches for $dfName")
 
           // Use a fixed thread pool to parallelize HTTP inserts
           val maxWorkers = Math.min(16, Math.max(1, batches.length))
-          implicit val ec = ExecutionContext.fromExecutor(java.util.concurrent.Executors.newFixedThreadPool(maxWorkers))
+          implicit val ec = ExecutionContext.fromExecutor(
+            java.util.concurrent.Executors.newFixedThreadPool(maxWorkers)
+          )
 
           val futures = batches.zipWithIndex.filter(_._1.nonEmpty).map { case (batchArr, idx) =>
             Future {
@@ -336,7 +337,10 @@ object MinioToClickHouse {
           val insertedInDf = results.sum
           totalInserted += insertedInDf
           val successfulBatches = results.count(_ > 0)
-          logger.info(s"$dfName: $successfulBatches/${batches.length} batches, $insertedInDf/$recordCount records")
+          logger.info(
+            s"$dfName: $successfulBatches/${batches.length} batches, " +
+            s"$insertedInDf/$recordCount records"
+          )
           if (successfulBatches == 0) {
             logger.error(s"All batches failed for $dfName")
             return false
@@ -353,10 +357,10 @@ object MinioToClickHouse {
     }
   }
 
-  // ----- helper: perform HTTP POST to ClickHouse -----
-  private def postToClickHouse(baseUrl: String, user: String, password: String, query: String, payload: String, timeout: FiniteDuration): (Boolean, String) = {
+  private def postToClickHouse(
+    baseUrl: String, user: String, password: String,
+    query: String, payload: String, timeout: FiniteDuration): (Boolean, String) = {
     Try {
-      // Build URL with query param
       val urlStr = s"$baseUrl?query=${java.net.URLEncoder.encode(query, "UTF-8")}"
       val url = new URL(urlStr)
       val conn = url.openConnection().asInstanceOf[HttpURLConnection]
@@ -366,9 +370,11 @@ object MinioToClickHouse {
         conn.setDoOutput(true)
         conn.setRequestMethod("POST")
         conn.setRequestProperty("Content-Type", "text/plain; charset=utf-8")
-        // Basic auth if provided
+
         if (user != null && user.nonEmpty) {
-          val auth = java.util.Base64.getEncoder.encodeToString(s"$user:$password".getBytes(StandardCharsets.UTF_8))
+          val auth = java.util.Base64.getEncoder.encodeToString(
+            s"$user:$password".getBytes(StandardCharsets.UTF_8)
+          )
           conn.setRequestProperty("Authorization", s"Basic $auth")
         }
 
@@ -383,7 +389,10 @@ object MinioToClickHouse {
         }
 
         val code = conn.getResponseCode
-        val respStream = if (code >= 200 && code < 300) conn.getInputStream else conn.getErrorStream
+        val respStream = {
+          if (code >= 200 && code < 300) conn.getInputStream 
+          else conn.getErrorStream
+        }
         val resp = scala.io.Source.fromInputStream(respStream, "UTF-8").mkString
         (code >= 200 && code < 300, resp)
       } finally {
@@ -396,7 +405,6 @@ object MinioToClickHouse {
     }
   }
 
-  // ----- map df name to ClickHouse table -----
   private def getTableName(dfName: String): String = {
     val tableMapping = Map(
       "raw_data" -> "smart_meter_raw",
