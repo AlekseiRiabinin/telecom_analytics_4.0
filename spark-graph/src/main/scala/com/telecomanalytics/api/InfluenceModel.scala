@@ -1,18 +1,13 @@
 package com.telecomanalytics.api
 
-import org.apache.spark.sql.{Dataset, SparkSession}
 
+/**
+ * Influence model:
+ * measures how influential a node is based on
+ * outgoing edge weights and connected vertices
+ */
+object InfluenceModel extends Model {
 
-case class InfluenceResult(nodeId: String, score: Double)
-
-class InfluenceModel(spark: SparkSession) extends Model[InfluenceResult] {
-
-  import spark.implicits._
-
-  override def evaluate(): Dataset[InfluenceResult] = {
-    Seq(
-      InfluenceResult("A", 10.0),
-      InfluenceResult("B", 5.0)
-    ).toDS()
-  }
+  override def formula(): Formula =
+    Normalize(SumEdges(EdgeField("weight")))
 }

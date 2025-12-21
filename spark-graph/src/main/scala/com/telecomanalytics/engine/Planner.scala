@@ -14,8 +14,14 @@ object Planner {
     case Add(a, b) =>
       BinaryOp("+", plan(a), plan(b))
 
+    case Sub(a, b) =>
+      BinaryOp("-", plan(a), plan(b))
+
     case Mul(a, b) =>
       BinaryOp("*", plan(a), plan(b))
+
+    case Div(a, b) =>
+      BinaryOp("/", plan(a), plan(b))
 
     case SumEdges(expr) =>
       EdgeAggregation(
@@ -27,6 +33,20 @@ object Planner {
     case AvgEdges(expr) =>
       EdgeAggregation(
         field = "weight",
+        expr  = expr,
+        agg   = "avg"
+      )
+
+    case SumVertices(expr) =>
+      VertexAggregation(
+        field = "value",
+        expr  = expr,
+        agg   = "sum"
+      )
+
+    case AvgVertices(expr) =>
+      VertexAggregation(
+        field = "value",
         expr  = expr,
         agg   = "avg"
       )

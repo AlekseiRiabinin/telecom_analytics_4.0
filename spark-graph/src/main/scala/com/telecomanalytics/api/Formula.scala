@@ -20,8 +20,14 @@ case class Div(left: Formula, right: Formula) extends Formula
 sealed trait Aggregation extends Formula {
   def expr: Formula
 }
+
+// Edge aggregations
 case class SumEdges(expr: Formula) extends Aggregation
 case class AvgEdges(expr: Formula) extends Aggregation
+
+// Vertex aggregations
+case class SumVertices(expr: Formula) extends Aggregation
+case class AvgVertices(expr: Formula) extends Aggregation
 case class MaxVertices(expr: Formula) extends Aggregation
 
 // ---------- Transformations ----------
