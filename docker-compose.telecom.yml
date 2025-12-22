@@ -569,6 +569,81 @@ services:
         reservations:
           memory: 1G
 
+  postgis-cre:
+    image: postgis/postgis:18-3.6
+    container_name: postgis-cre
+    environment:
+      POSTGRES_DB: cre_graph
+      POSTGRES_USER: cre_user
+      POSTGRES_PASSWORD: cre_pass
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgis-cre-data:/var/lib/postgresql/data
+      - ./postgis/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - kafka-net
+    restart: always
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "cre_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2GiB
+        reservations:
+          cpus: '0.5'
+          memory: 1GiB
+
+  cre-graphql:
+    build:
+      context: ./graphql-server
+      dockerfile: Dockerfile
+    image: cre-graphql:latest
+    container_name: cre-graphql
+    depends_on:
+      postgis-cre:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgis-cre
+      DB_PORT: 5432
+      DB_NAME: cre_graph
+      DB_USER: cre_user
+      DB_PASSWORD: cre_pass
+
+      # Optional integrations
+      REDIS_HOST: redis
+      KAFKA_BOOTSTRAP_SERVERS: kafka-1:19092,kafka-2:19094
+    ports:
+      - "8088:8080"   # GraphQL endpoint http://localhost:8088/graphql
+    networks:
+      - kafka-net
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.75'
+          memory: 1GiB
+
+  pgadmin-cre:
+    image: dpage/pgadmin4
+    container_name: pgadmin-cre
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@cre.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5051:80"
+    depends_on:
+      - postgis-cre
+    networks:
+      - kafka-net
+    restart: always
+
 volumes:
   clickhouse_data:
     name: clickhouse_data
@@ -584,6 +659,8 @@ volumes:
     name: mssql-backups
   redis-data:
     name: redis-data
+  postgis-cre-data:
+    name: postgis-cre-data
 
 networks:
   kafka-net:

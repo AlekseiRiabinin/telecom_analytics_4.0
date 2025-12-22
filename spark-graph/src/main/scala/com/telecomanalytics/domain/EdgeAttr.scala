@@ -7,5 +7,6 @@ case class EdgeAttr(
   weight: Double,
   eType: EdgeType = EdgeType.Call,
   properties: Map[String, Any] = Map.empty,
-  timestamp: Long = System.currentTimeMillis()
+  timestamp: Long = System.currentTimeMillis(),
+  geometry: Option[Geometry] = None
 )
