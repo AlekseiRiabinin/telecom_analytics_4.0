@@ -573,37 +573,29 @@ services:
     image: postgis/postgis:18-3.6
     container_name: postgis-cre
     environment:
-      POSTGRES_DB: cre_graph
+      POSTGRES_DB: cre_db
       POSTGRES_USER: cre_user
-      POSTGRES_PASSWORD: cre_pass
+      POSTGRES_PASSWORD: cre_password
     ports:
       - "5435:5432"
     volumes:
-      - postgis-cre-data:/var/lib/postgresql/data
-      - ./postgis/init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - kafka-net
-    restart: always
+      - postgis-cre-data:/var/lib/postgresql
+      - ./postgis/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "cre_user"]
+      test: ["CMD-SHELL", "pg_isready -U cre_user -d cre_db"]
       interval: 10s
       timeout: 5s
       retries: 5
-    deploy:
-      resources:
-        limits:
-          cpus: '1.0'
-          memory: 2GiB
-        reservations:
-          cpus: '0.5'
-          memory: 1GiB
+    networks:
+      - kafka-net
+    restart: always
 
-  cre-graphql:
+  graphql-cre:
     build:
       context: ./graphql-server
       dockerfile: Dockerfile
-    image: cre-graphql:latest
-    container_name: cre-graphql
+    image: graphql-cre:latest
+    container_name: graphql-cre
     depends_on:
       postgis-cre:
         condition: service_healthy
@@ -634,8 +626,9 @@ services:
     image: dpage/pgadmin4
     container_name: pgadmin-cre
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@cre.local
+      PGADMIN_DEFAULT_EMAIL: admin@localhost.localdomain
       PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
     ports:
       - "5051:80"
     depends_on:
@@ -643,6 +636,31 @@ services:
     networks:
       - kafka-net
     restart: always
+
+  redis-cre:
+    image: redis:7.2-alpine
+    container_name: redis-cre
+    command: redis-server --appendonly yes
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis-cre-data:/data
+    networks:
+      - kafka-net
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512MiB
+        reservations:
+          cpus: '0.25'
+          memory: 256MiB
 
 volumes:
   clickhouse_data:
@@ -661,6 +679,8 @@ volumes:
     name: redis-data
   postgis-cre-data:
     name: postgis-cre-data
+  redis-cre-data:
+    name: redis-cre-data
 
 networks:
   kafka-net:
