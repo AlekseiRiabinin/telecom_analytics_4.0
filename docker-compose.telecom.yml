@@ -662,6 +662,21 @@ services:
           cpus: '0.25'
           memory: 256MiB
 
+  flyway:
+    image: flyway/flyway:10
+    depends_on:
+      postgis-cre:
+        condition: service_healthy
+    volumes:
+      - ./db/migrations:/flyway/sql
+    command:
+      - migrate
+    environment:
+      FLYWAY_URL: jdbc:postgresql://postgis-cre:5432/cre
+      FLYWAY_USER: cre_user
+      FLYWAY_PASSWORD: cre_password
+      FLYWAY_SCHEMAS: core,spatial,graph,analytics,api
+
 volumes:
   clickhouse_data:
     name: clickhouse_data
