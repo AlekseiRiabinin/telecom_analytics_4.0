@@ -56,3 +56,61 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER trg_sync_geog
 BEFORE INSERT OR UPDATE ON spatial.building_geom
 FOR EACH ROW EXECUTE FUNCTION spatial.sync_geog();
+
+
+-- Versioned spatial data (temporal GIS)
+CREATE TABLE spatial.building_geom_history (
+    history_id   BIGSERIAL PRIMARY KEY,
+    building_id  UUID NOT NULL,
+    geom         geometry(POLYGON, 4326) NOT NULL,
+    geog         geography(POLYGON, 4326) NOT NULL,
+    valid_from   TIMESTAMPTZ NOT NULL,
+    valid_to     TIMESTAMPTZ,
+    operation    TEXT, -- 'INSERT','UPDATE','DELETE'
+    changed_by   TEXT,
+    changed_at   TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX idx_building_geom_history_building
+  ON spatial.building_geom_history (building_id);
+
+CREATE INDEX idx_building_geom_history_valid
+  ON spatial.building_geom_history (valid_from, COALESCE(valid_to, 'infinity'::timestamptz));
+
+
+CREATE OR REPLACE FUNCTION spatial.building_geom_history_trigger()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF TG_OP = 'INSERT' THEN
+        INSERT INTO spatial.building_geom_history (
+            building_id, geom, geog, valid_from, operation, changed_by
+        )
+        VALUES (
+            NEW.building_id, NEW.geom, NEW.geog, now(), 'INSERT', current_user
+        );
+    ELSIF TG_OP = 'UPDATE' THEN
+        UPDATE spatial.building_geom_history
+        SET valid_to = now()
+        WHERE building_id = OLD.building_id
+          AND valid_to IS NULL;
+
+        INSERT INTO spatial.building_geom_history (
+            building_id, geom, geog, valid_from, operation, changed_by
+        )
+        VALUES (
+            NEW.building_id, NEW.geom, NEW.geog, now(), 'UPDATE', current_user
+        );
+    ELSIF TG_OP = 'DELETE' THEN
+        UPDATE spatial.building_geom_history
+        SET valid_to = now(), operation = 'DELETE', changed_by = current_user
+        WHERE building_id = OLD.building_id
+          AND valid_to IS NULL;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_building_geom_history
+AFTER INSERT OR UPDATE OR DELETE ON spatial.building_geom
+FOR EACH ROW EXECUTE FUNCTION spatial.building_geom_history_trigger();
