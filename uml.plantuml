@@ -1,0 +1,92 @@
+@startuml
+title Dubai CRE Analytics Platform Architecture
+
+package "Client Layer" {
+  [UI / BI / ML Clients]
+}
+
+package "API Layer" {
+  [GraphQL API]
+}
+
+package "PostGIS Layer" {
+  [core.building]
+  [core.parcel]
+  [spatial.building_geom]
+  [spatial.building_geom_history]
+  [spatial functions]
+  [ingest.valid_features]
+}
+
+package "Graph Engine" {
+  [graph.node]
+  [graph.edge]
+  [graph.node_spatial_cache]
+  [analytics.graph_metrics]
+  [Routing]
+  [Influence Models]
+}
+
+package "Analytics & ML" {
+  [analytics.building_metrics]
+  [ml.feature_store]
+}
+
+package "Ingestion Pipeline" {
+  [ingest.raw_features]
+  [ingest.validation_errors]
+  [ingest.validation_rules]
+  [validate_feature()]
+}
+
+package "Jobs" {
+  [jobs.job_definitions]
+  [jobs.job_runs]
+  [jobs.job_steps]
+}
+
+package "Audit" {
+  [audit.change_log]
+}
+
+package "Monitoring" {
+  [monitoring.spatial_stats]
+  [monitoring.query_performance]
+}
+
+[UI / BI / ML Clients] --> [GraphQL API]
+
+[GraphQL API] --> [core.building]
+[GraphQL API] --> [graph.node]
+
+[ingest.raw_features] --> [validate_feature()]
+[validate_feature()] --> [ingest.valid_features]
+[validate_feature()] --> [ingest.validation_errors]
+[ingest.validation_rules] --> [validate_feature()]
+
+[ingest.valid_features] --> [core.building]
+[core.building] --> [spatial.building_geom]
+[spatial.building_geom] --> [spatial.building_geom_history]
+
+[spatial.building_geom] --> [graph.node_spatial_cache]
+[graph.node] --> [graph.node_spatial_cache]
+
+[graph.node] --> [analytics.graph_metrics]
+[graph.edge] --> [Routing]
+[Routing] --> [Influence Models]
+[Influence Models] --> [analytics.building_metrics]
+
+[analytics.building_metrics] --> [ml.feature_store]
+[analytics.graph_metrics] --> [ml.feature_store]
+
+[jobs.job_definitions] --> [jobs.job_runs]
+[jobs.job_runs] --> [jobs.job_steps]
+[jobs.job_steps] --> [analytics.building_metrics]
+
+[core.building] --> [audit.change_log]
+[spatial.building_geom] --> [audit.change_log]
+
+[spatial.building_geom] --> [monitoring.spatial_stats]
+[graph.node] --> [monitoring.query_performance]
+
+@enduml
