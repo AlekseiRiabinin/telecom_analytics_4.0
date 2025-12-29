@@ -1,4 +1,5 @@
 .metals/
+data/
 
 # Java
 *.jar
