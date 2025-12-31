@@ -64,6 +64,10 @@ def insert_raw_feature(
                         %s,
                         %s
                     )
+                ON CONFLICT (checksum) DO UPDATE
+                SET payload     = EXCLUDED.payload,
+                    geom_raw    = EXCLUDED.geom_raw,
+                    received_at = now()
                 RETURNING ingest_id;
                 """,
                 (
@@ -115,6 +119,10 @@ def insert_raw_features_batch(
                 INSERT INTO ingest.raw_features
                     (source_system, source_object, payload, geom_raw, checksum, is_processed)
                 VALUES %s
+                ON CONFLICT (checksum) DO UPDATE
+                SET payload     = EXCLUDED.payload,
+                    geom_raw    = EXCLUDED.geom_raw,
+                    received_at = now()
                 RETURNING ingest_id;
                 """,
                 [
@@ -122,7 +130,8 @@ def insert_raw_features_batch(
                         r[0],  # source_system
                         r[1],  # source_object
                         r[2],  # payload
-                        psycopg2.Binary(r[3]) if r[3] else None,
+                        psycopg2.Binary(r[3]) if r[3] else None,  # geom_wkb for CASE
+                        psycopg2.Binary(r[3]) if r[3] else None,  # geom_wkb for ST_GeomFromWKB
                         r[4],  # checksum
                         r[5],  # is_processed
                     )

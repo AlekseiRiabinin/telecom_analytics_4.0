@@ -1,12 +1,14 @@
 CREATE TABLE ingest.raw_features (
-    ingest_id      BIGSERIAL PRIMARY KEY,
-    source_system  TEXT NOT NULL,
-    source_object  TEXT,
-    payload        JSONB NOT NULL,
-    geom_raw       GEOMETRY,
-    received_at    TIMESTAMPTZ DEFAULT now(),
-    checksum       TEXT,
-    is_processed   BOOLEAN DEFAULT FALSE
+	ingest_id bigserial NOT NULL,
+	source_system text NOT NULL,
+	source_object text NULL,
+	payload jsonb NOT NULL,
+	geom_raw public.geometry NULL,
+	received_at timestamptz DEFAULT now() NULL,
+	checksum text NULL,
+	is_processed bool DEFAULT false NULL,
+	CONSTRAINT raw_features_pkey PRIMARY KEY (ingest_id),
+	CONSTRAINT raw_unique_checksum UNIQUE (checksum)
 );
 
 CREATE TABLE ingest.validation_errors (
