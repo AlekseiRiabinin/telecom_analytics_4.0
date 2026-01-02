@@ -26,7 +26,7 @@ class BaseIngestionPipeline(ABC):
         return props, geom
 
     def after_validation(self, conn, ingest_id, validation_result):
-        pass
+        ...
 
     def serialize_payload(self, props: dict) -> str:
         return json.dumps(props, default=str)
@@ -72,6 +72,7 @@ class BaseIngestionPipeline(ABC):
 
     def _flush_batch(self, conn, batch):
         ingest_ids = insert_raw_features_batch(conn, batch)
+
         for ingest_id in ingest_ids:
             ok = call_validate_feature(conn, ingest_id)
             self.after_validation(conn, ingest_id, ok)
