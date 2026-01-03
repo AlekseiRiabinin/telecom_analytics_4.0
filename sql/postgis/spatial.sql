@@ -8,6 +8,40 @@ CREATE INDEX idx_building_geom_geog ON spatial.building_geom USING gist (geog);
 CREATE INDEX idx_building_geom_geom ON spatial.building_geom USING gist (geom);
 
 
+CREATE TABLE spatial.road_geom (
+    road_id UUID PRIMARY KEY,
+    geom geometry(MULTILINESTRING, 4326) NOT NULL,
+    geog geography(MULTILINESTRING, 4326),
+    osm_id TEXT,
+    road_type TEXT,
+    oneway TEXT,
+    maxspeed INTEGER,
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+
+-- Versioned spatial data (temporal GIS)
+CREATE TABLE spatial.building_geom_history (
+	history_id BIGSERIAL NOT NULL,
+	building_id UUID NOT NULL,
+	geom geometry(MULTIPOLYGON, 4326) NOT NULL,
+	geog geography(MULTIPOLYGON, 4326) NOT NULL,
+	valid_from TIMESTAMPTZ NOT NULL,
+	valid_to TIMESTAMPTZ NULL,
+	operation TEXT NULL,
+	changed_by TEXT NULL,
+	changed_at TIMESTAMPTZ DEFAULT now() NULL,
+	CONSTRAINT building_geom_history_pkey PRIMARY KEY (history_id)
+);
+
+CREATE INDEX idx_building_geom_history_building
+  ON spatial.building_geom_history (building_id);
+
+CREATE INDEX idx_building_geom_history_valid
+  ON spatial.building_geom_history (valid_from, COALESCE(valid_to, 'infinity'::timestamptz));
+
+
+
 -- Spatial filtering → graph
 CREATE FUNCTION spatial.buildings_within_radius(
   lon DOUBLE PRECISION,
@@ -53,27 +87,6 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER trg_sync_geog
 BEFORE INSERT OR UPDATE ON spatial.building_geom
 FOR EACH ROW EXECUTE FUNCTION spatial.sync_geog();
-
-
--- Versioned spatial data (temporal GIS)
-CREATE TABLE spatial.building_geom_history (
-	history_id bigserial NOT NULL,
-	building_id uuid NOT NULL,
-	geom public.geometry(multipolygon, 4326) NOT NULL,
-	geog public.geography(multipolygon, 4326) NOT NULL,
-	valid_from timestamptz NOT NULL,
-	valid_to timestamptz NULL,
-	operation text NULL,
-	changed_by text NULL,
-	changed_at timestamptz DEFAULT now() NULL,
-	CONSTRAINT building_geom_history_pkey PRIMARY KEY (history_id)
-);
-
-CREATE INDEX idx_building_geom_history_building
-  ON spatial.building_geom_history (building_id);
-
-CREATE INDEX idx_building_geom_history_valid
-  ON spatial.building_geom_history (valid_from, COALESCE(valid_to, 'infinity'::timestamptz));
 
 
 CREATE OR REPLACE FUNCTION spatial.building_geom_history_trigger()

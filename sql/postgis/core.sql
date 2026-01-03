@@ -1,10 +1,10 @@
 CREATE TABLE core.building (
-	building_id uuid NOT NULL,
-	"name" text NULL,
-	building_type text NULL,
-	status text NULL,
-	created_at timestamptz DEFAULT now() NULL,
-	osm_id text NULL,
+	building_id UUID NOT NULL,
+	"name" TEXT NULL,
+	building_type TEXT NULL,
+	status TEXT NULL,
+	created_at TIMESTAMPTZ DEFAULT now() NULL,
+	osm_id TEXT NULL,
 	CONSTRAINT building_pkey PRIMARY KEY (building_id)
 );
 

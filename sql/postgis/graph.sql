@@ -113,3 +113,46 @@ BEGIN
     FROM spatial.snap_to_nearest_building(n_geom) s;
 END;
 $$ LANGUAGE plpgsql STABLE;
+
+
+-- Business domain layer
+INSERT INTO graph.node (node_id, node_type, ref_id, geom)
+SELECT
+    gen_random_uuid(),
+    'building_centroid',
+    building_id,
+    ST_Centroid(geom)
+FROM spatial.building_geom;
+
+INSERT INTO graph.node (node_id, node_type, ref_id, geom)
+SELECT
+    gen_random_uuid(),
+    'road_endpoint',
+    r.road_id,
+    (ST_DumpPoints(r.geom)).geom
+FROM spatial.road_geom r;
+
+
+-- Create road edges (segments between nodes)
+WITH segments AS (
+    SELECT
+        r.road_id,
+        (ST_Dump(ST_Segmentize(r.geom, 0.00001))).geom AS seg
+    FROM spatial.road_geom r
+)
+INSERT INTO graph.edge (edge_id, from_node, to_node, weight, edge_type)
+SELECT
+    gen_random_uuid(),
+    n1.node_id,
+    n2.node_id,
+    ST_Length(seg::geography),
+    'road'
+FROM segments s
+JOIN graph.node n1 ON ST_StartPoint(s.seg) = n1.geom
+JOIN graph.node n2 ON ST_EndPoint(s.seg) = n2.geom;
+
+
+-- Populate graph.node_spatial_cache
+SELECT graph.refresh_node_spatial_cache(node_id) 
+FROM graph.node;
+
