@@ -13,7 +13,18 @@ CREATE TABLE audit.change_log (
 
 CREATE OR REPLACE FUNCTION audit.audit_trigger()
 RETURNS TRIGGER AS $$
+DECLARE
+    pk_col TEXT;
 BEGIN
+	-- 1. Find the primary key column name for the current table
+    SELECT a.attname INTO pk_col
+    FROM pg_index i
+    JOIN pg_attribute a 
+		ON a.attrelid = i.indrelid AND a.attnum = ANY(i.indkey)
+    WHERE i.indrelid = TG_RELID AND i.indisprimary
+    LIMIT 1;
+
+	-- 2. Insert audit row
     INSERT INTO audit.change_log (
         schema_name,
         table_name,
@@ -27,7 +38,10 @@ BEGIN
         TG_TABLE_SCHEMA,
         TG_TABLE_NAME,
         TG_OP,
-        COALESCE(NEW.id::TEXT, OLD.id::TEXT),
+        COALESCE(
+            to_jsonb(NEW)->>pk_col,
+            to_jsonb(OLD)->>pk_col
+        ),
         to_jsonb(OLD),
         to_jsonb(NEW),
         current_user

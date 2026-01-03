@@ -1,14 +1,11 @@
 CREATE TABLE spatial.building_geom (
-  building_id UUID PRIMARY KEY REFERENCES core.building(building_id),
-  geom geometry(POLYGON, 4326) NOT NULL,
-  geog geography(POLYGON, 4326) NOT NULL
+	building_id uuid NOT NULL,
+	geom public.geometry(multipolygon, 4326) NOT NULL,
+	geog public.geography(multipolygon, 4326) NOT NULL,
+	CONSTRAINT building_geom_pkey PRIMARY KEY (building_id)
 );
-
-CREATE INDEX idx_building_geom_geom
-  ON spatial.building_geom USING GIST (geom);
-
-CREATE INDEX idx_building_geom_geog
-  ON spatial.building_geom USING GIST (geog);
+CREATE INDEX idx_building_geom_geog ON spatial.building_geom USING gist (geog);
+CREATE INDEX idx_building_geom_geom ON spatial.building_geom USING gist (geom);
 
 
 -- Spatial filtering → graph
@@ -60,15 +57,16 @@ FOR EACH ROW EXECUTE FUNCTION spatial.sync_geog();
 
 -- Versioned spatial data (temporal GIS)
 CREATE TABLE spatial.building_geom_history (
-    history_id   BIGSERIAL PRIMARY KEY,
-    building_id  UUID NOT NULL,
-    geom         geometry(POLYGON, 4326) NOT NULL,
-    geog         geography(POLYGON, 4326) NOT NULL,
-    valid_from   TIMESTAMPTZ NOT NULL,
-    valid_to     TIMESTAMPTZ,
-    operation    TEXT, -- 'INSERT','UPDATE','DELETE'
-    changed_by   TEXT,
-    changed_at   TIMESTAMPTZ DEFAULT now()
+	history_id bigserial NOT NULL,
+	building_id uuid NOT NULL,
+	geom public.geometry(multipolygon, 4326) NOT NULL,
+	geog public.geography(multipolygon, 4326) NOT NULL,
+	valid_from timestamptz NOT NULL,
+	valid_to timestamptz NULL,
+	operation text NULL,
+	changed_by text NULL,
+	changed_at timestamptz DEFAULT now() NULL,
+	CONSTRAINT building_geom_history_pkey PRIMARY KEY (history_id)
 );
 
 CREATE INDEX idx_building_geom_history_building
@@ -114,3 +112,14 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER trg_building_geom_history
 AFTER INSERT OR UPDATE OR DELETE ON spatial.building_geom
 FOR EACH ROW EXECUTE FUNCTION spatial.building_geom_history_trigger();
+
+
+-- Business domain layer
+INSERT INTO spatial.building_geom (building_id, geom)
+SELECT
+    b.building_id,
+    v.geom
+FROM core.building b
+JOIN ingest.valid_features v
+  ON v.properties->>'osm_id' = b.osm_id
+WHERE v.feature_type = 'building';
