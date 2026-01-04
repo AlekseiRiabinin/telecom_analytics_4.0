@@ -14,16 +14,15 @@ CREATE TABLE graph.edge (
 );
 
 -- Spatial–graph cache tables
-CREATE TABLE graph.node_spatial_cache (
-    node_id          UUID PRIMARY KEY REFERENCES graph.node(node_id),
-    building_id      UUID,
-    nearest_road_id  UUID,
-    snapped_geom     geometry(POINT, 4326),
+CREATE TABLE IF NOT EXISTS graph.node_spatial_cache (
+    node_id UUID PRIMARY KEY REFERENCES graph.node(node_id),
+    building_id UUID,
+    nearest_road_id UUID,
+    snapped_geom geometry(POINT, 4326),
     distance_to_bldg DOUBLE PRECISION,
     distance_to_road DOUBLE PRECISION,
-    updated_at       TIMESTAMPTZ DEFAULT now()
+    updated_at TIMESTAMPTZ DEFAULT now()
 );
-
 CREATE INDEX idx_node_spatial_cache_building
   ON graph.node_spatial_cache (building_id);
 

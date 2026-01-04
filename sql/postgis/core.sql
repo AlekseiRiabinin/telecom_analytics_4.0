@@ -1,11 +1,10 @@
 CREATE TABLE core.building (
-	building_id UUID NOT NULL,
+	building_id UUID PRIMARY KEY,
 	"name" TEXT NULL,
 	building_type TEXT NULL,
 	status TEXT NULL,
 	created_at TIMESTAMPTZ DEFAULT now() NULL,
-	osm_id TEXT NULL,
-	CONSTRAINT building_pkey PRIMARY KEY (building_id)
+	osm_id TEXT NULL
 );
 
 CREATE TABLE core.parcel (

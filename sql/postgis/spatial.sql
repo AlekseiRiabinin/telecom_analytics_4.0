@@ -1,8 +1,7 @@
 CREATE TABLE spatial.building_geom (
-	building_id uuid NOT NULL,
-	geom public.geometry(multipolygon, 4326) NOT NULL,
-	geog public.geography(multipolygon, 4326) NOT NULL,
-	CONSTRAINT building_geom_pkey PRIMARY KEY (building_id)
+	building_id UUID PRIMARY KEY,
+	geom geometry(MULTIPOLYGON, 4326) NOT NULL,
+	geog geography(MULTIPOLYGON, 4326) NOT NULL
 );
 CREATE INDEX idx_building_geom_geog ON spatial.building_geom USING gist (geog);
 CREATE INDEX idx_building_geom_geom ON spatial.building_geom USING gist (geom);
@@ -22,7 +21,7 @@ CREATE TABLE spatial.road_geom (
 
 -- Versioned spatial data (temporal GIS)
 CREATE TABLE spatial.building_geom_history (
-	history_id BIGSERIAL NOT NULL,
+	history_id BIGSERIAL PRIMARY KEY,
 	building_id UUID NOT NULL,
 	geom geometry(MULTIPOLYGON, 4326) NOT NULL,
 	geog geography(MULTIPOLYGON, 4326) NOT NULL,
@@ -30,8 +29,7 @@ CREATE TABLE spatial.building_geom_history (
 	valid_to TIMESTAMPTZ NULL,
 	operation TEXT NULL,
 	changed_by TEXT NULL,
-	changed_at TIMESTAMPTZ DEFAULT now() NULL,
-	CONSTRAINT building_geom_history_pkey PRIMARY KEY (history_id)
+	changed_at TIMESTAMPTZ DEFAULT now() NULL
 );
 
 CREATE INDEX idx_building_geom_history_building
