@@ -155,3 +155,7 @@ JOIN graph.node n2 ON ST_EndPoint(s.seg) = n2.geom;
 SELECT graph.refresh_node_spatial_cache(node_id) 
 FROM graph.node;
 
+
+-- JOBS
+SELECT graph.refresh_node_spatial_cache(node_id)
+FROM graph.node;

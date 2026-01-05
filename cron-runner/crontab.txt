@@ -1,0 +1,14 @@
+# Refresh node_spatial_cache hourly
+0 * * * * /scripts/run_jobs.sh >> /var/log/cron.log 2>&1
+
+# Refresh building metrics daily at 02:00
+0 2 * * * /scripts/run_jobs.sh >> /var/log/cron.log 2>&1
+
+# Refresh ML features nightly at 03:00
+0 3 * * * /scripts/run_jobs.sh >> /var/log/cron.log 2>&1
+
+# Refresh materialized views daily at 04:00
+0 4 * * * /scripts/run_jobs.sh >> /var/log/cron.log 2>&1
+
+# Cleanup job logs weekly on Sunday at 01:00
+0 1 * * 0 /scripts/run_jobs.sh >> /var/log/cron.log 2>&1

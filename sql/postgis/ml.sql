@@ -44,3 +44,7 @@ BEGIN
     END LOOP;
 END;
 $$ LANGUAGE plpgsql;
+
+
+-- JOBS
+SELECT ml.refresh_building_features();

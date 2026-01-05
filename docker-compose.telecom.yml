@@ -662,6 +662,18 @@ services:
           cpus: '0.25'
           memory: 256MiB
 
+  cron-cre:
+    build:
+      context: ./cron-runner
+    container_name: cron-cre
+    depends_on:
+      - postgis-cre
+    volumes:
+      - ./cron-runner:/scripts
+    networks:
+      - kafka-net
+    restart: always
+
   flyway:
     image: flyway/flyway:10
     depends_on:
@@ -700,3 +712,8 @@ volumes:
 networks:
   kafka-net:
     driver: bridge
+
+
+# docker compose -f docker-compose.telecom.yml build cron-cre
+# docker compose -f docker-compose.telecom.yml up -d cron-cre
+# docker logs cron-cre

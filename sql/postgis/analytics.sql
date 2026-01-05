@@ -42,3 +42,34 @@ UPDATE analytics.building_metrics
 SET risk_score = analytics.compute_risk_score(building_id),
     updated_at = now();
 
+
+CREATE OR REPLACE FUNCTION analytics.compute_accessibility_score(p_building_id UUID)
+RETURNS DOUBLE PRECISION AS $$
+DECLARE
+    dist DOUBLE PRECISION;
+BEGIN
+    -- Find the building's graph node and its cached distance to the nearest road
+    SELECT c.distance_to_road
+    INTO dist
+    FROM graph.node_spatial_cache c
+    JOIN graph.node n ON n.node_id = c.node_id
+    WHERE n.ref_id = p_building_id
+      AND n.node_type = 'building_centroid';
+
+    -- If no road distance is available yet, return NULL
+    IF dist IS NULL THEN
+        RETURN NULL;
+    END IF;
+
+    -- Compute accessibility score
+    RETURN 1 / (1 + dist);
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- JOBS
+UPDATE analytics.building_metrics
+SET
+    risk_score = analytics.compute_risk_score(building_id),
+    accessibility_score = analytics.compute_accessibility_score(building_id),
+    updated_at = now();
