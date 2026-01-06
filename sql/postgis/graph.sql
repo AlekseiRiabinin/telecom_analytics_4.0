@@ -31,9 +31,16 @@ CREATE OR REPLACE FUNCTION graph.refresh_node_spatial_cache(p_node_id UUID)
 RETURNS VOID AS $$
 DECLARE
     n_geom geometry(POINT, 4326);
+
+    -- nearest building
     b_id   UUID;
     b_dist DOUBLE PRECISION;
+
+    -- nearest road
+    r_id   UUID;
+    r_dist DOUBLE PRECISION;
 BEGIN
+    -- Load node geometry
     SELECT geom INTO n_geom
     FROM graph.node
     WHERE node_id = p_node_id;
@@ -42,6 +49,9 @@ BEGIN
         RETURN;
     END IF;
 
+    ----------------------------------------------------------------------
+    -- 1. Find nearest building
+    ----------------------------------------------------------------------
     SELECT bg.building_id,
            ST_Distance(n_geom::geography, bg.geog)
     INTO b_id, b_dist
@@ -49,16 +59,43 @@ BEGIN
     ORDER BY n_geom <-> bg.geom
     LIMIT 1;
 
+    ----------------------------------------------------------------------
+    -- 2. Find nearest road
+    ----------------------------------------------------------------------
+    SELECT rg.road_id,
+           ST_Distance(n_geom::geography, rg.geog)
+    INTO r_id, r_dist
+    FROM spatial.road_geom rg
+    ORDER BY n_geom <-> rg.geom
+    LIMIT 1;
+
+    ----------------------------------------------------------------------
+    -- 3. Upsert into cache
+    ----------------------------------------------------------------------
     INSERT INTO graph.node_spatial_cache (
-        node_id, building_id, snapped_geom, distance_to_bldg, updated_at
+        node_id,
+        building_id,
+        nearest_road_id,
+        snapped_geom,
+        distance_to_bldg,
+        distance_to_road,
+        updated_at
     )
     VALUES (
-        p_node_id, b_id, n_geom, b_dist, now()
+        p_node_id,
+        b_id,
+        r_id,
+        n_geom,
+        b_dist,
+        r_dist,
+        now()
     )
     ON CONFLICT (node_id) DO UPDATE
     SET building_id      = EXCLUDED.building_id,
+        nearest_road_id  = EXCLUDED.nearest_road_id,
         snapped_geom     = EXCLUDED.snapped_geom,
         distance_to_bldg = EXCLUDED.distance_to_bldg,
+        distance_to_road = EXCLUDED.distance_to_road,
         updated_at       = now();
 END;
 $$ LANGUAGE plpgsql;
@@ -151,11 +188,15 @@ JOIN graph.node n1 ON ST_StartPoint(s.seg) = n1.geom
 JOIN graph.node n2 ON ST_EndPoint(s.seg) = n2.geom;
 
 
--- Populate graph.node_spatial_cache
-SELECT graph.refresh_node_spatial_cache(node_id) 
-FROM graph.node;
-
-
 -- JOBS
+INSERT INTO graph.node_spatial_cache (node_id)
+SELECT node_id FROM graph.node;
+
+-- Populate graph.node_spatial_cache
 SELECT graph.refresh_node_spatial_cache(node_id)
 FROM graph.node;
+
+-- Verify
+SELECT COUNT(*) FROM graph.node_spatial_cache;
+SELECT COUNT(*) FROM graph.node_spatial_cache WHERE nearest_road_id IS NOT NULL;
+SELECT COUNT(*) FROM graph.node_spatial_cache WHERE nearest_road_id IS NULL;

@@ -17,7 +17,9 @@ CREATE TABLE spatial.road_geom (
     maxspeed INTEGER,
     created_at TIMESTAMPTZ DEFAULT now()
 );
-
+CREATE INDEX IF NOT EXISTS road_geom_gix
+ON spatial.road_geom
+USING GIST (geom);
 
 -- Versioned spatial data (temporal GIS)
 CREATE TABLE spatial.building_geom_history (
