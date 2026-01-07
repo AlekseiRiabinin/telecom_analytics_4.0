@@ -29,7 +29,7 @@ RETURNS BIGINT AS $$
 DECLARE
     rid BIGINT;
 BEGIN
-        INSERT INTO jobs.job_runs (job_name, status, started_at, parameters)
+    INSERT INTO jobs.job_runs (job_name, status, started_at, parameters)
     VALUES (p_job_name, 'RUNNING', now(), p_params)
     RETURNING run_id INTO rid;
 

@@ -170,25 +170,65 @@ FROM spatial.road_geom r;
 
 
 -- Create road edges (segments between nodes)
-WITH segments AS (
+CREATE OR REPLACE FUNCTION graph.refresh_road_edges()
+RETURNS VOID AS $$
+BEGIN
+    -- 1. Remove existing road edges to avoid duplicates
+    DELETE FROM graph.edge
+    WHERE edge_type = 'road';
+
+    -- 2. Rebuild edges from road geometry
+    WITH segments AS (
+        SELECT
+            r.road_id,
+            r.oneway,
+            (ST_Dump(ST_Segmentize(r.geom, 0.00001))).geom AS seg
+        FROM spatial.road_geom r
+    ),
+    matched AS (
+        SELECT
+            s.road_id,
+            s.oneway,
+            s.seg,
+            n1.node_id AS from_node,
+            n2.node_id AS to_node,
+            ST_Length(s.seg::geography) AS weight
+        FROM segments s
+        JOIN graph.node n1 ON ST_StartPoint(s.seg) = n1.geom
+        JOIN graph.node n2 ON ST_EndPoint(s.seg) = n2.geom
+    )
+
+    -- 3. Insert forward edges
+    INSERT INTO graph.edge (edge_id, from_node, to_node, weight, edge_type, ref_id)
     SELECT
-        r.road_id,
-        (ST_Dump(ST_Segmentize(r.geom, 0.00001))).geom AS seg
-    FROM spatial.road_geom r
-)
-INSERT INTO graph.edge (edge_id, from_node, to_node, weight, edge_type)
-SELECT
-    gen_random_uuid(),
-    n1.node_id,
-    n2.node_id,
-    ST_Length(seg::geography),
-    'road'
-FROM segments s
-JOIN graph.node n1 ON ST_StartPoint(s.seg) = n1.geom
-JOIN graph.node n2 ON ST_EndPoint(s.seg) = n2.geom;
+        gen_random_uuid(),
+        from_node,
+        to_node,
+        weight,
+        'road',
+        road_id
+    FROM matched
+
+    UNION ALL
+
+    -- 4. Insert reverse edges for two‑way roads
+    SELECT
+        gen_random_uuid(),
+        to_node,
+        from_node,
+        weight,
+        'road',
+        road_id
+    FROM matched
+    WHERE oneway = 'B';
+
+END;
+$$ LANGUAGE plpgsql;
 
 
 -- JOBS
+SELECT graph.refresh_road_edges();
+
 INSERT INTO graph.node_spatial_cache (node_id)
 SELECT node_id FROM graph.node;
 

@@ -44,43 +44,43 @@ CREATE INDEX idx_building_geom_history_valid
 
 -- Spatial filtering → graph
 CREATE FUNCTION spatial.buildings_within_radius(
-  lon DOUBLE PRECISION,
-  lat DOUBLE PRECISION,
-  radius_m DOUBLE PRECISION
+    lon DOUBLE PRECISION,
+    lat DOUBLE PRECISION,
+    radius_m DOUBLE PRECISION
 )
 RETURNS TABLE (building_id UUID)
 LANGUAGE sql STABLE AS $$
-  SELECT building_id
-  FROM spatial.building_geom
-  WHERE ST_DWithin(
-    geog,
-    ST_MakePoint(lon, lat)::geography,
-    radius_m
-  );
+    SELECT building_id
+    FROM spatial.building_geom
+    WHERE ST_DWithin(
+        geog,
+        ST_MakePoint(lon, lat)::geography,
+        radius_m
+    );
 $$;
 
 -- Graph → spatial enrichment
 CREATE FUNCTION spatial.enrich_nodes(
-  node_ids UUID[]
+    node_ids UUID[]
 )
 RETURNS TABLE (
-  node_id UUID,
-  geom geometry
+    node_id UUID,
+    geom geometry
 )
 LANGUAGE sql STABLE AS $$
-  SELECT n.node_id, bg.geom
-  FROM graph.node n
-  JOIN spatial.building_geom bg
-    ON bg.building_id = n.ref_id
-  WHERE n.node_id = ANY(node_ids);
+    SELECT n.node_id, bg.geom
+    FROM graph.node n
+    JOIN spatial.building_geom bg
+      ON bg.building_id = n.ref_id
+    WHERE n.node_id = ANY(node_ids);
 $$;
 
 -- sync geometry/geography
 CREATE FUNCTION spatial.sync_geog()
 RETURNS TRIGGER AS $$
 BEGIN
-  NEW.geog := NEW.geom::geography;
-  RETURN NEW;
+    NEW.geog := NEW.geom::geography;
+    RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 

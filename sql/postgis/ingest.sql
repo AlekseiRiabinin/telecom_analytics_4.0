@@ -6,7 +6,7 @@ CREATE TABLE ingest.raw_features (
 	geom_raw public.geometry NULL,
 	received_at TIMESTAMPTZ DEFAULT now() NULL,
 	checksum TEXT NULL,
-	is_processed BOO DEFAULT FALSE NULL,
+	is_processed BOOLEAN DEFAULT FALSE NULL,
 	CONSTRAINT raw_features_pkey PRIMARY KEY (ingest_id),
 	CONSTRAINT raw_unique_checksum UNIQUE (checksum)
 );
@@ -27,33 +27,6 @@ CREATE TABLE ingest.valid_features (
 );
 
 
-CREATE OR REPLACE FUNCTION ingest.validate_feature(p_ingest_id BIGINT)
-RETURNS BOOLEAN AS $$
-DECLARE
-    g GEOMETRY;
-BEGIN
-    SELECT geom_raw INTO g
-    FROM ingest.raw_features
-    WHERE ingest_id = p_ingest_id;
-
-    IF g IS NULL OR NOT ST_IsValid(g) THEN
-        INSERT INTO ingest.validation_errors
-        VALUES (p_ingest_id, 'INVALID_GEOMETRY', 'Geometry invalid');
-        RETURN FALSE;
-    END IF;
-
-    INSERT INTO ingest.valid_features (ingest_id, geom)
-    VALUES (p_ingest_id, ST_MakeValid(g));
-
-    UPDATE ingest.raw_features
-    SET is_processed = TRUE
-    WHERE ingest_id = p_ingest_id;
-
-    RETURN TRUE;
-END;
-$$ LANGUAGE plpgsql;
-
-
 -- Ingestion rules engine
 -- Rules table
 CREATE TABLE ingest.validation_rules (
@@ -65,51 +38,64 @@ CREATE TABLE ingest.validation_rules (
     created_at    TIMESTAMPTZ DEFAULT now()
 );
 
--- Extend validation to use rules (simplified example)
+
+-- Extend validation to use rules
 CREATE OR REPLACE FUNCTION ingest.validate_feature(p_ingest_id BIGINT)
 RETURNS BOOLEAN AS $$
 DECLARE
-    g        GEOMETRY;
-    v_ok     BOOLEAN := TRUE;
-    r        RECORD;
+    g            GEOMETRY;
+    v_ok         BOOLEAN := TRUE;
+    r            RECORD;
+    v_source     TEXT;
+    v_properties JSONB;
 BEGIN
-    SELECT geom_raw INTO g
+    -- Load raw feature
+    SELECT source_system, payload, geom_raw
+    INTO v_source, v_properties, g
     FROM ingest.raw_features
     WHERE ingest_id = p_ingest_id;
 
-    -- basic geometry check
+    -- Basic geometry check
     IF g IS NULL OR NOT ST_IsValid(g) THEN
         INSERT INTO ingest.validation_errors (ingest_id, error_code, error_msg)
         VALUES (p_ingest_id, 'INVALID_GEOMETRY', 'Geometry invalid');
         v_ok := FALSE;
     END IF;
 
-    -- dynamic rules
+    -- Dynamic rules
     FOR r IN
         SELECT * FROM ingest.validation_rules
         WHERE is_enabled = TRUE
     LOOP
         IF r.rule_type = 'GEOMETRY' THEN
-            -- example: bounding box check from config
             IF r.config ? 'bbox' THEN
-                IF NOT ST_Within(
-                    g,
-                    ST_GeomFromText(r.config->>'bbox', 4326)
-                ) THEN
+                IF NOT ST_Within(g, ST_GeomFromText(r.config->>'bbox', 4326)) THEN
                     INSERT INTO ingest.validation_errors (ingest_id, error_code, error_msg)
                     VALUES (p_ingest_id, r.rule_name, 'Geometry outside allowed extent');
                     v_ok := FALSE;
                 END IF;
             END IF;
         END IF;
-        -- it can be extended with ATTRIBUTE / TOPOLOGY rules
     END LOOP;
 
+    -- If valid, insert into valid_features
     IF v_ok THEN
-        INSERT INTO ingest.valid_features (ingest_id, geom)
-        VALUES (p_ingest_id, ST_MakeValid(g))
+        INSERT INTO ingest.valid_features (ingest_id, feature_type, geom, properties)
+        VALUES (
+            p_ingest_id,
+			CASE
+			    WHEN v_source LIKE 'OSM_Dubai_Buildings%' THEN 'building'
+			    WHEN v_source LIKE 'OSM_Dubai_Roads%' THEN 'road'
+			    WHEN v_source LIKE 'OSM_Dubai_POIs%' THEN 'poi'
+			    WHEN v_source LIKE 'OSM_Dubai_Landuse%' THEN 'landuse'
+			END,
+            ST_MakeValid(g),
+            v_properties
+        )
         ON CONFLICT (ingest_id) DO UPDATE
-        SET geom = EXCLUDED.geom,
+        SET feature_type = EXCLUDED.feature_type,
+            geom         = EXCLUDED.geom,
+            properties   = EXCLUDED.properties,
             validated_at = now();
 
         UPDATE ingest.raw_features

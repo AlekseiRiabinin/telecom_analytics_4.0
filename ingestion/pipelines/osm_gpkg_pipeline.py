@@ -12,29 +12,6 @@ def sanitize_value(v):
     except Exception:
         pass
 
-    if isinstance(v, (np.integer,)):
-        return int(v)
-
-    if isinstance(v, (np.floating,)):
-        return float(v)
-
-    return v
-
-
-import pandas as pd
-import numpy as np
-import geopandas as gpd
-from shapely.geometry.base import BaseGeometry
-from ingestion.pipelines.base_pipeline import BaseIngestionPipeline
-
-
-def sanitize_value(v):
-    try:
-        if pd.isna(v):
-            return None
-    except Exception:
-        pass
-
     if isinstance(v, np.integer):
         return int(v)
 
