@@ -1,147 +1,150 @@
 """
-Dubai Commercial Listings (Office, Retail, Industrial)
-Source: Bayut
+Dubizzle Commercial for Rent (Dubai) scraper using real Chrome + CDP pipe.
+
+Requires:
+  - Google Chrome or Chromium
+  - Python 3.10+ (for text I/O buffering)
+
+Run:
+  python3 ingestion/scrapers/dubizzle_cdp_pipe_commercial_rent.py
 """
 
-import os
+import asyncio
 import json
-import requests
-from typing import Optional
+import os
+import time
+
+from playwright.async_api import Page, async_playwright
 from bs4 import BeautifulSoup
-from bs4.element import Tag
 
-
-# -------------------------------------------------------------------
-# Resolve project root and data directory
-# -------------------------------------------------------------------
-
+# ==============================
+# PATH CONFIGURATION
+# ==============================
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, "..", ".."))
+
 DATA_DIR = os.path.join(PROJECT_ROOT, "data", "listings")
-OUTPUT_JSON = os.path.join(DATA_DIR, "dubai_commercial_listings.json")
+URLS_FILE = os.path.join(DATA_DIR, "dubizzle_urls.txt")
+OUTPUT_JSON = os.path.join(DATA_DIR, "dubizzle_commercial.json")
+
+os.makedirs(DATA_DIR, exist_ok=True)
+
+# ==============================
+# EXTRACTION HELPERS
+# ==============================
+def extract_next_data(html: str) -> dict:
+    """
+    Extract and parse __NEXT_DATA__ JSON from page HTML.
+    """
+    soup = BeautifulSoup(html, "html.parser")
+    script = soup.find("script", id="__NEXT_DATA__")
+
+    if not script or not script.string:
+        raise ValueError("__NEXT_DATA__ not found in page")
+
+    return json.loads(script.string)
 
 
-# -------------------------------------------------------------------
-# Bayut commercial URLs
-# -------------------------------------------------------------------
+async def scrape_listing(page: Page, url: str) -> dict:
+    """
+    Load a single listing page and return the listing JSON.
+    """
+    print(f"Opening: {url}")
+    await page.goto(url, wait_until="networkidle", timeout=60000)
 
-BAYUT_URLS = {
-    "commercial_mixed": "https://www.bayut.com/for-sale/commercial/dubai/",
-    "commercial_buildings": "https://www.bayut.com/for-sale/commercial-buildings/dubai/",
-    "offices_min_500sqft": "https://www.bayut.com/s/offices-sale-from-500-sqft-dubai/",
-    "offices_min_1m": "https://www.bayut.com/s/offices-sale-aed-1000000-dubai/",
-    "industrial_rent_dic": "https://www.bayut.com/to-rent/commercial/dubai/dubai-industrial-city/",
-    "dip_commercial": "https://www.bayut.com/for-sale/commercial/dubai/dubai-investment-park-dip/",
-}
+    html = await page.content()
+    data = extract_next_data(html)
 
+    try:
+        listing = data["props"]["pageProps"]["listing"]
+    except KeyError:
+        raise KeyError("Listing object not found in __NEXT_DATA__")
 
-# -------------------------------------------------------------------
-# Utility functions
-# -------------------------------------------------------------------
+    return listing
 
-def ensure_dir(path: str) -> None:
-    os.makedirs(path, exist_ok=True)
+# ==============================
+# MAIN PIPELINE
+# ==============================
+async def main():
+    if not os.path.exists(URLS_FILE):
+        raise FileNotFoundError(f"URLs file not found: {URLS_FILE}")
 
+    with open(URLS_FILE, "r", encoding="utf-8") as f:
+        urls = [line.strip() for line in f if line.strip()]
 
-def fetch_html(url: str) -> str:
-    headers = {
-        "User-Agent": (
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/120.0 Safari/537.36"
-        ),
-        "Accept-Language": "en-US,en;q=0.9",
-    }
+    print(f"Loaded {len(urls)} URLs")
 
-    r = requests.get(url, headers=headers, timeout=30)
-    r.raise_for_status()
-    return r.text
+    all_listings = []
 
+    async with async_playwright() as p:
+        # ==============================
+        # FIREFOX PERSISTENT PROFILE SETUP
+        # ==============================
+        # TODO: Update this path to your actual Firefox profile path
+        # On Linux: "~/.mozilla/firefox/your_profile.default-release"
+        # On Windows: "C:\\Users\\<User>\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\xxxx.default-release"
+        FIREFOX_PROFILE_PATH = os.path.expanduser("~/.mozilla/firefox/dubizzle_real")
 
-def parse_listings(soup: BeautifulSoup, source_url: str) -> list[dict]:
-    listings: list[dict] = []
+        browser = await p.firefox.launch_persistent_context(
+            user_data_dir=FIREFOX_PROFILE_PATH,
+            headless=False,  # keep headful
+            viewport={"width": 1366, "height": 768},
+            locale="en-US",
+            slow_mo=50       # human-like pacing
+        )
 
-    cards: list[Tag] = soup.select("[data-testid='listing-card']")
-    if not cards:
-        return listings
+        page = await browser.new_page()
 
-    for card in cards:
-        title_el: Optional[Tag] = card.select_one("[data-testid='listing-title']")
-        price_el: Optional[Tag] = card.select_one("[data-testid='listing-price']")
-        location_el: Optional[Tag] = card.select_one("[data-testid='listing-location']")
+        # ==============================
+        # Human-in-the-loop warmup
+        # ==============================
+        print("\nBrowser launched with your persistent profile.")
+        print("Please interact manually for 10-30 seconds if needed (scroll, open a listing).")
+        input("Press ENTER to start scraping...")
 
-        title = title_el.get_text(strip=True) if title_el else None
-        price = price_el.get_text(strip=True) if price_el else None
-        location = location_el.get_text(strip=True) if location_el else None
+        # ==============================
+        # Scraping loop
+        # ==============================
+        for idx, url in enumerate(urls, start=1):
+            try:
+                listing = await scrape_listing(page, url)
 
-        listings.append({
-            "title": title,
-            "price": price,
-            "location": location,
-            "source_url": source_url,
-        })
+                all_listings.append(listing)
+                print(
+                    f"[{idx}/{len(urls)}] Collected listing: "
+                    f"{listing.get('property_id', listing.get('id', 'N/A'))}"
+                )
 
-    return listings
+                # polite delay
+                time.sleep(2)
 
+            except Exception as e:
+                print(f"ERROR on {url}: {e}")
+                print("Pause and fix manually if needed.")
+                input("Press ENTER to continue...")
 
-def scrape_category(base_url: str) -> list[dict]:
-    page = 1
-    results: list[dict] = []
+        await browser.close()
 
-    while True:
-        separator = "&" if "?" in base_url else "?"
-        url = f"{base_url}{separator}page={page}"
-        print(f"Scraping: {url}")
+    # ==============================
+    # SAVE OUTPUT
+    # ==============================
+    with open(OUTPUT_JSON, "w", encoding="utf-8") as f:
+        json.dump(all_listings, f, ensure_ascii=False, indent=2)
 
-        html = fetch_html(url)
-        soup = BeautifulSoup(html, "html.parser")
-
-        page_results = parse_listings(soup, url)
-        if not page_results:
-            break
-
-        results.extend(page_results)
-        page += 1
-
-    return results
-
-
-def save_json(path: str, data: list[dict]) -> None:
-    ensure_dir(os.path.dirname(path))
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
-
-
-# -------------------------------------------------------------------
-# Main runner
-# -------------------------------------------------------------------
-
-def run() -> None:
-    all_results: list[dict] = []
-
-    for category, url in BAYUT_URLS.items():
-        print(f"\n=== Scraping category: {category} ===")
-        listings = scrape_category(url)
-
-        for item in listings:
-            item["category"] = category
-
-        all_results.extend(listings)
-
-    print(f"\nTotal listings scraped: {len(all_results)}")
-    print(f"Saving to: {OUTPUT_JSON}")
-    save_json(OUTPUT_JSON, all_results)
+    print(f"\nSaved {len(all_listings)} listings to:")
+    print(OUTPUT_JSON)
 
 
 if __name__ == "__main__":
-    run()
+    asyncio.run(main())
 
 
-# Load the scraped data in Jupyter
 
+# How to run:
+#   python3 ingestion/scrapers/commercial_listings.py
+#
+# Jupyter usage:
 # import json
-
-# with open("data/listings/dubai_commercial_listings.json") as f:
+# with open("data/listings/dubizzle_commercial_rent.json") as f:
 #     listings = json.load(f)
-
 # listings[:3]

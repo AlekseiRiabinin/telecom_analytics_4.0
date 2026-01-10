@@ -1,110 +1,189 @@
 """
-Developer Building Footprints
-(https://github.com/microsoft/GlobalMLBuildingFootprints)
+Microsoft Building Footprints for Dubai
+via Planetary Computer STAC (ms-buildings)
+
+Flow:
+  1. Query STAC for tiles intersecting Dubai bbox
+  2. For each tile:
+       - take ABFS href
+       - convert to HTTPS Planetary Computer data URL
+       - sign with planetary_computer
+       - download parquet locally (cached)
+       - load with GeoPandas
+  3. Merge all tiles
+  4. Filter to Dubai boundary (GADM shapefile)
+  5. Save as ESRI Shapefile for downstream use
 """
 
 import os
+import requests
 import pandas as pd
 import geopandas as gpd
-import requests
-from shapely.geometry import box
+import planetary_computer as pc
+import pystac_client
+from shapely.ops import unary_union
 
 
 # -------------------------------------------------------------------
-# Resolve project root and data directory
+# Paths and constants
 # -------------------------------------------------------------------
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, "..", ".."))
-DATA_DIR = os.path.join(PROJECT_ROOT, "data", "buildings")
-OUTPUT_SHP = os.path.join(DATA_DIR, "building_footprints.shp")
+
+BUILDINGS_DIR = os.path.join(PROJECT_ROOT, "data", "buildings")
+TILE_CACHE_DIR = os.path.join(BUILDINGS_DIR, "tiles")
+OUTPUT_SHP = os.path.join(BUILDINGS_DIR, "building_footprints_dubai.shp")
+
+DUBAI_BOUNDARY_SHP = os.path.join(
+    PROJECT_ROOT, "data", "boundaries", "gadm_dubai", "dubai_admin.shp"
+)
+
+# Dubai bbox (same as before)
+DUBAI_BBOX = {
+    "type": "Polygon",
+    "coordinates": [[
+        [54.8911, 24.6231],
+        [56.2054, 24.6231],
+        [56.2054, 25.3741],
+        [54.8911, 25.3741],
+        [54.8911, 24.6231]
+    ]]
+}
 
 
 # -------------------------------------------------------------------
-# Microsoft Building Footprints URLs
-# -------------------------------------------------------------------
-
-COVERAGE_URL = "https://minedbuildings.z5.web.core.windows.net/global-buildings/buildings-coverage.geojson"
-BASE_TILE_URL = "https://minedbuildings.z5.web.core.windows.net/global-buildings/"
-
-
-# -------------------------------------------------------------------
-# Utility functions
+# Helpers
 # -------------------------------------------------------------------
 
 def ensure_dir(path: str) -> None:
     os.makedirs(path, exist_ok=True)
 
 
-def download_geojson(url: str) -> dict:
-    r = requests.get(url, timeout=60)
-    r.raise_for_status()
-    return r.json()
+def abfs_to_https(abfs_url: str) -> str:
+    """
+    Convert an ABFS URL from the ms-buildings STAC asset into
+    the corresponding Planetary Computer HTTPS data endpoint.
+    """
+    # abfs://footprints/delta/...
+    path = abfs_url.replace("abfs://", "")
+    return f"https://planetarycomputer.microsoft.com/api/data/v1/{path}"
 
 
-def load_coverage() -> gpd.GeoDataFrame:
-    coverage_json = download_geojson(COVERAGE_URL)
-    return gpd.GeoDataFrame.from_features(coverage_json["features"], crs="EPSG:4326")
+def download_to_local(url: str, local_path: str) -> str:
+    """
+    Download a (signed) HTTPS parquet URL to a local file, with simple caching.
+    """
+    if os.path.exists(local_path):
+        print(f"Using cached tile: {local_path}")
+        return local_path
+
+    print(f"Downloading tile to {local_path}")
+    with requests.get(url, stream=True, timeout=300) as r:
+        r.raise_for_status()
+        with open(local_path, "wb") as f:
+            for chunk in r.iter_content(chunk_size=1024 * 1024):
+                if chunk:
+                    f.write(chunk)
+
+    return local_path
 
 
-def filter_tiles_for_dubai(coverage: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
-    # Dubai bounding box (geodata.ucdavis.edu)
-    dubai_bbox = box(54.8911, 24.6231, 56.2054, 25.3741)
-    return coverage[coverage.intersects(dubai_bbox)]
+def load_dubai_boundary(shp_path: str) -> gpd.GeoDataFrame:
+    print(f"Loading Dubai boundary from {shp_path} ...")
+    dubai = gpd.read_file(shp_path)
+    if dubai.crs is None:
+        dubai.set_crs(epsg=4326, inplace=True)
+    else:
+        dubai = dubai.to_crs(epsg=4326)
+    return dubai
 
 
-def download_tile(tile_name: str) -> gpd.GeoDataFrame:
-    url = BASE_TILE_URL + tile_name
-    tile_json = download_geojson(url)
-    return gpd.GeoDataFrame.from_features(tile_json["features"], crs="EPSG:4326")
+def filter_to_dubai(buildings: gpd.GeoDataFrame, dubai: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
+    print("Filtering buildings to Dubai boundary...")
+    dubai_geom = unary_union(dubai.geometry)
 
+    buildings = buildings[buildings.geometry.notnull()]
+    sindex = buildings.sindex
 
-def merge_tiles(tile_gdfs: list[gpd.GeoDataFrame]) -> gpd.GeoDataFrame:
-    merged = gpd.GeoDataFrame(pd.concat(tile_gdfs, ignore_index=True), crs="EPSG:4326")
-    return merged
+    possible_idx = list(sindex.intersection(dubai_geom.bounds))
+    candidates = buildings.iloc[possible_idx]
 
+    mask = candidates.intersects(dubai_geom)
+    dubai_buildings = candidates[mask]
 
-def save_as_shapefile(gdf: gpd.GeoDataFrame):
-    ensure_dir(DATA_DIR)
-    gdf.to_file(OUTPUT_SHP, driver="ESRI Shapefile")
+    print(
+        f"Total buildings: {len(buildings)}, "
+        f"candidates: {len(candidates)}, "
+        f"Dubai-only: {len(dubai_buildings)}"
+    )
+
+    return dubai_buildings
 
 
 # -------------------------------------------------------------------
-# Main runner
+# Main
 # -------------------------------------------------------------------
 
 def run():
-    print("Downloading coverage file...")
-    coverage = load_coverage()
+    ensure_dir(BUILDINGS_DIR)
+    ensure_dir(TILE_CACHE_DIR)
 
-    print("Filtering tiles for Dubai...")
-    dubai_tiles = filter_tiles_for_dubai(coverage)
-    print(f"Found {len(dubai_tiles)} tiles for Dubai")
+    print("Connecting to Planetary Computer STAC...")
+    catalog = pystac_client.Client.open(
+        "https://planetarycomputer.microsoft.com/api/stac/v1"
+    )
+
+    print("Searching for building footprints intersecting Dubai...")
+    search = catalog.search(
+        collections=["ms-buildings"],
+        intersects=DUBAI_BBOX
+    )
+
+    items = list(search.get_items())
+    if not items:
+        raise RuntimeError("No ms-buildings tiles found intersecting Dubai bbox.")
+
+    print(f"Found {len(items)} tiles. Downloading and loading...")
 
     tile_gdfs = []
-    for _, row in dubai_tiles.iterrows():
 
-        props = row.to_dict()
+    for item in items:
+        asset = item.assets["data"]
+        abfs_url = asset.href
 
-        tile_name = (
-            props.get("tile") or
-            props.get("location") or
-            props.get("quadkey") or
-            props.get("path")
-        )
+        https_url = abfs_to_https(abfs_url)
+        signed_href = pc.sign(https_url)
 
-        if not tile_name:
-            raise ValueError(f"Could not find tile name in row: {props}")
+        # Use quadkey part as local filename
+        # e.g. .../quadkey=123023133 -> quadkey=123023133.parquet
+        tile_id = abfs_url.split("/")[-1]
+        local_tile_path = os.path.join(TILE_CACHE_DIR, f"{tile_id}.parquet")
 
-        print(f"Downloading tile: {tile_name}")
-        tile_gdf = download_tile(tile_name)
-        tile_gdfs.append(tile_gdf)
+        local_file = download_to_local(signed_href, local_tile_path)
+
+        print(f"Reading parquet: {local_file}")
+        gdf = gpd.read_parquet(local_file)
+
+        if gdf.crs is None:
+            gdf.set_crs(epsg=4326, inplace=True)
+        else:
+            gdf = gdf.to_crs(epsg=4326)
+
+        tile_gdfs.append(gdf)
 
     print("Merging tiles...")
-    merged = merge_tiles(tile_gdfs)
+    buildings_all = gpd.GeoDataFrame(
+        pd.concat(tile_gdfs, ignore_index=True),
+        crs="EPSG:4326"
+    )
 
+    dubai = load_dubai_boundary(DUBAI_BOUNDARY_SHP)
+    buildings_dubai = filter_to_dubai(buildings_all, dubai)
+
+    ensure_dir(BUILDINGS_DIR)
     print(f"Saving shapefile to: {OUTPUT_SHP}")
-    save_as_shapefile(merged)
+    buildings_dubai.to_file(OUTPUT_SHP, driver="ESRI Shapefile")
 
     print("Done.")
 
@@ -113,5 +192,9 @@ if __name__ == "__main__":
     run()
 
 
-# python3 ingestion/scrapers/building_footprints.py
-# gpd.read_file("data/buildings/building_footprints.shp")
+# How to run:
+#   python3 ingestion/scrapers/building_footprints.py
+#
+# How to load in Jupyter:
+#   import geopandas as gpd
+#   gdf = gpd.read_file("data/buildings/building_footprints_dubai.shp")
