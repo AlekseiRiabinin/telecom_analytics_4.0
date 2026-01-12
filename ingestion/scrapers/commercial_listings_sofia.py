@@ -1,173 +1,162 @@
 """
-Dubizzle Commercial for Rent (Dubai) scraper using real Chrome + CDP pipe.
-
-Requires:
-  - Google Chrome or Chromium
-  - Python 3.10+ (for text I/O buffering)
-
-Run:
-  python3 ingestion/scrapers/dubizzle_cdp_pipe_commercial_rent.py
+IMOT.BG Commercial Listings scraper (Bulgaria)
+Human-in-the-loop Playwright scraper using Firefox persistent profile.
 """
 
-import os
-import json
 import asyncio
-import random
-from typing import List, Dict, Any
-
+import json
+import os
+import re
+from typing import Optional
 from playwright.async_api import Page, async_playwright
+from bs4 import BeautifulSoup, Tag
 
-# --- CONFIG ---
 
-IMOT_BASE_URL = "https://imoti.info"
-IMOT_SEARCH_URL = (
-    "https://imoti.info/en/for-sale/grad-sofiya/business-properties?pubtype=7&pubtype=14"
-)
-
-MAX_PAGES = 10
-
-# Bulgarian residential proxy
-PROXY_SERVER = "socks5://aleksei-proxy.ddns.net:10808"
-
+# ==============================
+# PATH CONFIGURATION
+# ==============================
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, "..", ".."))
+
 DATA_DIR = os.path.join(PROJECT_ROOT, "data", "listings")
-OUTPUT_JSON = os.path.join(DATA_DIR, "imoti_info_commercial_sofia.json")
+URLS_FILE = os.path.join(DATA_DIR, "imoti_urls.txt")
+OUTPUT_JSON = os.path.join(DATA_DIR, "imoti_commercial.json")
+
+os.makedirs(DATA_DIR, exist_ok=True)
 
 
-def ensure_dir(path: str) -> None:
-    os.makedirs(path, exist_ok=True)
+# ==============================
+# HELPERS
+# ==============================
+async def safe_goto(page: Page, url: str):
+    for attempt in range(3):
+        try:
+            await page.goto(url, wait_until="load", timeout=60000)
+            return
+        except Exception as e:
+            print(f"Retry {attempt+1}/3 for {url}: {e}")
+            await asyncio.sleep(2)
+
+    raise RuntimeError(f"Failed to load {url}")
 
 
-def random_delay(a: float = 0.8, b: float = 1.8) -> float:
-    return random.uniform(a, b)
-
-
-async def extract_listings(page: Page) -> List[Dict[str, Any]]:
+def extract_text(soup: BeautifulSoup, label: str) -> Optional[str]:
     """
-    Extract listing cards from imoti.info.
+    Extract value from 'label: value' rows.
     """
-    listings = []
+    cell: Optional[Tag] = soup.find("td", string=re.compile(label, re.I))
+    
+    if not cell:
+        return None
 
-    # imoti.info uses <div class="estate"> for each listing
-    cards = await page.query_selector_all("div.estate")
-    for card in cards:
-        # Title + URL
-        link = await card.query_selector("a.title")
-        if not link:
-            continue
+    value_cell: Optional[Tag] = cell.find_next_sibling("td")
+    
+    return value_cell.get_text(strip=True) if value_cell else None
 
-        title = (await link.inner_text()).strip()
-        href = await link.get_attribute("href")
-        url = href if href.startswith("http") else IMOT_BASE_URL + href
 
-        # Price
-        price_el = await card.query_selector(".price")
-        price = (await price_el.inner_text()).strip() if price_el else None
+def parse_listing(html: str, url: str) -> dict:
+    soup = BeautifulSoup(html, "html.parser")
 
-        # Location
-        loc_el = await card.query_selector(".location")
-        location = (await loc_el.inner_text()).strip() if loc_el else None
+    def text_or_none(el):
+        return el.get_text(strip=True) if el else None
 
-        # Size (m²)
-        size_el = await card.query_selector(".params span")
-        size = (await size_el.inner_text()).strip() if size_el else None
+    title = soup.find("h1")
+    price = soup.find("div", class_="price")
 
-        listings.append(
-            {
-                "title": title,
-                "listing_url": url,
-                "price": price,
-                "location": location,
-                "size": size,
-            }
+    description = soup.find("div", class_="description")
+
+    details = {}
+    for row in soup.select(".property-params li"):
+        label = row.find("span", class_="label")
+        value = row.find("span", class_="value")
+        if label and value:
+            details[label.get_text(strip=True).lower()] = value.get_text(strip=True)
+
+    # Attempt to extract coordinates if present
+    lat = lon = None
+    map_div = soup.find("div", {"data-lat": True, "data-lng": True})
+    if map_div:
+        lat = map_div.get("data-lat")
+        lon = map_div.get("data-lng")
+
+    return {
+        "source": "imoti.info",
+        "url": url,
+        "title": text_or_none(title),
+        "price": text_or_none(price),
+        "property_type": details.get("property type"),
+        "area_sqm": details.get("area"),
+        "city": details.get("city"),
+        "district": details.get("district"),
+        "description": text_or_none(description),
+        "latitude": lat,
+        "longitude": lon,
+    }
+
+
+async def scrape_listing(page: Page, url: str) -> dict:
+    print(f"Opening: {url}")
+    await safe_goto(page, url)
+
+    html = await page.content()
+    return parse_listing(html, url)
+
+
+# ==============================
+# MAIN PIPELINE
+# ==============================
+async def main():
+    if not os.path.exists(URLS_FILE):
+        raise FileNotFoundError(f"URLs file not found: {URLS_FILE}")
+
+    with open(URLS_FILE, "r", encoding="utf-8") as f:
+        urls = [u.strip() for u in f if u.strip()]
+
+    print(f"Loaded {len(urls)} URLs")
+
+    results = []
+
+    async with async_playwright() as p:
+        FIREFOX_PROFILE_PATH = os.path.expanduser(
+            "~/snap/firefox/common/.mozilla/firefox/c80a2gz4.imot_real"
         )
 
-    return listings
-
-
-async def go_to_page(page: Page, page_num: int) -> str:
-    """
-    imoti.info uses ?page=N for pagination.
-    """
-    if page_num == 1:
-        await page.goto(IMOT_SEARCH_URL, wait_until="networkidle")
-        return page.url
-
-    url = IMOT_SEARCH_URL + f"&page={page_num}"
-    await page.goto(url, wait_until="networkidle")
-    return page.url
-
-
-async def scrape_imoti_info() -> None:
-    ensure_dir(DATA_DIR)
-    all_results: List[Dict[str, Any]] = []
-    seen = set()
-
-    async with async_playwright() as pw:
-        browser = await pw.chromium.launch(
+        browser = await p.firefox.launch_persistent_context(
+            user_data_dir=FIREFOX_PROFILE_PATH,
             headless=False,
-            proxy={"server": PROXY_SERVER},
+            viewport={"width": 1366, "height": 768},
+            locale="bg-BG",
+            slow_mo=50,
+            proxy={"server": "socks5://aleksei-proxy.ddns.net:10808"}
         )
-        context = await browser.new_context()
-        page = await context.new_page()
 
-        for page_num in range(1, MAX_PAGES + 1):
-            print(f"\nScraping page {page_num}...")
-            url = await go_to_page(page, page_num)
-            print("At URL:", url)
 
-            # Wait for dynamic listings to render
+        page = await browser.new_page()
+
+        print("\nBrowser launched.")
+        print("Interact manually for 10-20 seconds if desired.")
+        input("Press ENTER to start scraping...")
+
+        for idx, url in enumerate(urls, start=1):
             try:
-                await page.wait_for_selector("div.estate", timeout=10000)
-            except:
-                print("Listings did not load — stopping.")
-                break
+                listing = await scrape_listing(page, url)
+                results.append(listing)
+                print(f"[{idx}/{len(urls)}] Collected")
 
-            # Optional: dump HTML for debugging
-            # html = await page.content()
-            # with open(f"debug_page_{page_num}.html", "w", encoding="utf-8") as f:
-            #     f.write(html)
+                await asyncio.sleep(2)
 
-            page_listings = await extract_listings(page)
-            if not page_listings:
-                print("No listings found, stopping.")
-                break
-
-            new_count = 0
-            for item in page_listings:
-                key = item["listing_url"]
-                if key not in seen:
-                    seen.add(key)
-                    all_results.append(item)
-                    new_count += 1
-
-            print(f"Added {new_count} new listings (total: {len(all_results)})")
-
-            if new_count == 0:
-                print("No new unique listings, stopping.")
-                break
-
-            await page.wait_for_timeout(int(random_delay(1500, 3000)))
+            except Exception as e:
+                print(f"ERROR on {url}: {e}")
+                input("Fix manually and press ENTER to continue...")
 
         await browser.close()
 
-    print(f"\nSaving {len(all_results)} listings to {OUTPUT_JSON}")
     with open(OUTPUT_JSON, "w", encoding="utf-8") as f:
-        json.dump(all_results, f, indent=2, ensure_ascii=False)
+        json.dump(results, f, ensure_ascii=False, indent=2)
 
-    print("Done.")
+    print(f"\nSaved {len(results)} listings to:")
+    print(OUTPUT_JSON)
 
 
 if __name__ == "__main__":
-    asyncio.run(scrape_imoti_info())
-
-
-# How to run:
-#   python3 ingestion/scrapers/commercial_listings_sofia.py
-#
-# Jupyter usage:
-# import json
-# with open("data/listings/imot_bg_commercial_sofia.json") as f:
-#     listings = json.load(f)
-# listings[:3]
+    asyncio.run(main())

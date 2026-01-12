@@ -1,21 +1,21 @@
 """
-Dubizzle Commercial for Rent (Dubai) scraper using real Chrome + CDP pipe.
+Dubizzle Commercial for Rent (Dubai) scraper using Playwright.
 
 Requires:
-  - Google Chrome or Chromium
+  - Playwright
   - Python 3.10+ (for text I/O buffering)
 
 Run:
-  python3 ingestion/scrapers/dubizzle_cdp_pipe_commercial_rent.py
+  python3 ingestion/scrapers/commercial_listings.py
 """
 
 import asyncio
 import json
 import os
-import time
 
 from playwright.async_api import Page, async_playwright
 from bs4 import BeautifulSoup
+
 
 # ==============================
 # PATH CONFIGURATION
@@ -45,22 +45,48 @@ def extract_next_data(html: str) -> dict:
     return json.loads(script.string)
 
 
+async def safe_goto(page: Page, url):
+    for attempt in range(3):
+        try:
+            await page.goto(url, wait_until="load", timeout=60000)
+            return
+
+        except Exception as e:
+            print(f"Retry {attempt+1}/3 for {url}: {e}")
+            await asyncio.sleep(2)
+
+    raise RuntimeError(f"Failed to load {url} after 3 attempts")
+
+
 async def scrape_listing(page: Page, url: str) -> dict:
     """
     Load a single listing page and return the listing JSON.
     """
     print(f"Opening: {url}")
-    await page.goto(url, wait_until="networkidle", timeout=60000)
+    await safe_goto(page, url)
 
     html = await page.content()
-    data = extract_next_data(html)
+    try:
+        data = extract_next_data(html)
+
+    except Exception:
+        # Fallback: scroll to force hydration / lazy loading
+        print("Fallback: __NEXT_DATA__ missing, scrolling…")
+        await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+        await asyncio.sleep(1)
+
+        # Try again
+        html = await page.content()
+        data = extract_next_data(html)  # if this fails, let it raise
 
     try:
         listing = data["props"]["pageProps"]["listing"]
+
     except KeyError:
         raise KeyError("Listing object not found in __NEXT_DATA__")
 
     return listing
+
 
 # ==============================
 # MAIN PIPELINE
@@ -81,9 +107,10 @@ async def main():
         # FIREFOX PERSISTENT PROFILE SETUP
         # ==============================
         # TODO: Update this path to your actual Firefox profile path
-        # On Linux: "~/.mozilla/firefox/your_profile.default-release"
-        # On Windows: "C:\\Users\\<User>\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\xxxx.default-release"
-        FIREFOX_PROFILE_PATH = os.path.expanduser("~/.mozilla/firefox/dubizzle_real")
+        # On Linux: "~/.mozilla/firefox/profile.default-release"
+        FIREFOX_PROFILE_PATH = os.path.expanduser(
+            "~/snap/firefox/common/.mozilla/firefox/x9k3abcd.dubizzle_pw"
+        )
 
         browser = await p.firefox.launch_persistent_context(
             user_data_dir=FIREFOX_PROFILE_PATH,
@@ -116,7 +143,7 @@ async def main():
                 )
 
                 # polite delay
-                time.sleep(2)
+                await asyncio.sleep(2)
 
             except Exception as e:
                 print(f"ERROR on {url}: {e}")
@@ -148,3 +175,8 @@ if __name__ == "__main__":
 # with open("data/listings/dubizzle_commercial_rent.json") as f:
 #     listings = json.load(f)
 # listings[:3]
+
+# Correct usage:
+#   1. Close Firefox completely
+#   2. Run the Playwright script
+#   3. Let Playwright open Firefox
