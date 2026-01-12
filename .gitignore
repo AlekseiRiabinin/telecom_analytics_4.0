@@ -164,5 +164,3 @@ sample_data/output/
 
 # Jar cached files
 shared/ivy-cache/
-
-data/listings/*.json
