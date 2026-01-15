@@ -72,6 +72,31 @@ start_redis() {
     exit 1
 }
 
+# Start Tegola
+start_tegola() {
+    if ! service_exists tegola-cre; then
+        echo "tegola-cre service not defined — skipping"
+        return
+    fi
+
+    echo "Starting Tegola (CRE)..."
+    docker compose -f "$COMPOSE_FILE" up -d --no-deps tegola-cre
+
+    local attempts=10
+    for i in $(seq 1 $attempts); do
+        if curl -s http://localhost:8085 > /dev/null 2>&1; then
+            echo "Tegola is ready"
+            return 0
+        fi
+        echo "Waiting for Tegola... ($i/$attempts)"
+        sleep 3
+    done
+
+    echo "Tegola failed to start"
+    docker compose -f "$COMPOSE_FILE" logs tegola-cre --tail=20
+    exit 1
+}
+
 # Start GraphQL (optional)
 start_graphql() {
     if ! service_exists graphql-cre; then
@@ -95,17 +120,19 @@ start_graphql() {
 start_postgis
 start_pgadmin
 start_redis
+start_tegola
 start_graphql
 
 echo ""
 echo "=== CRE Stack Status ==="
-docker compose -f "$COMPOSE_FILE" ps postgis-cre pgadmin-cre redis-cre graphql-cre || true
+docker compose -f "$COMPOSE_FILE" ps postgis-cre pgadmin-cre redis-cre tegola-cre graphql-cre || true
 
 echo ""
 echo "=== Access Information ==="
 echo "PostGIS:   localhost:5435 (cre_user / cre_password)"
 echo "pgAdmin:   http://localhost:5051"
 echo "Redis:     localhost:6380"
+echo "Tegola:    http://localhost:8080/maps"
 echo "GraphQL:   http://localhost:8088/graphql (when implemented)"
 echo ""
 echo "CRE PostGIS stack started successfully"

@@ -1,13 +1,15 @@
 CREATE TABLE spatial.building_geom (
 	building_id UUID PRIMARY KEY,
 	geom geometry(MULTIPOLYGON, 4326) NOT NULL,
-	geog geography(MULTIPOLYGON, 4326) NOT NULL
+	geog geography(MULTIPOLYGON, 4326) NOT NULL,
+	geom_3857 geometry(MULTIPOLYGON, 3857) GENERATED ALWAYS AS (ST_Transform(geom, 3857)) STORED
 );
 CREATE INDEX idx_building_geom_geog ON spatial.building_geom USING gist (geog);
 CREATE INDEX idx_building_geom_geom ON spatial.building_geom USING gist (geom);
+CREATE INDEX idx_building_geom_geom_3857 ON spatial.building_geom USING GIST (geom_3857);
 
 
-CREATE TABLE spatial.road_geom (
+CREATE TE TABLE spatial.road_geom (
     road_id UUID PRIMARY KEY,
     geom geometry(MULTILINESTRING, 4326) NOT NULL,
     geog geography(MULTILINESTRING, 4326),
@@ -15,11 +17,11 @@ CREATE TABLE spatial.road_geom (
     road_type TEXT,
     oneway TEXT,
     maxspeed INTEGER,
-    created_at TIMESTAMPTZ DEFAULT now()
+    created_at TIMESTAMPTZ DEFAULT now(),
+    geom_3857 geometry(MULTILINESTRING, 3857) GENERATED ALWAYS AS (ST_Transform(geom, 3857)) STORED
 );
-CREATE INDEX IF NOT EXISTS road_geom_gix
-ON spatial.road_geom
-USING GIST (geom);
+CREATE INDEX idx_road_geom_geom ON spatial.road_geom USING GIST (geom);
+CREATE INDEX idx_road_geom_geom_3857 ON spatial.road_geom USING GIST (geom_3857);
 
 -- Versioned spatial data (temporal GIS)
 CREATE TABLE spatial.building_geom_history (

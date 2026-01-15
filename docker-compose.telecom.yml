@@ -689,6 +689,29 @@ services:
       FLYWAY_PASSWORD: cre_password
       FLYWAY_SCHEMAS: core,spatial,graph,analytics,api
 
+  tegola-cre:
+    image: gospatial/tegola:latest
+    container_name: tegola-cre
+    restart: unless-stopped
+    depends_on:
+      postgis-cre:
+        condition: service_healthy
+      redis-cre:
+        condition: service_healthy
+    volumes:
+      - ./tegola/config.toml:/config/config.toml:ro
+    entrypoint: ["/opt/tegola", "serve", "--config", "/config/config.toml", "--port", ":8085"]
+    ports:
+      - "8085:8085"
+    environment:
+      TEGOLA_MAX_TILE_SIZE: "10MB"
+      TEGOLA_CACHE_TYPE: "redis"
+      TEGOLA_CACHE_REDIS_ENDPOINT: "redis-cre:6379"
+      TEGOLA_CACHE_REDIS_PREFIX: "tegola:"
+    networks:
+      - kafka-net
+
+
 volumes:
   clickhouse_data:
     name: clickhouse_data
@@ -713,6 +736,10 @@ networks:
   kafka-net:
     driver: bridge
 
+
+# Vector tiles:
+# http://localhost:8085/maps/dubai/{layer}/{z}/{x}/{y}.pbf
+# http://localhost:8085/maps/dubai/buildings/14/8700/5370.pbf
 
 # docker compose -f docker-compose.telecom.yml build cron-cre
 # docker compose -f docker-compose.telecom.yml up -d cron-cre

@@ -1,0 +1,42 @@
+[webserver]
+port = ":8085"
+
+[cache]
+type = "redis"
+uri = "redis://redis-cre:6379"
+key_prefix = "tegola:"
+tile_expiry = 86400
+max_zoom = 20
+
+[[providers]]
+name = "cre_postgis"
+type = "postgis"
+uri = "postgres://cre_user:cre_password@postgis-cre:5432/cre_db?sslmode=disable"
+srid = 3857
+
+[[providers.layers]]
+name = "Buildings"
+tablename = "tiles.buildings"
+geometry_fieldname = "geom"
+geometry_type = "MultiPolygon"
+
+[[providers.layers]]
+name = "Roads"
+tablename = "tiles.roads"
+geometry_fieldname = "geom"
+geometry_type = "MultiLineString"
+
+[[maps]]
+name = "dubai"
+
+[[maps.layers]]
+id = "Buildings"
+provider_layer = "cre_postgis.Buildings"
+min_zoom = 10
+max_zoom = 20
+
+[[maps.layers]]
+id = "Roads"
+provider_layer = "cre_postgis.Roads"
+min_zoom = 8
+max_zoom = 20
