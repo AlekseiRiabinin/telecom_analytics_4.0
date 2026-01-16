@@ -116,23 +116,50 @@ start_graphql() {
     echo "GraphQL CRE service started"
 }
 
+# Start Style Server (Nginx for Mapbox styles)
+start_style_server() {
+    if ! service_exists style-server; then
+        echo "style-server service not defined — skipping"
+        return
+    fi
+
+    echo "Starting Style Server..."
+    docker compose -f "$COMPOSE_FILE" up -d --no-deps style-server
+
+    local attempts=10
+    for i in $(seq 1 $attempts); do
+        if curl -s http://localhost:8000 >/dev/null 2>&1; then
+            echo "Style Server is ready"
+            return 0
+        fi
+        echo "Waiting for Style Server... ($i/$attempts)"
+        sleep 2
+    done
+
+    echo "Style Server failed to start"
+    docker compose -f "$COMPOSE_FILE" logs style-server --tail=20
+    exit 1
+}
+
 # Execution order
 start_postgis
 start_pgadmin
 start_redis
+start_style_server
 start_tegola
 start_graphql
 
 echo ""
 echo "=== CRE Stack Status ==="
-docker compose -f "$COMPOSE_FILE" ps postgis-cre pgadmin-cre redis-cre tegola-cre graphql-cre || true
+docker compose -f "$COMPOSE_FILE" ps postgis-cre pgadmin-cre redis-cre style-server tegola-cre graphql-cre || true
+
 
 echo ""
 echo "=== Access Information ==="
 echo "PostGIS:   localhost:5435 (cre_user / cre_password)"
 echo "pgAdmin:   http://localhost:5051"
 echo "Redis:     localhost:6380"
-echo "Tegola:    http://localhost:8080/maps"
+echo "Style JSON:http://localhost:8000/dubai_style.json"
+echo "Tegola:    http://localhost:8085/maps"
 echo "GraphQL:   http://localhost:8088/graphql (when implemented)"
 echo ""
-echo "CRE PostGIS stack started successfully"

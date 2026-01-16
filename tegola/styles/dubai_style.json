@@ -1,0 +1,31 @@
+{
+  "version": 8,
+  "sources": {
+    "dubai": {
+      "type": "vector",
+      "tiles": [
+        "http://10.20.3.191:8085/maps/dubai/{z}/{x}/{y}.pbf"
+      ],
+      "minzoom": 8,
+      "maxzoom": 20
+    }
+  },
+  "layers": [
+    {
+      "id": "buildings",
+      "type": "fill",
+      "source": "dubai",
+      "source-layer": "Buildings"
+    },
+    {
+      "id": "roads",
+      "type": "line",
+      "source": "tegola",
+      "source-layer": "Roads",
+      "paint": {
+        "line-color": "#ff5500",
+        "line-width": 1.5
+      }
+    }
+  ]
+}

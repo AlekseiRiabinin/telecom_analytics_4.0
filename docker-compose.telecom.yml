@@ -699,7 +699,8 @@ services:
       redis-cre:
         condition: service_healthy
     volumes:
-      - ./tegola/config.toml:/config/config.toml:ro
+      - ./tegola/config/config.toml:/config/config.toml:ro
+      - ./tegola/styles/dubai_style.json:/styles/dubai_style.json:ro
     entrypoint: ["/opt/tegola", "serve", "--config", "/config/config.toml", "--port", ":8085"]
     ports:
       - "8085:8085"
@@ -711,6 +712,13 @@ services:
     networks:
       - kafka-net
 
+  style-server:
+    image: nginx:alpine
+    container_name: style-server
+    volumes:
+      - ./tegola/styles:/usr/share/nginx/html:ro
+    ports:
+      - "8000:80"
 
 volumes:
   clickhouse_data:
