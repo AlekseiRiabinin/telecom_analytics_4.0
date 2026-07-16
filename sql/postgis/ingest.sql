@@ -39,6 +39,40 @@ CREATE TABLE ingest.validation_rules (
 );
 
 
+-----------------------------------------------------------------------
+CREATE TABLE ingest.raw_urbi_cadastral_plots (
+    id BIGSERIAL PRIMARY KEY,
+    district_name TEXT NOT NULL,
+    district_id TEXT NOT NULL,
+    payload JSONB NOT NULL,
+    loaded_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION ingest.load_urbi_cadastral_plots(
+    p_district_name TEXT,
+    p_district_id TEXT,
+    p_payload JSONB
+)
+RETURNS VOID
+AS $$
+BEGIN
+    INSERT INTO ingest.raw_urbi_cadastral_plots (
+        district_name,
+        district_id,
+        payload
+    )
+    SELECT
+        p_district_name,
+        p_district_id,
+        elem
+    FROM jsonb_array_elements(p_payload) AS elem;
+END;
+$$ LANGUAGE plpgsql;
+-----------------------------------------------------------------------
+
+
 -- Extend validation to use rules
 CREATE OR REPLACE FUNCTION ingest.validate_feature(p_ingest_id BIGINT)
 RETURNS BOOLEAN AS $$

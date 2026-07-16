@@ -9,7 +9,7 @@ CREATE INDEX idx_building_geom_geom ON spatial.building_geom USING gist (geom);
 CREATE INDEX idx_building_geom_geom_3857 ON spatial.building_geom USING GIST (geom_3857);
 
 
-CREATE TE TABLE spatial.road_geom (
+CREATE TABLE spatial.road_geom (
     road_id UUID PRIMARY KEY,
     geom geometry(MULTILINESTRING, 4326) NOT NULL,
     geog geography(MULTILINESTRING, 4326),
@@ -42,6 +42,48 @@ CREATE INDEX idx_building_geom_history_building
 CREATE INDEX idx_building_geom_history_valid
   ON spatial.building_geom_history (valid_from, COALESCE(valid_to, 'infinity'::timestamptz));
 
+
+----------------------------------------------------------------------
+
+CREATE TABLE spatial.cadastral_plot_geom (
+    plot_id TEXT PRIMARY KEY,                      -- payload.id
+    geom geometry(MULTIPOLYGON, 4326) NOT NULL,    -- from WKT
+    centroid geometry(POINT, 4326) NOT NULL        -- from point.lat/lon
+);
+CREATE INDEX cadastral_plot_geom_gix ON spatial.cadastral_plot_geom USING GIST (geom);
+
+----------------------------------------------------------------------
+
+----------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION spatial.load_cadastral_plots_geom()
+RETURNS VOID AS $$
+BEGIN
+    TRUNCATE spatial.cadastral_plot_geom;
+
+    INSERT INTO spatial.cadastral_plot_geom (
+        plot_id,
+        geom,
+        centroid
+    )
+    SELECT
+        payload->>'id' AS plot_id,
+
+        ST_GeomFromText(payload->>'wkt', 4326) AS geom,
+
+        ST_SetSRID(
+            ST_MakePoint(
+                (payload->'point'->>'lon')::float,
+                (payload->'point'->>'lat')::float
+            ),
+            4326
+        ) AS centroid
+
+    FROM ingest.raw_urbi_cadastral_plots;
+END;
+$$ LANGUAGE plpgsql;
+
+----------------------------------------------------------------------
 
 
 -- Spatial filtering → graph

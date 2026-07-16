@@ -690,7 +690,7 @@ services:
       FLYWAY_SCHEMAS: core,spatial,graph,analytics,api
 
   tegola-cre:
-    image: gospatial/tegola:latest
+    image: gospatial/tegola:v0.21.2
     container_name: tegola-cre
     restart: unless-stopped
     depends_on:
@@ -713,7 +713,7 @@ services:
       - kafka-net
 
   style-server:
-    image: nginx:alpine
+    image: nginx:1.29.4-alpine
     container_name: style-server
     volumes:
       - ./tegola/styles:/usr/share/nginx/html:ro
