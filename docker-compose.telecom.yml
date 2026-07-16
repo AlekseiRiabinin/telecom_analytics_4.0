@@ -1,65 +1,32 @@
 services:
-
-  # Kafka Brokers
+  
   kafka-1:
-    image: bitnami/kafka:3.8.0
+    image: apache/kafka:3.8.0
     container_name: kafka-1
     ports:
-      - "19092:19092"    # External access
-      - "19093:19093"    # Controller port
+      - "19092:19092"
+      - "19093:19093"
     environment:
-      - KAFKA_ENABLE_KRAFT=yes
-      - KAFKA_KRAFT_CLUSTER_ID=d8ce1515-401e-44d4-a444-1b6dba479047
-      - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_HEAP_OPTS=-Xmx2G -Xms2G
-    volumes:
-      - ./server-1.properties:/opt/bitnami/kafka/config/server.properties:ro
-    networks:
-      - kafka-net
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka-1:19093
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:19092,CONTROLLER://0.0.0.0:19093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-1:19092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+      CLUSTER_ID: d8ce1515-401e-44d4-a444-1b6dba479047
+    networks: [kafka-net]
     restart: always
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 2GiB
-        reservations:
-          cpus: '0.25'
-          memory: 1GiB
 
-  kafka-2:
-    image: bitnami/kafka:3.8.0
-    container_name: kafka-2
-    ports:
-      - "19094:19094"    # External access (changed from 9095)
-      - "19095:19095"    # Controller port
-    environment:
-      - KAFKA_ENABLE_KRAFT=yes
-      - KAFKA_KRAFT_CLUSTER_ID=d8ce1515-401e-44d4-a444-1b6dba479047
-      - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_HEAP_OPTS=-Xmx2G -Xms2G
-    volumes:
-      - ./server-2.properties:/opt/bitnami/kafka/config/server.properties:ro
-    networks:
-      - kafka-net
-    restart: always
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 2GiB
-        reservations:
-          cpus: '0.25'
-          memory: 1GiB
-  
   # Kafka Producer (smart meter data)
   kafka-producer:
     image: alexflames77/kafka_producer:latest
     container_name: kafka-producer
     depends_on:
       - kafka-1
-      - kafka-2
     environment:
-      - KAFKA_BOOTSTRAP_SERVERS=kafka-1:19092,kafka-2:19094
+      - KAFKA_BOOTSTRAP_SERVERS=kafka-1:19092
       - KAFKA_TOPIC=smart_meter_data
     networks:
       - kafka-net
@@ -78,7 +45,6 @@ services:
     container_name: clickhouse-server
     depends_on:
       - kafka-1
-      - kafka-2
     ports:
       - "8123:8123"  # HTTP API
       - "9000:9000"  # Native interface
@@ -237,7 +203,7 @@ services:
 
   airflow-webserver:
     build:
-      context: ../apps/airflow-app
+      context: ../../real_time_video/apps/airflow-app
       dockerfile: Dockerfile
     image: alexflames77/custom-airflow:latest
     container_name: airflow-webserver
@@ -252,7 +218,7 @@ services:
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
       - HADOOP_CONF_DIR=/opt/hadoop/etc/hadoop
       - AIRFLOW_CONN_HDFS_DEFAULT=hdfs://namenode:8020
-      - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092,kafka-2:19095
+      - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092
       - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
       - AIRFLOW_CONN_MINIO_DEFAULT=s3://minioadmin:minioadmin@minio:9002
       - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/telecom_analytics
@@ -266,6 +232,7 @@ services:
       - ./hadoop-conf:/opt/hadoop/etc/hadoop
       - ./spark/pipelines:/opt/airflow/dags/spark/pipelines
       - ./spark/jars:/opt/airflow/jars
+      - ../spatio_temporal_stream_processing/batch-processing/city-rover/spark-jars:/opt/airflow/city-rover-jars
     ports:
       - "8083:8080"
     networks:
@@ -287,7 +254,7 @@ services:
     environment:
       - HADOOP_CONF_DIR=/opt/hadoop/etc/hadoop
       - AIRFLOW_CONN_HDFS_DEFAULT=hdfs://namenode:8020
-      - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092,kafka-2:19095
+      - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092
       - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
       - AIRFLOW_CONN_MINIO_DEFAULT=s3://minioadmin:minioadmin@minio:9002
       - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/telecom_analytics
@@ -301,6 +268,7 @@ services:
       - ./hadoop-conf:/opt/hadoop/etc/hadoop
       - ./spark/pipelines:/opt/airflow/dags/spark/pipelines
       - ./spark/jars:/opt/airflow/jars
+      - ../spatio_temporal_stream_processing/batch-processing/city-rover/spark-jars:/opt/airflow/city-rover-jars
     networks:
       - kafka-net
     restart: always
@@ -320,7 +288,7 @@ services:
       - postgres
     environment:
       - AIRFLOW_CONN_HDFS_DEFAULT=hdfs://namenode:8020
-      - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092,kafka-2:19095
+      - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092
       - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
       - AIRFLOW_CONN_MINIO_DEFAULT=s3://minioadmin:minioadmin@minio:9002
       - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/telecom_analytics
@@ -334,6 +302,7 @@ services:
       - ./hadoop-conf:/opt/hadoop/etc/hadoop
       - ./spark/pipelines:/opt/airflow/dags/spark/pipelines
       - ./spark/jars:/opt/airflow/jars
+      - ../spatio_temporal_stream_processing/batch-processing/city-rover/spark-jars:/opt/airflow/city-rover-jars
     networks:
       - kafka-net
     restart: always
@@ -353,7 +322,7 @@ services:
       - postgres
     environment:
       - AIRFLOW_CONN_HDFS_DEFAULT=hdfs://namenode:8020
-      - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092,kafka-2:19095
+      - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092
       - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
       - AIRFLOW_CONN_MINIO_DEFAULT=s3://minioadmin:minioadmin@minio:9002
       - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/telecom_analytics
@@ -367,6 +336,7 @@ services:
       - ./hadoop-conf:/opt/hadoop/etc/hadoop
       - ./spark/pipelines:/opt/airflow/dags/spark/pipelines
       - ./spark/jars:/opt/airflow/jars
+      - ../spatio_temporal_stream_processing/batch-processing/city-rover/spark-jars:/opt/airflow/city-rover-jars
     networks:
       - kafka-net
     restart: always
@@ -399,7 +369,7 @@ services:
       - AIRFLOW__CORE__FERNET_KEY=PakKUDc_578hbrABpAhOs0PMn7RnDBfkgRO03e_tugA=
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
       - AIRFLOW_CONN_HDFS_DEFAULT=hdfs://namenode:8020
-      - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092,kafka-2:19095
+      - AIRFLOW_CONN_KAFKA_DEFAULT=kafka://kafka-1:19092
       - AIRFLOW_CONN_SPARK_DEFAULT=spark://spark-master:7077
       - AIRFLOW_CONN_MINIO_DEFAULT=s3://minioadmin:minioadmin@minio:9002
       - AIRFLOW_CONN_CLICKHOUSE_DEFAULT=clickhouse://admin:clickhouse_admin@clickhouse:8123/telecom_analytics
@@ -476,6 +446,7 @@ services:
       - ./spark/pipelines:/opt/spark/work-dir/pipelines
       - ./spark/jars:/opt/airflow/jars:ro
       - ./shared/ivy-cache:/home/spark/.ivy2
+      - ../spatio_temporal_stream_processing/batch-processing/city-rover/spark-jars:/opt/spark/city-rover-jars
     networks:
       - kafka-net
     restart: always
@@ -516,6 +487,7 @@ services:
       - ./spark/pipelines:/opt/spark/work-dir/pipelines
       - ./spark/jars:/opt/airflow/jars:ro
       - ./shared/ivy-cache:/home/spark/.ivy2
+      - ../spatio_temporal_stream_processing/batch-processing/city-rover/spark-jars:/opt/spark/city-rover-jars
     depends_on:
       - spark-master
     networks:
@@ -538,10 +510,9 @@ services:
     container_name: debezium-connect
     depends_on:
       - kafka-1
-      - kafka-2
       - mssql
     environment:
-      - BOOTSTRAP_SERVERS=kafka-1:19092,kafka-2:19094
+      - BOOTSTRAP_SERVERS=kafka-1:19092
       - GROUP_ID=debezium-connect-cluster
       - CONFIG_STORAGE_TOPIC=debezium_connect_configs
       - OFFSET_STORAGE_TOPIC=debezium_connect_offsets
@@ -610,7 +581,7 @@ services:
 
       # Optional integrations
       REDIS_HOST: redis
-      KAFKA_BOOTSTRAP_SERVERS: kafka-1:19092,kafka-2:19094
+      KAFKA_BOOTSTRAP_SERVERS: kafka-1:19092
     ports:
       - "8088:8088"   # GraphQL endpoint http://localhost:8088/graphql
     networks:
