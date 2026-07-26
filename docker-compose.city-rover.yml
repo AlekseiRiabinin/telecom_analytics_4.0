@@ -252,6 +252,8 @@ services:
       timeout: 10s
       retries: 3
       start_period: 60s
+    networks:
+      - city-rover-net
 
   spark-master:
     image: alexflames77/custom-spark:latest
@@ -277,6 +279,8 @@ services:
       /bin/bash -c "
       /opt/spark/sbin/start-master.sh -h spark-master -p 7077 --webui-port 8080 &&
       tail -f /opt/spark/logs/spark--org.apache.spark.deploy.master.Master-*.out"
+    networks:
+      - city-rover-net
     volumes:
       - ./spark/jars:/opt/spark/custom-jars
       - ./spark/pipelines:/opt/spark/work-dir/pipelines
@@ -308,6 +312,8 @@ services:
       --memory 4G 
       --cores 2 &&
       tail -f /opt/spark/logs/spark--org.apache.spark.deploy.worker.Worker-*.out"
+    networks:
+      - city-rover-net
     volumes:
       - ./spark/jars:/opt/spark/custom-jars
       - ./spark/pipelines:/opt/spark/work-dir/pipelines

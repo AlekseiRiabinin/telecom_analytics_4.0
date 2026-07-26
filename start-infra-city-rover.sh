@@ -339,17 +339,34 @@ start_city_rover() {
     print_message "${BLUE}" "   Starting ClickHouse..."
     docker compose -f "$COMPOSE_FILE" up -d --no-deps clickhouse
     wait_for_clickhouse || exit 1
-    
-    # Phase 3: Start Spark
+
+    # Phase 3: Copy Spark JARs into shared directory
     print_message "${BLUE}" ""
-    print_message "${BLUE}" "⚡ Phase 3: Starting Spark Cluster..."
+    print_message "${BLUE}" "📦 Phase 3: Preparing Spark JARs..."
+
+    SHARED_JAR_DIR="../spatio_temporal_stream_processing/batch-processing/city-rover/spark-jars"
+    JOB_JAR="../spatio_temporal_stream_processing/batch-processing/city-rover/spark-jobs/trajectory-visualizer-job/target/scala-2.12/cityrover-trajectory-visualizer-job-assembly-0.1.0.jar"
+
+    if [ -f "$JOB_JAR" ]; then
+        print_message "${BLUE}" "   Copying trajectory-visualizer-job JAR..."
+        cp "$JOB_JAR" "$SHARED_JAR_DIR/"
+        print_message "${GREEN}" "   JAR copied to shared directory."
+    else
+        print_message "${RED}" "❌ JAR not found: $JOB_JAR"
+        print_message "${YELLOW}" "   Run 'sbt assembly' in trajectory-visualizer-job first."
+        exit 1
+    fi
+
+    # Phase 4: Start Spark
+    print_message "${BLUE}" ""
+    print_message "${BLUE}" "⚡ Phase 4: Starting Spark Cluster..."
     print_message "${BLUE}" "   Starting Spark Master and Worker..."
     docker compose -f "$COMPOSE_FILE" up -d spark-master spark-worker
     wait_for_spark
     
-    # Phase 4: Start Airflow
+    # Phase 5: Start Airflow
     print_message "${BLUE}" ""
-    print_message "${BLUE}" "🌐 Phase 4: Starting Airflow Platform..."
+    print_message "${BLUE}" "🌐 Phase 5: Starting Airflow Platform..."
     
     if [ "$SKIP_INIT" = false ]; then
         print_message "${BLUE}" "   Initializing Airflow database..."
