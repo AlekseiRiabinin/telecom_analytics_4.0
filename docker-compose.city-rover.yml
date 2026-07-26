@@ -17,7 +17,7 @@ services:
       timeout: 5s
       retries: 5    
     networks:
-      - kafka-net
+      - city-rover-net
     restart: always
     deploy:
       resources:
@@ -37,7 +37,7 @@ services:
     volumes:
       - redis-data:/data
     networks:
-      - kafka-net
+      - city-rover-net
     restart: always
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
@@ -60,8 +60,6 @@ services:
     depends_on:
       - postgres
       - clickhouse
-      - minio
-      - mssql
     environment:
       - AIRFLOW__WEBSERVER__EXPOSE_CONFIG=True
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
@@ -85,7 +83,7 @@ services:
     ports:
       - "8083:8080"
     networks:
-      - kafka-net
+      - city-rover-net
     restart: always
     deploy:
       resources:
@@ -99,7 +97,6 @@ services:
     command: scheduler
     depends_on:
       - airflow-webserver
-      - mssql
     environment:
       - HADOOP_CONF_DIR=/opt/hadoop/etc/hadoop
       - AIRFLOW_CONN_HDFS_DEFAULT=hdfs://namenode:8020
@@ -119,7 +116,7 @@ services:
       - ./spark/jars:/opt/airflow/jars
       - ../spatio_temporal_stream_processing/batch-processing/city-rover/spark-jars:/opt/airflow/city-rover-jars
     networks:
-      - kafka-net
+      - city-rover-net
     restart: always
     deploy:
       resources:
@@ -153,7 +150,7 @@ services:
       - ./spark/jars:/opt/airflow/jars
       - ../spatio_temporal_stream_processing/batch-processing/city-rover/spark-jars:/opt/airflow/city-rover-jars
     networks:
-      - kafka-net
+      - city-rover-net
     restart: always
     deploy:
       resources:
@@ -187,7 +184,7 @@ services:
       - ./spark/jars:/opt/airflow/jars
       - ../spatio_temporal_stream_processing/batch-processing/city-rover/spark-jars:/opt/airflow/city-rover-jars
     networks:
-      - kafka-net
+      - city-rover-net
     restart: always
     deploy:
       resources:
@@ -208,8 +205,6 @@ services:
       --password admin"
     depends_on:
       - clickhouse
-      - minio
-      - mssql
     environment:
       - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
       - AIRFLOW__CELERY__BROKER_URL=redis://redis:6379/0
@@ -230,7 +225,7 @@ services:
       - ./airflow/config/airflow.cfg:/opt/airflow/airflow.cfg 
       - ./shared/ivy-cache:/home/airflow/.ivy2
     networks:
-      - kafka-net
+      - city-rover-net
 
   clickhouse:
     image: clickhouse/clickhouse-server:25.9
@@ -326,6 +321,8 @@ services:
 volumes:
   clickhouse_data:
   clickhouse_log:
+  postgres-azure-data:
+  redis-data:
 
 networks:
   city-rover-net:
