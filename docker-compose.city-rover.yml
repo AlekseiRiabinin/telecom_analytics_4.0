@@ -278,16 +278,12 @@ services:
       SPARK_LOG_LEVEL: INFO
       PYSPARK_PYTHON: python3.10
       PYSPARK_DRIVER_PYTHON: python3.10
-      # SPARK_CLASSPATH: "/opt/spark/custom-jars/*"
-      # SPARK_DRIVER_EXTRA_CLASSPATH: "/opt/spark/custom-jars/*"
-      # SPARK_EXECUTOR_EXTRA_CLASSPATH: "/opt/spark/custom-jars/*"
     networks:
       - city-rover-net
     volumes:
       - ./spark/jars:/opt/spark/custom-jars
       - ./spark/jars:/opt/airflow/jars:ro
       - ./shared/ivy-cache:/home/spark/.ivy2
-      # - ../spatio_temporal_stream_processing/batch-processing/city-rover/spark-jars:/opt/spark/city-rover-jars
     restart: unless-stopped
 
   spark-worker:
@@ -313,9 +309,6 @@ services:
       SPARK_LOG_LEVEL: INFO
       PYSPARK_PYTHON: python3.10
       PYSPARK_DRIVER_PYTHON: python3.10
-      # SPARK_CLASSPATH: "/opt/spark/custom-jars/*"
-      # SPARK_DRIVER_EXTRA_CLASSPATH: "/opt/spark/custom-jars/*"
-      # SPARK_EXECUTOR_EXTRA_CLASSPATH: "/opt/spark/custom-jars/*"
     depends_on:
       - spark-master
     networks:
@@ -325,7 +318,6 @@ services:
       - ./spark/jars:/opt/airflow/jars:ro
       - ./spark/pipelines:/opt/spark/work-dir/pipelines 
       - ./shared/ivy-cache:/home/spark/.ivy2
-      # - ../spatio_temporal_stream_processing/batch-processing/city-rover/spark-jars:/opt/spark/city-rover-jars
       - ../spatio_temporal_stream_processing/graph-data:/opt/cityrover/graph-engine/output
     restart: unless-stopped
 
