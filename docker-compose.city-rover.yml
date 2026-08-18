@@ -284,6 +284,8 @@ services:
       - ./spark/jars:/opt/spark/custom-jars
       - ./spark/jars:/opt/airflow/jars:ro
       - ./shared/ivy-cache:/home/spark/.ivy2
+      - /home/aleksei/Projects/spatio_temporal_stream_processing/batch-processing/city-rover/spark-jobs/trajectory-visualizer-job/target/scala-2.12:/opt/spark/city-rover-jars
+
     restart: unless-stopped
 
   spark-worker:
@@ -319,6 +321,8 @@ services:
       - ./spark/pipelines:/opt/spark/work-dir/pipelines 
       - ./shared/ivy-cache:/home/spark/.ivy2
       - ../spatio_temporal_stream_processing/graph-data:/opt/cityrover/graph-engine/output
+      - /home/aleksei/Projects/spatio_temporal_stream_processing/batch-processing/city-rover/spark-jobs/trajectory-visualizer-job/target/scala-2.12:/opt/spark/city-rover-jars
+
     restart: unless-stopped
 
 volumes:
